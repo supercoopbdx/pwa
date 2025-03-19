@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "vue": "^3.5.13",
-    "vue-barcode-reader": "^1.0.3"
+    "vue-barcode-reader": "^1.0.3",
+    "vue-i18n": "^11.1.2",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.14",
