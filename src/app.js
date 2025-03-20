@@ -6,8 +6,9 @@ import fr from './lang/fr.js'
 import App from './App.vue'
 import Home from './components/Home.vue'
 import List from './components/List.vue'
-import Scanner from './components/Scanner.vue'
-import BarcodeForm from './components/BarcodeForm.vue'
+import Scan from './components/Scan.vue'
+import Form from './components/Form.vue'
+import Send from './components/Send.vue'
 
 createApp(App)
   .use(createI18n({
@@ -21,8 +22,9 @@ createApp(App)
     routes: [
       { path: '/', component: Home },
       { path: '/list', component: List },
-      { path: '/scan', component: Scanner },
-      { path: '/form', component: BarcodeForm },
+      { path: '/scan', component: Scan },
+      { path: '/form', component: Form },
+      { path: '/send', component: Send },
     ]
   }))
   .mount('#app')

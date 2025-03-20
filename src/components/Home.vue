@@ -1,11 +1,9 @@
 <script setup>
-import PrimaryButton from './buttons/PrimaryButton.vue'
-import TextInput from './inputs/TextInput.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const zone = ref('')
-const router = useRouter();
+const router = useRouter()
 
 function start () {
     router.push('/list')
@@ -13,14 +11,15 @@ function start () {
 </script>
 
 <template>
-    <div class="flex flex-col gap-3 text-center">
+    <div class="flex flex-col gap-2 text-center">
         <h1 class="text-4xl">{{ $t('nav.home') }}</h1>
-        <p class="m-10">{{ $t('home.introduction') }}</p>
-        <div class="flex flex-row gap-2 m-auto">
-            <label for="zoneInput"> {{ $t('input.zone_number') }} : </label>
-            <TextInput type="number" v-model="zone" />
-        </div>
+        <p class="text-left mt-4 mb-30">{{ $t('home.introduction') }}</p>
 
-        <PrimaryButton @click="start" class="p-3 m-3 text-xl">{{ $t('home.start') }}</PrimaryButton>
+        <form>
+            <label for="number-input">{{ $t('home.zone_number')}} :</label>
+            <input type="number" id="number-input" required v-model="zone" />
+        </form>
+
+        <button @click="start" class="primary mt-10">{{ $t('home.start') }}</button>
     </div>
 </template>

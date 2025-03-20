@@ -19,9 +19,9 @@ export default defineConfig({
       },
 
       manifest: {
-        name: 'pwa',
-        short_name: 'pwa',
-        description: 'pwa',
+        name: 'Inventaire Supercoop',
+        short_name: 'inventaire',
+        description: 'App pour faire l\'inventaire supercoop',
         theme_color: '#ffffff'
       },
 
