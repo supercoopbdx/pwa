@@ -11,8 +11,8 @@ function start () {
 </script>
 
 <template>
-    <div class="flex flex-col gap-2 text-center">
-        <h1 class="text-4xl">{{ $t('nav.home') }}</h1>
+    <div class="page gap-2">
+        <h1>{{ $t('nav.home') }}</h1>
         <p class="text-left mt-4 mb-30">{{ $t('home.introduction') }}</p>
 
         <form>

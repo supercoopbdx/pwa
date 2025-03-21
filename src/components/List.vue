@@ -13,8 +13,8 @@ const list = ref([
 </script>
 
 <template>
-    <div class="flex flex-col gap-2 text-center">
-        <h1 class="text-4xl">{{ $t('nav.list') }}</h1>
+    <div class="page gap-2">
+        <h1>{{ $t('nav.list') }}</h1>
         <form class="my-5">
             <label for="number-input">{{ $t('list.zone_number')}} :</label>
             <input type="number" id="number-input" required v-model="zone" />
