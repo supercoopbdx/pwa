@@ -11,7 +11,7 @@ function start () {
 </script>
 
 <template>
-    <div class="page gap-2">
+    <main class="page gap-2">
         <h1>{{ $t('nav.home') }}</h1>
         <p class="text-left mt-4 mb-30">{{ $t('home.introduction') }}</p>
 
@@ -21,5 +21,5 @@ function start () {
         </form>
 
         <button @click="start" class="primary mt-10">{{ $t('home.start') }}</button>
-    </div>
+    </main>
 </template>

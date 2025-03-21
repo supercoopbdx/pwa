@@ -32,6 +32,14 @@ button.secondary:hover {
     @apply bg-blue-500 text-white;
 }
 
+button.cancel {
+    @apply text-red-500 font-semibold;
+}
+
+button.cancel:hover {
+    @apply bg-red-500 text-white;
+}
+
 form {
     @apply text-left mx-auto;
 }

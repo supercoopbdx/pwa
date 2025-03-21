@@ -13,7 +13,7 @@ const list = ref([
 </script>
 
 <template>
-    <div class="page gap-2">
+    <main class="page gap-2">
         <h1>{{ $t('nav.list') }}</h1>
         <form class="my-5">
             <label for="number-input">{{ $t('list.zone_number')}} :</label>
@@ -48,8 +48,8 @@ const list = ref([
                 <button class="secondary">{{ $t('button.back') }}</button>
             </RouterLink>
             <RouterLink to="/send">
-                <button class="primary">{{ $t('button.send') }}</button>
+                <button class="primary">{{ $t('button.send_list') }}</button>
             </RouterLink>
         </div>
-    </div>
+    </main>
 </template>

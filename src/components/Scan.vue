@@ -7,7 +7,7 @@ const loading = ref(true)
 </script>
 
 <template>
-    <div class="page gap-2">
+    <main class="page gap-2">
         <h1>{{ $t('nav.scan') }}</h1>
         <div v-if="loading">
             <img src="/barcode_scan.svg" alt="Barcode" class="max-w-md m-auto" />
@@ -18,5 +18,5 @@ const loading = ref(true)
         <RouterLink to="/list">
             <button class="secondary">{{ $t('button.back') }}</button>
         </RouterLink>
-    </div>
+    </main>
 </template>
