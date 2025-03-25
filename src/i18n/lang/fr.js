@@ -25,6 +25,7 @@ export default {
     zone_number: 'Numéro de la zone',
     barcode: 'Code-barre',
     amount: 'Quantité',
+    empty: 'La liste est vide',
   },
   scan: {
     loading: 'Chargement de la caméra',
