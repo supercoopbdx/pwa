@@ -25,8 +25,9 @@ export const useInventoryStore = defineStore('inventory', () => {
   }
 
   function reset() {
-    zone.value = ''
     itemList.value = {}
+
+    localStorage.setItem('items', JSON.stringify(itemList.value))
   }
 
   return { zone, itemList, saveZone, addItem, removeItem, reset }
