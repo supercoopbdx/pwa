@@ -6,16 +6,18 @@ import TableHead from '@/components/tables/TableHead.vue'
 import TableRow from '@/components/tables/TableRow.vue'
 import TableCell from '@/components/tables/TableCell.vue'
 import TableLayout from '@/layout/TableLayout.vue'
-import { TrashIcon } from '@heroicons/vue/24/outline/index.js'
-import { useInventoryStore } from '@/stores/inventory.js'
 import ButtonBase from '@/components/buttons/ButtonBase.vue'
+import CancelButton from '@/components/buttons/CancelButton.vue'
+import { useInventoryStore } from '@/stores/inventory.js'
+import { TrashIcon } from '@heroicons/vue/24/outline/index.js'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
+
 const router = useRouter()
 const store = useInventoryStore()
-const { t } = useI18n({ useScope: 'global' })
 
 const items = computed(() => Object.values(store.itemList))
 
@@ -27,14 +29,13 @@ function removeItem(barcode) {
   store.removeItem(barcode)
 }
 
+function back() {
+  router.push({ path: '/' })
+}
+
 function reset() {
-  if (items.value.length) {
-    if (confirm(t('list.reset'))) {
-      store.reset()
-      router.push({ path: '/' })
-    }
-  } else {
-    router.push({ path: '/' })
+  if (confirm(t('list.reset'))) {
+    store.reset()
   }
 }
 
@@ -86,10 +87,13 @@ function send() {
     </div>
 
     <div class="flex flex-row gap-2 justify-between">
-      <SecondaryButton @click="reset()">{{ $t('button.cancel') }}</SecondaryButton>
-      <PrimaryButton @click="send()" :disabled="!items.length"
-        >{{ $t('button.send_list') }}
-      </PrimaryButton>
+      <SecondaryButton @click="back()">{{ $t('button.back') }}</SecondaryButton>
+      <div class="flex flex-row gap-4">
+        <CancelButton @click="reset()">{{ $t('button.reset') }}</CancelButton>
+        <PrimaryButton @click="send()" :disabled="!items.length">
+          {{ $t('button.send_list') }}
+        </PrimaryButton>
+      </div>
     </div>
   </PageLayout>
 </template>
