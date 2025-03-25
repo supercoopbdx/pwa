@@ -14,6 +14,7 @@ export default {
     submit: 'Valider',
     remove: 'Supprimer',
     send_confirm: "Confirmer l'envoi",
+    cancel: 'Annuler',
   },
   home: {
     introduction:
@@ -26,6 +27,7 @@ export default {
     barcode: 'Code-barre',
     amount: 'Quantité',
     empty: 'La liste est vide',
+    reset: 'Vous êtes sur le point de tout réinitialiser',
   },
   scan: {
     loading: 'Chargement de la caméra',

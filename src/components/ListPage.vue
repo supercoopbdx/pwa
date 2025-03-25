@@ -11,9 +11,11 @@ import { useInventoryStore } from '@/stores/inventory.js'
 import ButtonBase from '@/components/buttons/ButtonBase.vue'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const store = useInventoryStore()
+const { t } = useI18n({ useScope: 'global' })
 
 const items = computed(() => Object.values(store.itemList))
 
@@ -23,6 +25,21 @@ if (!store.zone) {
 
 function removeItem(barcode) {
   store.removeItem(barcode)
+}
+
+function reset() {
+  if (items.value.length) {
+    if (confirm(t('list.reset'))) {
+      store.reset()
+      router.push({ path: '/' })
+    }
+  } else {
+    router.push({ path: '/' })
+  }
+}
+
+function send() {
+  router.push({ path: '/send' })
 }
 </script>
 
@@ -69,12 +86,10 @@ function removeItem(barcode) {
     </div>
 
     <div class="flex flex-row gap-2 justify-between">
-      <RouterLink to="/">
-        <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
-      </RouterLink>
-      <RouterLink to="/send">
-        <PrimaryButton>{{ $t('button.send_list') }}</PrimaryButton>
-      </RouterLink>
+      <SecondaryButton @click="reset()">{{ $t('button.cancel') }}</SecondaryButton>
+      <PrimaryButton @click="send()" :disabled="!items.length"
+        >{{ $t('button.send_list') }}
+      </PrimaryButton>
     </div>
   </PageLayout>
 </template>
