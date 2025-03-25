@@ -29,7 +29,7 @@ function start() {
     </FormLayout>
 
     <PrimaryButton class="mt-10" @click="start" :disabled="!store.zone">
-      {{ $t('home.start') }}
+      {{ !Object.values(store.itemList).length ? $t('home.start') : $t('home.continue') }}
     </PrimaryButton>
   </PageLayout>
 </template>
