@@ -3,11 +3,13 @@ import { ref } from 'vue'
 import { StreamBarcodeReader } from '@teckel/vue-barcode-reader'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
+import { useRouter } from 'vue-router'
 
 const loading = ref(true)
+const router = useRouter()
 
 function decode(barcode) {
-  alert(barcode)
+  router.push({ path: '/form', query: { barcode } })
 }
 </script>
 
