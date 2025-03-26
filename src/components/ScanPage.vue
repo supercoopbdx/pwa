@@ -1,10 +1,14 @@
 <script setup>
-import { StreamBarcodeReader } from 'vue-barcode-reader'
 import { ref } from 'vue'
+import { StreamBarcodeReader } from '@teckel/vue-barcode-reader'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 
 const loading = ref(true)
+
+function decode(barcode) {
+  alert(barcode)
+}
 </script>
 
 <template>
@@ -15,8 +19,10 @@ const loading = ref(true)
     </div>
 
     <StreamBarcodeReader
-      class="bg-gray-300 max-w-md m-auto my-10"
-      @decode="alert"
+      torch
+      no-front-cameras
+      class="bg-gray-300 max-w-md"
+      @decode="decode"
       @loaded="loading = false"
     />
     <RouterLink to="/list">
