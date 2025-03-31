@@ -4,6 +4,8 @@ import { StreamBarcodeReader } from '@teckel/vue-barcode-reader'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import { useRouter } from 'vue-router'
+import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import CancelButton from '@/components/buttons/CancelButton.vue'
 
 const loading = ref(true)
 const router = useRouter()
@@ -27,8 +29,13 @@ function decode(barcode) {
       @decode="decode"
       @loaded="loading = false"
     />
-    <RouterLink to="/list">
-      <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
-    </RouterLink>
+    <div class="flex flex-row gap-2 justify-between">
+      <RouterLink to="/list" class="m-auto">
+        <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
+      </RouterLink>
+      <RouterLink to="/form" class="m-auto">
+        <PrimaryButton class="text-sm">{{ $t('button.manual_input') }}</PrimaryButton>
+      </RouterLink>
+    </div>
   </PageLayout>
 </template>

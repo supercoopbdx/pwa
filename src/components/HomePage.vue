@@ -17,7 +17,17 @@ function start() {
 
 <template>
   <PageLayout :title="$t('nav.home')">
-    <p class="text-left mt-4 mb-30">{{ $t('home.introduction') }}</p>
+    <div class="text-left mt-4 mb-30">
+      <p class="mb-5">{{ $t('home.introduction') }}</p>
+      {{ $t('home.instructions.title') }}
+      <ul class="list-outside list-disc ml-10">
+        <li>{{ $t('home.instructions.zone_number') }}</li>
+        <li>{{ $t('home.instructions.scan') }}</li>
+        <li>{{ $t('home.instructions.manual') }}</li>
+        <li>{{ $t('home.instructions.send') }}</li>
+      </ul>
+      <p class="mt-10">{{ $t('home.good_luck') }}</p>
+    </div>
 
     <FormLayout>
       <FormInput
