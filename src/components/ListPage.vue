@@ -47,11 +47,8 @@ function send() {
 <template>
   <PageLayout :title="$t('nav.list', { zone: store.zone })">
     <div class="flex flex-col gap-2">
-      <RouterLink to="/scan">
+      <RouterLink to="/scan" class="m-auto">
         <PrimaryButton class="text-2xl px-10 py-5">{{ $t('button.scan_barcode') }}</PrimaryButton>
-      </RouterLink>
-      <RouterLink to="/form">
-        <SecondaryButton class="text-sm">{{ $t('button.manual_input') }}</SecondaryButton>
       </RouterLink>
     </div>
 

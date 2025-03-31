@@ -35,7 +35,7 @@ function barcodeChange() {
         <FormInput
           v-model="barcode"
           :label="$t('form.barcode')"
-          type="number"
+          type="text"
           @input="barcodeChange()"
         ></FormInput>
       </div>
