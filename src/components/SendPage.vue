@@ -2,6 +2,10 @@
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
+
+function sendZone() {
+
+}
 </script>
 
 <template>
@@ -12,9 +16,7 @@ import PageLayout from '@/layout/PageLayout.vue'
       <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-      <RouterLink to="/">
-        <PrimaryButton>{{ $t('button.send_confirm') }}</PrimaryButton>
-      </RouterLink>
+      <PrimaryButton @click="sendZone()">{{ $t('button.send_confirm') }}</PrimaryButton>
     </div>
   </PageLayout>
 </template>

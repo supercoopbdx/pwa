@@ -9,7 +9,7 @@ export const useInventoryStore = defineStore('inventory', () => {
     localStorage.setItem('zone', JSON.stringify(zone.value))
   }
 
-  function addItem(barcode, amount) {
+  function setItem(barcode, amount) {
     itemList.value[barcode] = {
       barcode,
       amount,
@@ -30,5 +30,5 @@ export const useInventoryStore = defineStore('inventory', () => {
     localStorage.setItem('items', JSON.stringify(itemList.value))
   }
 
-  return { zone, itemList, saveZone, addItem, removeItem, reset }
+  return { zone, itemList, saveZone, setItem, removeItem, reset }
 })
