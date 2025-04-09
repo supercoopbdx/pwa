@@ -3,32 +3,37 @@ import { ref } from 'vue'
 
 export const useInventoryStore = defineStore('inventory', () => {
   const zone = ref(JSON.parse(localStorage.getItem('zone')))
-  const itemList = ref(JSON.parse(localStorage.getItem('items')) ?? {})
+  const products = ref(JSON.parse(localStorage.getItem('items')) ?? {})
 
   function saveZone() {
     localStorage.setItem('zone', JSON.stringify(zone.value))
   }
 
-  function setItem(barcode, amount) {
-    itemList.value[barcode] = {
+  function setItem(barcode, quantity, oldBarcode) {
+    console.log('store item', barcode, quantity)
+    products.value[barcode] = {
       barcode,
-      amount,
+      quantity,
     }
 
-    localStorage.setItem('items', JSON.stringify(itemList.value))
+    if (oldBarcode !== barcode) {
+      removeItem(oldBarcode)
+    }
+
+    localStorage.setItem('items', JSON.stringify(products.value))
   }
 
   function removeItem(barcode) {
-    delete itemList.value[barcode]
+    delete products.value[barcode]
 
-    localStorage.setItem('items', JSON.stringify(itemList.value))
+    localStorage.setItem('items', JSON.stringify(products.value))
   }
 
   function reset() {
-    itemList.value = {}
+    products.value = {}
 
-    localStorage.setItem('items', JSON.stringify(itemList.value))
+    localStorage.setItem('items', JSON.stringify(products.value))
   }
 
-  return { zone, itemList, saveZone, setItem, removeItem, reset }
+  return { zone, products, saveZone, setItem, removeItem, reset }
 })

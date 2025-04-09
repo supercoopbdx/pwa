@@ -13,19 +13,19 @@ const router = useRouter()
 const store = useInventoryStore()
 
 const barcode = ref(route.query.barcode ?? null)
-const amount = ref(store.itemList[barcode.value]?.amount ?? null)
+const quantity = ref(store.products[barcode.value]?.quantity ?? null)
 
-const valid = computed(() => !errors.value.barcode && !errors.value.amount)
+const valid = computed(() => !errors.value.barcode && !errors.value.quantity)
 
 const errors = computed(() => {
   return {
     barcode: isNaN(barcode.value) || barcode.value?.length !== 13,
-    amount: isNaN(amount.value),
+    quantity: isNaN(quantity.value),
   }
 })
 
 function submit() {
-  store.setItem(route.query.barcode, amount.value ?? 0)
+  store.setItem(barcode.value, quantity.value ?? 0, route.query.barcode)
 
   router.push({ path: '/list' })
 }
@@ -35,7 +35,7 @@ function submit() {
 <template>
   <PageLayout :title="$t('nav.form')">
     <FormLayout>
-      {{ amount?.length }}
+      {{ quantity?.length }}
       <div class="flex flex-col gap-2">
         <FormInput
           type="text"
@@ -47,9 +47,9 @@ function submit() {
         </div>
       </div>
       <div class="flex flex-col gap-2">
-        <FormInput v-model="amount" :label="$t('form.amount')" type="number"></FormInput>
-        <div v-if="errors.amount" class="text-red-600">
-          {{ $t('form.amount_error') }}
+        <FormInput v-model="quantity" :label="$t('form.quantity')" type="number"></FormInput>
+        <div v-if="errors.quantity" class="text-red-600">
+          {{ $t('form.quantity_error') }}
         </div>
       </div>
     </FormLayout>
@@ -58,7 +58,7 @@ function submit() {
       <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-      <PrimaryButton @click="submit()" :disabled="!valid || errors.barcode || errors.amount">
+      <PrimaryButton @click="submit()" :disabled="!valid || errors.barcode || errors.quantity">
         {{ $t('button.submit') }}
       </PrimaryButton>
     </div>

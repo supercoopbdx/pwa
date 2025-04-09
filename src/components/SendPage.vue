@@ -2,9 +2,23 @@
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
+import { useInventoryStore } from '@/stores/inventory.js'
+import { toRaw } from 'vue'
 
-function sendZone() {
+const SERVER_URL = 'https://backend.supercoop.fr/submit'
+const store = useInventoryStore()
 
+async function submit() {
+  const response = await fetch(SERVER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: {
+      zone: store.zone,
+      products: Object.values(toRaw(store.products)),
+    },
+  })
+
+  //TODO : if request fails, display error
 }
 </script>
 
@@ -16,7 +30,7 @@ function sendZone() {
       <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-      <PrimaryButton @click="sendZone()">{{ $t('button.send_confirm') }}</PrimaryButton>
+      <PrimaryButton @click="submit()">{{ $t('button.send_confirm') }}</PrimaryButton>
     </div>
   </PageLayout>
 </template>

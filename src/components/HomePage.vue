@@ -46,7 +46,7 @@ function submitZone() {
     </FormLayout>
 
     <PrimaryButton class="mt-10" @click="submitZone" :disabled="!store.zone || errors.zone">
-      {{ !Object.values(store.itemList).length ? $t('home.start') : $t('home.continue') }}
+      {{ !Object.values(store.products).length ? $t('home.start') : $t('home.continue') }}
     </PrimaryButton>
   </PageLayout>
 </template>
