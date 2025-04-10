@@ -5,17 +5,17 @@ import PageLayout from '@/layout/PageLayout.vue'
 import { useInventoryStore } from '@/stores/inventory.js'
 import { toRaw } from 'vue'
 
-const SERVER_URL = 'https://backend.supercoop.fr/submit'
+const SERVER_URL = 'https://backend.supercoop.fr/send-email'
 const store = useInventoryStore()
 
 async function submit() {
   const response = await fetch(SERVER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: {
+    body: JSON.stringify({
       zone: store.zone,
       products: Object.values(toRaw(store.products)),
-    },
+    }),
   })
 
   //TODO : if request fails, display error

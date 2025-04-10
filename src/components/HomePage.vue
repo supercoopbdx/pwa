@@ -11,7 +11,7 @@ const store = useInventoryStore()
 const router = useRouter()
 const errors = computed(() => {
   return {
-    zone: isNaN(store.zone) || store.zone.length !== 3,
+    zone: isNaN(store.zone) || store.zone?.length !== 3,
   }
 })
 
@@ -42,7 +42,7 @@ function submitZone() {
         :label="$t('home.zone_number')"
         :required="true"
       ></FormInput>
-      <div v-if="zone.length > 0 && errors.zone" class="text-red-600">{{ $t('home.zone_error') }}</div>
+      <div v-if="errors.zone && store.zone?.length > 0" class="text-red-600">{{ $t('home.zone_error') }}</div>
     </FormLayout>
 
     <PrimaryButton class="mt-10" @click="submitZone" :disabled="!store.zone || errors.zone">
