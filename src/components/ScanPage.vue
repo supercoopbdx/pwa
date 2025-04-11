@@ -5,7 +5,6 @@ import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import { useRouter } from 'vue-router'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
-import CancelButton from '@/components/buttons/CancelButton.vue'
 
 const loading = ref(true)
 const router = useRouter()

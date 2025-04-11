@@ -28,13 +28,15 @@ export default {
     },
     good_luck: 'Bon comptage !!!',
     zone_number: 'Numéro de la zone',
+    zone_error: 'La zone doit être un numéro à 3 chiffres',
     start: "Démarrer l'inventaire",
     continue: "Reprendre l'inventaire",
+
   },
   list: {
     zone_number: 'Numéro de la zone',
     barcode: 'Code-barre',
-    amount: 'Quantité',
+    quantity: 'Quantité',
     empty: 'La liste est vide',
     reset: 'Vous êtes sur le point de vider la liste',
   },
@@ -43,7 +45,9 @@ export default {
   },
   form: {
     barcode: 'Code-barre',
-    amount: 'Quantité',
+    barcode_error: 'Le code-barre doit être un nombre à 13 chiffres',
+    quantity: 'Quantité',
+    quantity_error: 'La quantité doit être un nombre'
   },
   send: {
     confirmation:
