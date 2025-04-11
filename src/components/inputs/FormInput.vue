@@ -15,10 +15,7 @@ defineProps({
 
 const emit = defineEmits(['change', 'input'])
 
-const modelValue = defineModel({
-  type: [Number, null],
-  required: true,
-})
+const modelValue = defineModel<String | Number | null>({ required: true })
 </script>
 <template>
   <label>

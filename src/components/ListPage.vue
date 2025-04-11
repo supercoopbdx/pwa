@@ -19,7 +19,7 @@ const { t } = useI18n()
 const router = useRouter()
 const store = useInventoryStore()
 
-const items = computed(() => Object.values(store.itemList))
+const items = computed(() => Object.values(store.products))
 
 if (!store.zone) {
   router.push({ path: '/' })
@@ -56,7 +56,7 @@ function send() {
       <template v-slot:thead>
         <tr>
           <TableHead>{{ $t('list.barcode') }}</TableHead>
-          <TableHead>{{ $t('list.amount') }}</TableHead>
+          <TableHead>{{ $t('list.quantity') }}</TableHead>
           <TableHead class="w-10"></TableHead>
         </tr>
       </template>
@@ -70,7 +70,7 @@ function send() {
               {{ item.barcode }}
             </RouterLink>
           </TableCell>
-          <TableCell>{{ item.amount }}</TableCell>
+          <TableCell>{{ item.quantity }}</TableCell>
           <TableCell>
             <ButtonBase @click="removeItem(item.barcode)">
               <TrashIcon class="w-5 h-5"></TrashIcon>

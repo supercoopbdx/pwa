@@ -1,46 +1,56 @@
 <script setup>
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
-import FormLayout from '@/layout/FormLayout.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import FormInput from '@/components/inputs/FormInput.vue'
 import { useInventoryStore } from '@/stores/inventory.js'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref } from 'vue'
+import FormLayout from '@/layout/FormLayout.vue'
 
 const route = useRoute()
 const router = useRouter()
 const store = useInventoryStore()
 
 const barcode = ref(route.query.barcode ?? null)
-const amount = ref(store.itemList[barcode.value]?.amount ?? null)
+const quantity = ref(store.products[barcode.value]?.quantity ?? null)
 
-const valid = computed(() => barcode.value && amount.value)
+const valid = computed(() => !errors.value.barcode && !errors.value.quantity)
+
+const errors = computed(() => {
+  return {
+    barcode: isNaN(barcode.value) || barcode.value?.length !== 13,
+    quantity: isNaN(quantity.value),
+  }
+})
 
 function submit() {
-  store.addItem(barcode.value, amount.value)
+  store.setItem(barcode.value, quantity.value ?? 0, route.query.barcode)
+
   router.push({ path: '/list' })
 }
 
-function barcodeChange() {
-  router.replace({ path: '/form', query: { barcode: barcode.value }, replace: true })
-  amount.value = store.itemList[barcode.value]?.amount ?? null
-}
 </script>
 
 <template>
   <PageLayout :title="$t('nav.form')">
     <FormLayout>
-      <div>
+      {{ quantity?.length }}
+      <div class="flex flex-col gap-2">
         <FormInput
+          type="text"
           v-model="barcode"
           :label="$t('form.barcode')"
-          type="text"
-          @input="barcodeChange()"
         ></FormInput>
+        <div v-if="errors.barcode" class="text-red-600">
+          {{ $t('form.barcode_error') }}
+        </div>
       </div>
-      <div>
-        <FormInput v-model="amount" :label="$t('form.amount')" type="number"></FormInput>
+      <div class="flex flex-col gap-2">
+        <FormInput v-model="quantity" :label="$t('form.quantity')" type="number"></FormInput>
+        <div v-if="errors.quantity" class="text-red-600">
+          {{ $t('form.quantity_error') }}
+        </div>
       </div>
     </FormLayout>
 
@@ -48,7 +58,7 @@ function barcodeChange() {
       <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-      <PrimaryButton @click="submit()" :disabled="!valid">
+      <PrimaryButton @click="submit()" :disabled="!valid || errors.barcode || errors.quantity">
         {{ $t('button.submit') }}
       </PrimaryButton>
     </div>

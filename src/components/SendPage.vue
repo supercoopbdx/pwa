@@ -2,6 +2,24 @@
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
+import { useInventoryStore } from '@/stores/inventory.js'
+import { toRaw } from 'vue'
+
+const SERVER_URL = 'https://backend.supercoop.fr/send-email'
+const store = useInventoryStore()
+
+async function submit() {
+  const response = await fetch(SERVER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      zone: store.zone,
+      products: Object.values(toRaw(store.products)),
+    }),
+  })
+
+  //TODO : if request fails, display error
+}
 </script>
 
 <template>
@@ -12,9 +30,7 @@ import PageLayout from '@/layout/PageLayout.vue'
       <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-      <RouterLink to="/">
-        <PrimaryButton>{{ $t('button.send_confirm') }}</PrimaryButton>
-      </RouterLink>
+      <PrimaryButton @click="submit()">{{ $t('button.send_confirm') }}</PrimaryButton>
     </div>
   </PageLayout>
 </template>
