@@ -8,6 +8,7 @@ export default {
   },
   button: {
     back: 'Retour',
+    back_to_home: "Retour à l'accueil",
     send_list: 'Envoyer la liste',
     scan_barcode: 'Scanner un code-barre',
     manual_input: 'Saisie manuelle',
@@ -31,7 +32,6 @@ export default {
     zone_error: 'La zone doit être un numéro à 3 chiffres',
     start: "Démarrer l'inventaire",
     continue: "Reprendre l'inventaire",
-
   },
   list: {
     zone_number: 'Numéro de la zone',
@@ -47,7 +47,7 @@ export default {
     barcode: 'Code-barre',
     barcode_error: 'Le code-barre doit être un nombre à 13 chiffres',
     quantity: 'Quantité',
-    quantity_error: 'La quantité doit être un nombre'
+    quantity_error: 'La quantité doit être un nombre',
   },
   send: {
     confirmation:
