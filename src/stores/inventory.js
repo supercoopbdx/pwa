@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import config from '../config'
 
 export const useInventoryStore = defineStore('inventory', () => {
   const zone = ref(JSON.parse(localStorage.getItem('zone')))
@@ -11,14 +12,20 @@ export const useInventoryStore = defineStore('inventory', () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/product-info-from-barcode', {
+      const response = await fetch(config.api.baseURL + '/product-info-from-barcode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ barcode }),
       })
       if (!response.ok) {
-        throw new Error('Erreur serveur')
+        const errorData = await response.json()
+        if (errorData.error === 'unauthenticated') {
+          router.push({ name: 'home', query: { authMessage: errorData.authMessage } })
+        } else {
+          throw new Error(errorData.error || 'Erreur serveur')
+        }
       }
+
       const data = await response.json()
       return {
         name: data.product.name,

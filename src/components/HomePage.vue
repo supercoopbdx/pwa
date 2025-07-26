@@ -1,20 +1,43 @@
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import PageLayout from '@/layout/PageLayout.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import FormLayout from '@/layout/FormLayout.vue'
 import FormInput from '@/components/inputs/FormInput.vue'
+import AuthButtons from '@/components/AuthButtons.vue'
 import { useInventoryStore } from '@/stores/inventory.js'
-import { computed } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 
 const store = useInventoryStore()
 const router = useRouter()
+const route = useRoute()
+const showAuthAlert = ref(false)
+const authMessage = ref('')
+
 const errors = computed(() => {
   return {
     zone: isNaN(store.zone) || store.zone?.length !== 3,
   }
 })
 
+onMounted(() => {
+  // Vérifier si un message d'authentification est présent dans l'URL
+  if (route.query.authMessage) {
+    authMessage.value = route.query.authMessage
+    showAuthAlert.value = true
+    
+    // Nettoyer l'URL après avoir affiché le message
+    router.replace({ query: {} })
+  }
+})
+// 🔁 Écoute aussi les changements de query après le premier montage
+watch(() => route.query.authMessage, (newVal) => {
+  if (newVal) {
+    authMessage.value = newVal
+    showAuthAlert.value = true
+    router.replace({ query: {} })
+  }
+})
 function submitZone() {
   store.saveZone()
   router.push('/list')
@@ -23,6 +46,16 @@ function submitZone() {
 
 <template>
   <PageLayout :title="$t('nav.home')">
+    <!-- Message d'alerte pour connexion requise -->
+    <div v-if="showAuthAlert" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+      <p class="font-bold">{{ authMessage }}</p>
+    </div>
+
+    <!-- Boutons d'authentification en haut à droite -->
+    <div class="absolute top-4 right-4">
+      <AuthButtons />
+    </div>
+
     <div class="text-left mt-4 mb-30">
       <p class="mb-5">{{ $t('home.introduction') }}</p>
       {{ $t('home.instructions.title') }}
