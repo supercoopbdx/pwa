@@ -5,7 +5,7 @@ import PageLayout from '@/layout/PageLayout.vue'
 import FormInput from '@/components/inputs/FormInput.vue'
 import { useInventoryStore } from '@/stores/inventory.js'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import FormLayout from '@/layout/FormLayout.vue'
 
 const route = useRoute()
@@ -14,6 +14,10 @@ const store = useInventoryStore()
 
 const barcode = ref(route.query.barcode ?? null)
 const quantity = ref(store.products[barcode.value]?.quantity ?? null)
+const productName = ref('')
+const productImage = ref('')
+const errorMessage = ref('')
+const loading = ref(false)
 
 const valid = computed(() => !errors.value.barcode && !errors.value.quantity)
 
@@ -24,9 +28,43 @@ const errors = computed(() => {
   }
 })
 
-function submit() {
-  store.setItem(barcode.value, quantity.value ?? 0, route.query.barcode)
+const validBarcode = computed(() => barcode.value && barcode.value.length === 13 && !isNaN(barcode.value))
 
+watch(validBarcode, (newVal) => {
+  if (newVal) {
+    fetchProductInfo(barcode.value)
+  } else {
+    productName.value = ''
+    productImage.value = ''
+    errorMessage.value = ''
+  }
+})
+
+async function fetchProductInfo(barcode) {
+  loading.value = true
+  errorMessage.value = ''
+  try {
+    const productInfo = await store.fetchProductInfo(barcode)
+    productName.value = productInfo.name
+    productImage.value = productInfo.image
+  } catch (error) {
+    errorMessage.value = 'Produit non trouvé dans la base de données'
+    productName.value = 'Produit inconnu'
+    productImage.value = '/image-not-found-icon.svg'
+  } finally {
+    loading.value = false
+  }
+}
+
+function submit() {
+  if (!valid.value) return
+  store.setItem(
+    barcode.value,
+    quantity.value ?? 0,
+    route.query.barcode,
+    productName.value,
+    productImage.value
+  )
   router.push({ path: '/list' })
 }
 
@@ -35,22 +73,43 @@ function submit() {
 <template>
   <PageLayout :title="$t('nav.form')">
     <FormLayout>
-      {{ quantity?.length }}
-      <div class="flex flex-col gap-2">
+      <div v-if="loading" class="text-center">{{ $t('loading') }}...</div>
+      <div v-if="errorMessage" class="text-red-600 font-bold">{{ errorMessage }}</div>
+      <div v-if="productName">
+        <h3 class="font-bold text-lg">{{ productName }}</h3>
+        <div class="flex items-center justify-center">
+          <img :src="`data:image/png;base64,${productImage}`" alt="Product Image" class="max-w-md h-32" />
+        </div>
         <FormInput
-          type="text"
-          v-model="barcode"
-          :label="$t('form.barcode')"
-        ></FormInput>
-        <div v-if="errors.barcode" class="text-red-600">
-          {{ $t('form.barcode_error') }}
-        </div>
+          v-model="quantity"
+          :error="errors.quantity"
+          :error-message="$t('form.quantity_error')"
+          :label="$t('form.quantity')"
+          :placeholder="$t('form.quantity_placeholder')"
+          type="number"
+          min="0"
+        />
+        <PrimaryButton @click="submit" :disabled="!valid">Validé</PrimaryButton>
       </div>
-      <div class="flex flex-col gap-2">
-        <FormInput v-model="quantity" :label="$t('form.quantity')" type="number"></FormInput>
-        <div v-if="errors.quantity" class="text-red-600">
-          {{ $t('form.quantity_error') }}
-        </div>
+      <div v-else>
+        <FormInput
+          v-model="barcode"
+          :error="errors.barcode"
+          :error-message="$t('form.barcode_error')"
+          :label="$t('form.barcode')"
+          :placeholder="$t('form.barcode_placeholder')"
+          type="text"
+          maxlength="13"
+        />
+        <FormInput
+          v-model="quantity"
+          :error="errors.quantity"
+          :error-message="$t('form.quantity_error')"
+          :label="$t('form.quantity')"
+          :placeholder="$t('form.quantity_placeholder')"
+          type="number"
+          min="0"
+        />
       </div>
     </FormLayout>
 
@@ -58,9 +117,6 @@ function submit() {
       <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-      <PrimaryButton @click="submit()" :disabled="!valid || errors.barcode || errors.quantity">
-        {{ $t('button.submit') }}
-      </PrimaryButton>
     </div>
   </PageLayout>
 </template>

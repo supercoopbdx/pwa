@@ -37,6 +37,8 @@ export default {
     zone_number: 'Numéro de la zone',
     barcode: 'Code-barre',
     quantity: 'Quantité',
+    name: 'Nom',
+    image: 'Image',
     empty: 'La liste est vide',
     reset: 'Vous êtes sur le point de vider la liste',
   },
@@ -45,12 +47,15 @@ export default {
   },
   form: {
     barcode: 'Code-barre',
-    barcode_error: 'Le code-barre doit être un nombre à 13 chiffres',
+    barcode_placeholder: 'Scannez ou saisissez un code-barres',
+    quantity_placeholder: 'Saisissez la quantité',
+    barcode_error: 'Le code-barres doit être un nombre à 13 chiffres',
     quantity: 'Quantité',
     quantity_error: 'La quantité doit être un nombre',
   },
   send: {
     confirmation:
       "Vous êtes sur le point d'envoyer la liste, êtes-vous certain que c'est ce que vous voulez faire ?",
+    email_sent: "Email envoyé avec succès",
   },
 }
