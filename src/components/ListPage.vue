@@ -25,8 +25,6 @@ if (!store.zone) {
   router.push({ path: '/' })
 }
 
-<<<<<<< HEAD
-=======
 // Get product info directly from products objects
 const productInfo = computed(() => {
   return items.value.reduce((acc, item) => {
@@ -38,7 +36,6 @@ const productInfo = computed(() => {
   }, {})
 })
 
->>>>>>> fetch_info
 function removeItem(barcode) {
   store.removeItem(barcode)
 }
@@ -71,27 +68,13 @@ function send() {
         <tr>
           <TableHead>{{ $t('list.barcode') }}</TableHead>
           <TableHead>{{ $t('list.quantity') }}</TableHead>
-<<<<<<< HEAD
-=======
           <TableHead>{{ $t('list.name') }}</TableHead>
           <TableHead>{{ $t('list.image') }}</TableHead>
->>>>>>> fetch_info
           <TableHead class="w-10"></TableHead>
         </tr>
       </template>
       <template v-slot:tbody>
         <TableRow v-for="item in items" :key="item.barcode">
-<<<<<<< HEAD
-          <TableCell>
-            <RouterLink
-              :to="{ path: '/form', query: { barcode: item.barcode } }"
-              class="font-medium text-blue-600 hover:underline"
-            >
-              {{ item.barcode }}
-            </RouterLink>
-          </TableCell>
-          <TableCell>{{ item.quantity }}</TableCell>
-=======
           <TableCell>{{ item.barcode }}</TableCell>
           <TableCell>{{ item.quantity }}</TableCell>
           <TableCell>{{ productInfo[item.barcode]?.name || 'Produit inconnu' }}</TableCell>
@@ -101,7 +84,6 @@ function send() {
                  :alt="productInfo[item.barcode]?.name || 'Produit inconnu'"
                  class="w-10 h-10 object-contain" />
           </TableCell>
->>>>>>> fetch_info
           <TableCell>
             <ButtonBase @click="removeItem(item.barcode)">
               <TrashIcon class="w-5 h-5"></TrashIcon>
