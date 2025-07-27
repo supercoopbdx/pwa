@@ -15,7 +15,11 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v4
-
+      - name: Create .env file
+        run: |
+          echo "VITE_API_BASE_URL_LOCAL=${{ secrets.VITE_API_BASE_URL_LOCAL }}" >> .env
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> .env
+          echo "VITE_LOCAL=${{ secrets.VITE_LOCAL }}" >> .env
       - name: Install dependencies
         run: npm install
 
