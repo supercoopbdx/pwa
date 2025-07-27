@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import config from '../config'
 
+
 export const useInventoryStore = defineStore('inventory', () => {
   const zone = ref(JSON.parse(localStorage.getItem('zone')))
   const products = ref(JSON.parse(localStorage.getItem('items')) ?? {})
@@ -14,6 +15,7 @@ export const useInventoryStore = defineStore('inventory', () => {
     try {
       const response = await fetch(config.api.baseURL + '/product-info-from-barcode', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ barcode }),
       })
