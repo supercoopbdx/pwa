@@ -77,7 +77,9 @@ function submit() {
       <div v-if="errorMessage" class="text-red-600 font-bold">{{ errorMessage }}</div>
       <div v-if="productName">
         <h3 class="font-bold text-lg">{{ productName }}</h3>
-        <img :src="`data:image/png;base64,${productImage}`" alt="Product Image" class="max-w-xs" />
+        <div class="flex items-center justify-center">
+          <img :src="`data:image/png;base64,${productImage}`" alt="Product Image" class="max-w-md h-32" />
+        </div>
         <FormInput
           v-model="quantity"
           :error="errors.quantity"

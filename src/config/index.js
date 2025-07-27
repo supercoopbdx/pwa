@@ -1,6 +1,6 @@
-const LOCAL = true;
 let config;
-
+const LOCAL = import.meta.env.VITE_LOCAL === 'true'
+console.log(LOCAL)
 if (LOCAL) {
   config = {
     api: {
@@ -10,7 +10,7 @@ if (LOCAL) {
 } else {
   config = {    
     api: {
-      baseURL: import.meta.env.VITE_API_BASE_URL || 'https://backend.supercoopp.fr',
+      baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
     },
   };
 }
