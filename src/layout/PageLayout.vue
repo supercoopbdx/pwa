@@ -29,7 +29,7 @@ const emit = defineEmits(['toggleAuth'])
     </div>
 
     <!-- Contenu -->
-    <div class="text-left md:text-center">
+    <div class="text-left md:text-left">
       <slot />
     </div>
   </main>
