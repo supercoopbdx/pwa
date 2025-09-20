@@ -28,17 +28,16 @@ const errors = computed(() => {
   }
 })
 
-const validBarcode = computed(() => barcode.value && barcode.value.length === 13 && !isNaN(barcode.value))
 
-watch(validBarcode, (newVal) => {
-  if (newVal) {
-    fetchProductInfo(barcode.value)
+watch(barcode, (newVal) => {
+  if (newVal && newVal.length === 13 && !isNaN(newVal)) {
+    fetchProductInfo(newVal)
   } else {
     productName.value = ''
     productImage.value = ''
     errorMessage.value = ''
   }
-})
+}, { immediate: true }) // Avec { immediate: true }, le watcher s’exécute aussi au montage avec la valeur initiale (celle qui vient du scan via route.query).
 
 async function fetchProductInfo(barcode) {
   loading.value = true
