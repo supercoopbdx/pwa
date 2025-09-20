@@ -43,8 +43,8 @@ function submitZone() {
 <template>
   <PageLayout :title="$t('nav.home')" @toggleAuth="showAuthAlert = !showAuthAlert">
     <!-- Header actions slot -->
-    <template #actions>
-      <AuthButtons /> <!-- texte complet sur desktop -->
+    <template>
+      <AuthButtons /> 
     </template>
 
     <!-- Alert -->
