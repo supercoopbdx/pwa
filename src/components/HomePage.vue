@@ -14,23 +14,18 @@ const route = useRoute()
 const showAuthAlert = ref(false)
 const authMessage = ref('')
 
-const errors = computed(() => {
-  return {
-    zone: isNaN(store.zone) || store.zone?.length !== 3,
-  }
-})
+const errors = computed(() => ({
+  zone: isNaN(store.zone) || store.zone?.length !== 3,
+}))
 
 onMounted(() => {
-  // Vérifier si un message d'authentification est présent dans l'URL
   if (route.query.authMessage) {
     authMessage.value = route.query.authMessage
     showAuthAlert.value = true
-    
-    // Nettoyer l'URL après avoir affiché le message
     router.replace({ query: {} })
   }
 })
-// 🔁 Écoute aussi les changements de query après le premier montage
+
 watch(() => route.query.authMessage, (newVal) => {
   if (newVal) {
     authMessage.value = newVal
@@ -38,6 +33,7 @@ watch(() => route.query.authMessage, (newVal) => {
     router.replace({ query: {} })
   }
 })
+
 function submitZone() {
   store.saveZone()
   router.push('/list')
@@ -45,20 +41,22 @@ function submitZone() {
 </script>
 
 <template>
-  <PageLayout :title="$t('nav.home')">
+  <PageLayout :title="$t('nav.home')" @toggleAuth="showAuthAlert = !showAuthAlert">
+    <!-- Header actions slot -->
     <template #actions>
-      <AuthButtons />
+      <AuthButtons /> <!-- texte complet sur desktop -->
     </template>
 
-    <!-- Message d'alerte -->
-    <div v-if="showAuthAlert" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+    <!-- Alert -->
+    <div v-if="showAuthAlert" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded" role="alert">
       <p class="font-bold">{{ authMessage }}</p>
     </div>
 
-    <div class="text-left mt-4 mb-6">
+    <!-- Instructions -->
+    <div class="mt-4 mb-6 text-left md:text-center">
       <p class="mb-5">{{ $t('home.introduction') }}</p>
-      {{ $t('home.instructions.title') }}
-      <ul class="list-outside list-disc ml-6">
+      <h3 class="font-semibold mb-2">{{ $t('home.instructions.title') }}</h3>
+      <ul class="list-disc list-inside md:list-outside ml-0 md:ml-6">
         <li>{{ $t('home.instructions.zone_number') }}</li>
         <li>{{ $t('home.instructions.scan') }}</li>
         <li>{{ $t('home.instructions.manual') }}</li>
@@ -67,6 +65,7 @@ function submitZone() {
       <p class="mt-6">{{ $t('home.good_luck') }}</p>
     </div>
 
+    <!-- Formulaire -->
     <FormLayout>
       <FormInput
         type="text"
@@ -77,8 +76,9 @@ function submitZone() {
       <div v-if="errors.zone && store.zone?.length > 0" class="text-red-600">{{ $t('home.zone_error') }}</div>
     </FormLayout>
 
+    <!-- Bouton -->
     <PrimaryButton class="w-full mt-6" @click="submitZone" :disabled="!store.zone || errors.zone">
       {{ !Object.values(store.products).length ? $t('home.start') : $t('home.continue') }}
     </PrimaryButton>
   </PageLayout>
-  </template>
+</template>
