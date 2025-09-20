@@ -43,9 +43,7 @@ function submitZone() {
 <template>
   <PageLayout :title="$t('nav.home')" @toggleAuth="showAuthAlert = !showAuthAlert">
     <!-- Header actions slot -->
-    <template>
-      <AuthButtons /> 
-    </template>
+
 
     <!-- Alert -->
     <div v-if="showAuthAlert" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded" role="alert">
@@ -53,7 +51,7 @@ function submitZone() {
     </div>
 
     <!-- Instructions -->
-    <div class="mt-4 mb-6 text-left md:text-center">
+    <div class="mt-4 mb-6 text-left md:text-left">
       <p class="mb-5">{{ $t('home.introduction') }}</p>
       <h3 class="font-semibold mb-2">{{ $t('home.instructions.title') }}</h3>
       <ul class="list-disc list-inside md:list-outside ml-0 md:ml-6">

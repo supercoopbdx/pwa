@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import PageTitle from '@/components/titles/PageTitle.vue'
+import AuthButtons from '@/components/AuthButtons.vue'
 
 const props = defineProps({
   title: { type: String, required: true },
 })
-
 const emit = defineEmits(['toggleAuth'])
 </script>
 
@@ -13,15 +13,11 @@ const emit = defineEmits(['toggleAuth'])
     <!-- Header -->
     <div class="flex justify-between items-center">
       <PageTitle class="text-left md:text-center">{{ props.title }}</PageTitle>
-
-      <!-- Desktop: texte AuthButtons, Mobile: icône -->
-      <div>
-        <AuthButtons />
-      </div>
+      <AuthButtons />
     </div>
 
     <!-- Contenu -->
-    <div class="text-left md:text-center">
+    <div class="text-left md:text-left">
       <slot />
     </div>
   </main>
