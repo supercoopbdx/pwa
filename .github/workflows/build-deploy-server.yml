@@ -27,6 +27,16 @@ jobs:
 
       - name: Build project
         run: npm run build
+        
+      - name: Cleanup old dist
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            rm -rf /var/www/vue-app/dist/*
 
       - name: Upload dist to server
         uses: appleboy/scp-action@v0.1.5
