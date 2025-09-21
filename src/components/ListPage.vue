@@ -54,11 +54,12 @@ function send() {
   router.push({ path: '/send' })
 }
 </script>
+
 <template>
   <PageLayout :title="$t('nav.list', { zone: store.zone })">
     <div class="flex flex-col min-h-screen px-4 pb-24">
       <!-- Bouton scanner centré avec marge -->
-      <div class="flex justify-center mt-10 mb-10">
+      <div class="flex justify-center mt-6 mb-6">
         <RouterLink to="/scan">
           <PrimaryButton class="text-2xl px-10 py-5">
             {{ $t('button.scan_barcode') }}
@@ -67,7 +68,7 @@ function send() {
       </div>
 
       <!-- Table -->
-      <div class="flex-1 overflow-y-auto mt-10 mb-10">
+      <div class="flex-1 overflow-y-auto">
         <TableLayout v-if="items.length">
           <template v-slot:thead>
             <tr>
@@ -101,7 +102,7 @@ function send() {
           {{ $t('list.empty') }}
         </div>
       </div>
-
+    </div>
       <!-- Boutons fixes en bas -->
       <template #footer>
         <SecondaryButton @click="back()">{{ $t('button.back') }}</SecondaryButton>
@@ -112,7 +113,7 @@ function send() {
           </PrimaryButton>
         </div>
       </template>
-    </div>
+
   </PageLayout>
 </template>
 
