@@ -15,7 +15,7 @@ const AuthService = {
     window.location.href = `${API_BASE_URL}/auth/logout`;
   },
 
-  async getUser() {
+  async getUser() { 
     try {
       const response = await fetch(`${API_BASE_URL}/auth/user-info`, {
         method: 'GET',
@@ -27,16 +27,22 @@ const AuthService = {
       });
 
       if (!response.ok) {
+        // Loguer le status et le texte de réponse pour plus de détails
+        const text = await response.text();
+        console.error('Fetch non ok:', response.status, text);
         throw new Error('Erreur lors de la récupération des informations utilisateur');
       }
 
       const data = await response.json();
       return data && !data.error ? data : null;
+
     } catch (error) {
-      console.error('Erreur dans getUser:', error);
+      // Loguer l'erreur complète pour debugger
+      console.error('Erreur dans getUser (détail complet):', error);
       return null;
     }
   },
+
 
   async isAuthenticated() {
     const user = await this.getUser();
