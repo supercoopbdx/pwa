@@ -27,16 +27,6 @@ const logout = () => authStore.logout();
         Se déconnecter
       </button>
 
-      <!-- Mobile: icône logout -->
-      <button
-        @click="logout"
-        class="btn-info md:hidden"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M17 16l4-4m0 0l-4-4m4 4H7" />
-        </svg>
-      </button>
     </template>
 
     <!-- Utilisateur non connecté -->
@@ -47,18 +37,6 @@ const logout = () => authStore.logout();
         class="btn btn-primary hidden md:inline-flex"
       >
         Se connecter
-      </button>
-
-      <!-- Mobile: icône login -->
-      <button
-        @click="login"
-        class="btn-info md:hidden"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <!-- Icône login classique (porte + flèche) -->
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M15 12H3m12 0l-4-4m4 4l-4 4M21 12v6a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v6z"/>
-        </svg>
       </button>
     </template>
   </div>
@@ -118,25 +96,4 @@ button.btn {
   background-color: #dc2626;
 }
 
-/* Bouton icône mobile */
-.btn-info {
-  background-color: #3b82f6;
-  color: white;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  padding: 0.5rem;
-}
-
-.btn-info:hover {
-  background-color: #2563eb;
-}
-
-.btn-info svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
 </style>

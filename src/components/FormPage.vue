@@ -112,10 +112,10 @@ function submit() {
       </div>
     </FormLayout>
 
-    <div class="flex flex-row gap-2 justify-between">
+    <template #footer>
       <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-    </div>
+    </template>
   </PageLayout>
 </template>

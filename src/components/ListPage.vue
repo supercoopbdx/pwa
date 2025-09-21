@@ -54,56 +54,65 @@ function send() {
   router.push({ path: '/send' })
 }
 </script>
-
 <template>
   <PageLayout :title="$t('nav.list', { zone: store.zone })">
-    <div class="flex flex-col gap-2">
-      <RouterLink to="/scan" class="m-auto">
-        <PrimaryButton class="text-2xl px-10 py-5">{{ $t('button.scan_barcode') }}</PrimaryButton>
-      </RouterLink>
-    </div>
-
-    <TableLayout v-if="items.length">
-      <template v-slot:thead>
-        <tr>
-          <TableHead>{{ $t('list.barcode') }}</TableHead>
-          <TableHead>{{ $t('list.quantity') }}</TableHead>
-          <TableHead>{{ $t('list.name') }}</TableHead>
-          <TableHead>{{ $t('list.image') }}</TableHead>
-          <TableHead class="w-10"></TableHead>
-        </tr>
-      </template>
-      <template v-slot:tbody>
-        <TableRow v-for="item in items" :key="item.barcode">
-          <TableCell>{{ item.barcode }}</TableCell>
-          <TableCell>{{ item.quantity }}</TableCell>
-          <TableCell>{{ productInfo[item.barcode]?.name || 'Produit inconnu' }}</TableCell>
-          <TableCell>
-            <img v-if="productInfo[item.barcode]?.image" 
-                 :src="`data:image/png;base64,${productInfo[item.barcode].image}`" 
-                 :alt="productInfo[item.barcode]?.name || 'Produit inconnu'"
-                 class="w-10 h-10 object-contain" />
-          </TableCell>
-          <TableCell>
-            <ButtonBase @click="removeItem(item.barcode)">
-              <TrashIcon class="w-5 h-5"></TrashIcon>
-            </ButtonBase>
-          </TableCell>
-        </TableRow>
-      </template>
-    </TableLayout>
-    <div v-else>
-      {{ $t('list.empty') }}
-    </div>
-
-    <div class="flex flex-row gap-2 justify-between">
-      <SecondaryButton @click="back()">{{ $t('button.back') }}</SecondaryButton>
-      <div class="flex flex-row gap-4">
-        <CancelButton @click="reset()">{{ $t('button.reset') }}</CancelButton>
-        <PrimaryButton @click="send()" :disabled="!items.length">
-          {{ $t('button.send_list') }}
-        </PrimaryButton>
+    <div class="flex flex-col min-h-screen px-4 pb-24">
+      <!-- Bouton scanner centré avec marge -->
+      <div class="flex justify-center mt-10 mb-10">
+        <RouterLink to="/scan">
+          <PrimaryButton class="text-2xl px-10 py-5">
+            {{ $t('button.scan_barcode') }}
+          </PrimaryButton>
+        </RouterLink>
       </div>
+
+      <!-- Table -->
+      <div class="flex-1 overflow-y-auto mt-10 mb-10">
+        <TableLayout v-if="items.length">
+          <template v-slot:thead>
+            <tr>
+              <TableHead>{{ $t('list.barcode') }}</TableHead>
+              <TableHead>{{ $t('list.quantity') }}</TableHead>
+              <TableHead>{{ $t('list.name') }}</TableHead>
+              <TableHead>{{ $t('list.image') }}</TableHead>
+              <TableHead class="w-10"></TableHead>
+            </tr>
+          </template>
+          <template v-slot:tbody>
+            <TableRow v-for="item in items" :key="item.barcode">
+              <TableCell>{{ item.barcode }}</TableCell>
+              <TableCell>{{ item.quantity }}</TableCell>
+              <TableCell>{{ productInfo[item.barcode]?.name || 'Produit inconnu' }}</TableCell>
+              <TableCell>
+                <img v-if="productInfo[item.barcode]?.image" 
+                     :src="`data:image/png;base64,${productInfo[item.barcode].image}`" 
+                     :alt="productInfo[item.barcode]?.name || 'Produit inconnu'"
+                     class="w-10 h-10 object-contain" />
+              </TableCell>
+              <TableCell>
+                <ButtonBase @click="removeItem(item.barcode)">
+                  <TrashIcon class="w-5 h-5"></TrashIcon>
+                </ButtonBase>
+              </TableCell>
+            </TableRow>
+          </template>
+        </TableLayout>
+        <div v-else class="text-center text-gray-500">
+          {{ $t('list.empty') }}
+        </div>
+      </div>
+
+      <!-- Boutons fixes en bas -->
+      <template #footer>
+        <SecondaryButton @click="back()">{{ $t('button.back') }}</SecondaryButton>
+        <div class="flex gap-4">
+          <CancelButton @click="reset()">{{ $t('button.reset') }}</CancelButton>
+          <PrimaryButton @click="send()" :disabled="!items.length">
+            {{ $t('button.send_list') }}
+          </PrimaryButton>
+        </div>
+      </template>
     </div>
   </PageLayout>
 </template>
+
