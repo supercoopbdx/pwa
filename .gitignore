@@ -16,6 +16,15 @@ coverage
 
 /cypress/videos/
 /cypress/screenshots/
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
 
 # Editor directories and files
 .vscode/*
@@ -28,3 +37,13 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local development
+.env.local
+.env.*.local

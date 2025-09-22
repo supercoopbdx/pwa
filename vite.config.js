@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/pwa/',
+  base: '/',
   plugins: [
     tailwindcss(),
     vue(),
@@ -43,5 +43,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+  },
+  build: {
+    outDir: 'build-temp', // <- créer un dossier temporaire pour le build
+    emptyOutDir: true,    // <- nettoie le dossier à chaque build
   },
 })

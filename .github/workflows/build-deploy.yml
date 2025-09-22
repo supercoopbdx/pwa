@@ -15,7 +15,11 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v4
-
+      - name: Create .env file
+        run: |
+          echo "VITE_API_BASE_URL_LOCAL=${{ secrets.VITE_API_BASE_URL_LOCAL }}" >> .env
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> .env
+          echo "VITE_LOCAL=${{ secrets.VITE_LOCAL }}" >> .env
       - name: Install dependencies
         run: npm install
 
@@ -25,8 +29,8 @@ jobs:
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: ./dist
+          name: build-temp
+          path: ./build-temp
 
   deploy:
     name: Deploy
@@ -37,11 +41,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: ./dist
-
+          name: build-temp
+          path: ./build-temp
+      
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./build-temp

@@ -28,13 +28,15 @@ function decode(barcode) {
       @decode="decode"
       @loaded="loading = false"
     />
-    <div class="flex flex-row gap-2 justify-between">
-      <RouterLink to="/list" class="m-auto">
+    <template #footer>
+      <RouterLink to="/list">
         <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
       </RouterLink>
-      <RouterLink to="/form" class="m-auto">
-        <PrimaryButton class="text-sm">{{ $t('button.manual_input') }}</PrimaryButton>
-      </RouterLink>
-    </div>
+      <div class="flex"> 
+        <RouterLink to="/form" class="m-auto">
+            <PrimaryButton class="text-sm">{{ $t('button.manual_input') }}</PrimaryButton>
+          </RouterLink>
+      </div>
+    </template>  
   </PageLayout>
 </template>
