@@ -36,7 +36,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
           port: ${{ vars.SSH_PORT }}
           script: |
-            rm -rf /var/www/vue-app/dist/*
+            rm -rf /data/supercoop/app-pwa/dist/*
 
       - name: Upload dist to server
         uses: appleboy/scp-action@v0.1.5
@@ -46,7 +46,7 @@ jobs:
           key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
           port: ${{ vars.SSH_PORT }}
           source: "./dist/"
-          target: "/var/www/vue-app/dist/"
+          target: "/data/supercoop/app-pwa/dist/"
 
       - name: Reload nginx
         uses: appleboy/ssh-action@v1
