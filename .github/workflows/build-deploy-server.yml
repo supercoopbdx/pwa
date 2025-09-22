@@ -47,6 +47,7 @@ jobs:
           port: ${{ vars.SSH_PORT }}
           source: "./build-temp/*"       # fichiers à copier
           target: "/data/supercoop/app-pwa/"  # directement dans app-pwa
+          strip_components: 1           # <- important pour ne pas créer build-temp sur le serveur
 
       - name: Reload nginx
         uses: appleboy/ssh-action@v1
