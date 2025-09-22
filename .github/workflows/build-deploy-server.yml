@@ -28,7 +28,7 @@ jobs:
       - name: Build project
         run: npm run build
         
-      - name: Cleanup old dist
+      - name: Cleanup old files
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ vars.SSH_HOST }}
@@ -36,17 +36,18 @@ jobs:
           key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
           port: ${{ vars.SSH_PORT }}
           script: |
-            rm -rf /data/supercoop/app-pwa/dist/*
-
-      - name: Upload dist to server
+            rm -rf /data/supercoop/app-pwa/*
+      
+      - name: Upload build to server
         uses: appleboy/scp-action@v0.1.5
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
           port: ${{ vars.SSH_PORT }}
-          source: "./dist/"
-          target: "/data/supercoop/app-pwa/dist/"
+          source: "./build-temp/*"       # fichiers à copier
+          target: "/data/supercoop/app-pwa/"  # directement dans app-pwa
+          strip_components: 1           # <- important pour ne pas créer build-temp sur le serveur
 
       - name: Reload nginx
         uses: appleboy/ssh-action@v1
