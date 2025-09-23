@@ -1,9 +1,10 @@
 name: Build and Deploy
 
+run-name: "${{ github.actor }} published a new release:  ${{ github.ref }}!"
+
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -63,13 +64,3 @@ jobs:
           source: "./dist/*"
           target: "/data/supercoop/app-pwa/"
           strip_components: 1
-
-#      - name: Reload nginx
-#        uses: appleboy/ssh-action@v1
-#        with:
-#          host: ${{ vars.SSH_HOST }}
-#          username: ${{ vars.SSH_USER }}
-#          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
-#          port: ${{ vars.SSH_PORT }}
-#          script: |
-#            sudo nginx -s reload
