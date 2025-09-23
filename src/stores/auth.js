@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import AuthService from '@/services/AuthServices';
+import AuthService from '@/services/AuthService.js';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async initialize() {
       console.log('Début de initialize, isInitialized =', this.isInitialized);
-      
+
       if (!this.isInitialized) {
         try {
           const user = await this.fetchUser();
@@ -57,7 +57,7 @@ export const useAuthStore = defineStore('auth', {
       }
     }
   },
-  
+
   // Persist the auth state
   persist: true
 });

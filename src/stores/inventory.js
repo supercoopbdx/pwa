@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import config from '../config'
-
+import config from '@/config.js'
 
 export const useInventoryStore = defineStore('inventory', () => {
   const zone = ref(JSON.parse(localStorage.getItem('zone')))
@@ -74,13 +73,13 @@ export const useInventoryStore = defineStore('inventory', () => {
     localStorage.setItem('items', JSON.stringify(products.value))
   }
 
-  return { 
-    zone, 
-    products, 
-    saveZone, 
-    setItem, 
-    removeItem, 
-    fetchProductInfo, 
-    reset 
+  return {
+    zone,
+    products,
+    saveZone,
+    setItem,
+    removeItem,
+    fetchProductInfo,
+    reset
   }
 })

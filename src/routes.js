@@ -1,33 +1,33 @@
-import HomePage from './components/HomePage.vue'
-import ListPage from './components/ListPage.vue'
-import ScanPage from './components/ScanPage.vue'
-import FormPage from './components/FormPage.vue'
-import SendPage from './components/SendPage.vue'
+import HomePage from '@/components/HomePage.vue'
+import ListPage from '@/components/ListPage.vue'
+import ScanPage from '@/components/ScanPage.vue'
+import FormPage from '@/components/FormPage.vue'
+import SendPage from '@/components/SendPage.vue'
 
 export default [
-  { 
-    path: '/', 
+  {
+    path: '/',
     name: 'home',
     component: HomePage,
     meta: { requiresAuth: false }
   },
-  { 
-    path: '/list', 
+  {
+    path: '/list',
     component: ListPage,
     meta: { requiresAuth: true }
   },
-  { 
-    path: '/scan', 
+  {
+    path: '/scan',
     component: ScanPage,
     meta: { requiresAuth: true }
   },
-  { 
-    path: '/form', 
+  {
+    path: '/form',
     component: FormPage,
     meta: { requiresAuth: true }
   },
-  { 
-    path: '/send', 
+  {
+    path: '/send',
     component: SendPage,
     meta: { requiresAuth: true }
   },

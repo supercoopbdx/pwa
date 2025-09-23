@@ -4,7 +4,6 @@ import PageLayout from '@/layout/PageLayout.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import FormLayout from '@/layout/FormLayout.vue'
 import FormInput from '@/components/inputs/FormInput.vue'
-import AuthButtons from '@/components/AuthButtons.vue'
 import { useInventoryStore } from '@/stores/inventory.js'
 import { computed, ref, onMounted, watch } from 'vue'
 

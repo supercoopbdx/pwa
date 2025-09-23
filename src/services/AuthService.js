@@ -1,23 +1,19 @@
-// src/services/AuthService.js
-
-import config from '../config';
-
-const API_BASE_URL = config.api.baseURL;
+import config from '@/config.js';
 
 const AuthService = {
   login() {
     // Redirige vers le backend Flask pour déclencher le flow OIDC
-    window.location.href = `${API_BASE_URL}/auth/login`;
+    window.location.href = `${config.api.baseURL}/auth/login`;
   },
 
   logout() {
     // Déclenche la déconnexion via le backend
-    window.location.href = `${API_BASE_URL}/auth/logout`;
+    window.location.href = `${config.api.baseURL}/auth/logout`;
   },
 
-  async getUser() { 
+  async getUser() {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/user-info`, {
+      const response = await fetch(`${config.api.baseURL}/auth/user-info`, {
         method: 'GET',
         credentials: 'include', // Important pour envoyer les cookies de session
         headers: {
