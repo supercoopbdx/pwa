@@ -1,60 +1,58 @@
-name: Déploiement Vue.js
-run-name: "${{ github.actor }} a publié une nouvelle version frontend : ${{ github.ref }}!"
-on:
-  release:
-    types: [published]
-
-jobs:
-  deploy-frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Create .env file
-        run: |
-          echo "VITE_API_BASE_URL_LOCAL=${{ secrets.VITE_API_BASE_URL_LOCAL }}" >> .env
-          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> .env
-          echo "VITE_LOCAL=${{ secrets.VITE_LOCAL }}" >> .env
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-        
-      - name: Cleanup old files
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ vars.SSH_HOST }}
-          username: ${{ vars.SSH_USER }}
-          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
-          port: ${{ vars.SSH_PORT }}
-          script: |
-            rm -rf /data/supercoop/app-pwa/*
-      
-      - name: Upload build to server
-        uses: appleboy/scp-action@v0.1.5
-        with:
-          host: ${{ vars.SSH_HOST }}
-          username: ${{ vars.SSH_USER }}
-          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
-          port: ${{ vars.SSH_PORT }}
-          source: "./build-temp/*"       # fichiers à copier
-          target: "/data/supercoop/app-pwa/"  # directement dans app-pwa
-          strip_components: 1           # <- important pour ne pas créer build-temp sur le serveur
-
-      - name: Reload nginx
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ vars.SSH_HOST }}
-          username: ${{ vars.SSH_USER }}
-          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
-          port: ${{ vars.SSH_PORT }}
-          script: |
-            sudo nginx -s reload
+#name: Déploiement Vue.js
+#run-name: "${{ github.actor }} a publié une nouvelle version frontend : ${{ github.ref }}!"
+#on:
+#  release:
+#    types: [published]
+#
+#jobs:
+#  deploy-frontend:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '18'
+#
+#      - name: Create .env file
+#        run: |
+#          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> .env
+#
+#      - name: Install dependencies
+#        run: npm install
+#
+#      - name: Build project
+#        run: npm run build
+#
+#      - name: Cleanup old files
+#        uses: appleboy/ssh-action@v1
+#        with:
+#          host: ${{ vars.SSH_HOST }}
+#          username: ${{ vars.SSH_USER }}
+#          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
+#          port: ${{ vars.SSH_PORT }}
+#          script: |
+#            rm -rf /data/supercoop/app-pwa/*
+#
+#      - name: Upload build to server
+#        uses: appleboy/scp-action@v0.1.5
+#        with:
+#          host: ${{ vars.SSH_HOST }}
+#          username: ${{ vars.SSH_USER }}
+#          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
+#          port: ${{ vars.SSH_PORT }}
+#          source: "./build-temp/*"       # fichiers à copier
+#          target: "/data/supercoop/app-pwa/"  # directement dans app-pwa
+#          strip_components: 1           # <- important pour ne pas créer build-temp sur le serveur
+#
+#      - name: Reload nginx
+#        uses: appleboy/ssh-action@v1
+#        with:
+#          host: ${{ vars.SSH_HOST }}
+#          username: ${{ vars.SSH_USER }}
+#          key: ${{ secrets.SSH_KEY_WEBAPP_FRONTEND }}
+#          port: ${{ vars.SSH_PORT }}
+#          script: |
+#            sudo nginx -s reload

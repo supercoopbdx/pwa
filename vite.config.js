@@ -44,8 +44,4 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  build: {
-    outDir: 'build-temp', // <- créer un dossier temporaire pour le build
-    emptyOutDir: true,    // <- nettoie le dossier à chaque build
-  },
 })
