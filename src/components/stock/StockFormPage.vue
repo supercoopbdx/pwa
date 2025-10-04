@@ -71,12 +71,12 @@ function submit() {
     productName.value,
     productImage.value,
   )
-  router.push({ path: '/list' })
+  router.push({ name: 'stock-list' })
 }
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.nav.form')">
+  <PageLayout :title="$t('stock.form.title')">
     <FormLayout>
       <div v-if="loading" class="text-center">{{ $t('stock.loading') }}...</div>
       <div v-if="errorMessage" class="text-red-600 font-bold">{{ errorMessage }}</div>
@@ -125,7 +125,7 @@ function submit() {
     </FormLayout>
 
     <template #footer>
-      <RouterLink to="/list">
+      <RouterLink :to="{name: 'stock-list'}">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
     </template>

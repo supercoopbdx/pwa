@@ -13,18 +13,18 @@
     "login": "Connexion",
     "logout": "Deconnexion"
   },
-  "button": {
-    "back": "Retour",
-    "back_to_home": "Retour à l'accueil",
-    "send_list": "Envoyer la liste",
-    "scan_barcode": "Scanner un code-barre",
-    "manual_input": "Saisie manuelle",
-    "submit": "Valider",
-    "remove": "Supprimer",
-    "send_confirm": "Confirmer l'envoi",
-    "reset": "Réinitialiser"
-  },
   "stock": {
+    "button": {
+      "back": "Retour",
+      "back_to_home": "Retour à l'accueil",
+      "send_list": "Envoyer la liste",
+      "scan_barcode": "Scanner un code-barre",
+      "manual_input": "Saisie manuelle",
+      "submit": "Valider",
+      "remove": "Supprimer",
+      "send_confirm": "Confirmer l'envoi",
+      "reset": "Réinitialiser"
+    },
     "home": {
       "title": "Inventaire",
       "introduction": "Bienvenue sur la fonction inventaire de l'application SUPERCOOP.",

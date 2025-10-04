@@ -16,12 +16,12 @@ const errors = computed(() => ({
 
 function submitZone() {
   store.saveZone()
-  router.push('/list')
+  router.push({ name: 'stock-list' })
 }
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.nav.home')">
+  <PageLayout :title="$t('stock.home.title')">
     <div class="text-left md:text-left">
       <p class="mb-5">{{ $t('stock.home.introduction') }}</p>
       <h3 class="font-semibold mb-2">{{ $t('stock.home.instructions.title') }}</h3>

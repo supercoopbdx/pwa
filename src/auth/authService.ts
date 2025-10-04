@@ -8,7 +8,7 @@ const userManager = new UserManager({
     redirect_uri: `${window.location.origin}/login_callback`,
     response_type: 'code',
     scope: config.oidc.scope,
-    post_logout_redirect_uri: `${window.location.origin}/logout_callback`,
+    post_logout_redirect_uri: `${window.location.origin}/`,
     silent_redirect_uri: window.location.origin + '/silent-renew.html',
     automaticSilentRenew: true,
     loadUserInfo: true,

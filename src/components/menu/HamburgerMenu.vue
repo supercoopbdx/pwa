@@ -6,14 +6,14 @@ import {
   ClipboardDocumentCheckIcon,
   HomeIcon,
   InboxArrowDownIcon,
+  UserCircleIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
-import CancelButton from '@/components/buttons/CancelButton.vue'
-import { useAuth } from '@/composables/useAuth.ts'
+import { useAuthStore } from '@/stores/auth.ts'
 
-const { user, isAuthenticated, login, logout } = useAuth()
+const { user, isAuthenticated, login } = useAuthStore()
 const { t } = useI18n()
 
 interface MenuItem {
@@ -65,16 +65,9 @@ const closeMenu = () => {
     <!-- Menu Items -->
     <ul class="flex flex-col gap-1 my-2">
       <li v-for="item in menuItems" :key="item.path">
-        <RouterLink
-          :to="item.path"
-          @click="closeMenu"
-          class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors group"
-        >
-          <component
-            :is="item.icon"
-            class="h-6 w-6 text-gray-600 group-hover:text-blue-600 transition-colors"
-          />
-          <span class="text-gray-700 group-hover:text-gray-900 font-medium">
+        <RouterLink :to="item.path" @click="closeMenu" class="flex items-center gap-3 py-3 group">
+          <component :is="item.icon" class="h-6 w-6 text-gray-600 group-hover:text-blue-600" />
+          <span class="group-hover:text-gray-900 font-medium">
             {{ item.label }}
           </span>
         </RouterLink>
@@ -83,12 +76,12 @@ const closeMenu = () => {
 
     <div class="fixed bottom-5">
       <div>
-        <PrimaryButton v-if="!isAuthenticated" @click="login()">{{
-          $t('auth.login')
-        }}</PrimaryButton>
+        <PrimaryButton v-if="!isAuthenticated" @click="login()">
+          {{ $t('auth.login') }}
+        </PrimaryButton>
         <div v-else>
-          {{ user?.profile.name }}
-          <CancelButton @click="logout()">{{ $t('auth.logout') }}</CancelButton>
+          <UserCircleIcon class="h-6 text-gray-600 inline align-text-bottom" />
+          {{ user?.profile.name }}<br />
         </div>
       </div>
     </div>

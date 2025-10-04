@@ -23,7 +23,7 @@ const { t } = useI18n()
 const items = computed(() => Object.values(store.products))
 
 if (!store.zone) {
-  router.push({ path: '/' })
+  router.push({ name: 'stock-landing' })
 }
 
 // Get product info directly from products objects
@@ -81,7 +81,7 @@ function openPopup(event, content) {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.nav.list', { zone: store.zone })">
+  <PageLayout :title="$t('stock.list.title', { zone: store.zone })">
     <div class="flex flex-col min-h-screen pb-24">
       <!-- Bouton scanner centré avec marge -->
       <div class="flex justify-center mt-6 mb-6">

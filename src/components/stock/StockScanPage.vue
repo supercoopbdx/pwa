@@ -15,7 +15,7 @@ function decode(barcode) {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.nav.scan')">
+  <PageLayout :title="$t('stock.scan.title')">
     <div v-if="loading">
       <img alt="Barcode" class="max-w-md m-auto" src="/barcode_scan.svg" />
       <h3>{{ $t('stock.scan.loading') }}</h3>
@@ -29,7 +29,7 @@ function decode(barcode) {
       @loaded="loading = false"
     />
     <template #footer>
-      <RouterLink to="/list">
+      <RouterLink :to="{ name: 'stock-list' }">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
       <div class="flex">

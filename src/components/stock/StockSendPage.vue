@@ -28,14 +28,14 @@ async function submit() {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.nav.send')">
+  <PageLayout :title="$t('stock.send.title')">
     <p v-if="!reportSent" class="text-left m-auto mt-4 mb-30">
       {{ $t('stock.send.confirmation') }}
     </p>
     <p v-if="reportSent" class="text-left m-auto mt-4 mb-30">{{ message }}</p>
 
     <div class="flex flex-row gap-2 justify-between">
-      <RouterLink to="/list">
+      <RouterLink :to="{ name: 'stock-list' }">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
       <PrimaryButton v-if="!reportSent" @click="submit()">{{

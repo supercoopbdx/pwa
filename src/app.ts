@@ -6,8 +6,7 @@ import { createPinia } from 'pinia'
 import App from '@/components/App.vue'
 import routes from '@/routes'
 import french from '@/lang/fr.json'
-import { authService } from '@/auth/authService';
-import { useAuth } from '@/composables/useAuth.ts'
+import { useAuthStore } from '@/stores/auth.ts'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,16 +14,26 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  console.log('before each', to, from, next)
+  const { checkAuth, login, loginCallback } = useAuthStore()
+
   if (to.name === 'login-callback') {
-    console.log('redirect callback')
-    await authService.signinRedirectCallback()
-    next('/')
-  } else if (to.meta.requiresAuth && !useAuth().isAuthenticated) {
-    useAuth().login()
-  } else {
-    next()
+    next(await loginCallback())
+    return
   }
+
+  if (!to.meta.requiresAuth) {
+    next()
+    return
+  }
+
+  await checkAuth()
+  const { isAuthenticated } = useAuthStore()
+  if (!isAuthenticated) {
+    login(to.fullPath)
+    return false
+  }
+
+  next()
 })
 createApp(App)
   .use(
