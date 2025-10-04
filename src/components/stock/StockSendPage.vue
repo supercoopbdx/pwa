@@ -1,15 +1,14 @@
-<script setup>
+<script lang="ts" setup>
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
-import { useInventoryStore } from '@/stores/inventory.js'
-import { toRaw } from 'vue'
-import { ref } from 'vue'
+import { useStockStore } from '@/stores/stock'
+import { ref, toRaw } from 'vue'
 
 const SERVER_URL = 'https://backend.supercoop.fr/send-email'
-const store = useInventoryStore()
+const store = useStockStore()
 const reportSent = ref(false)
-const message = ref("")
+const message = ref('')
 
 async function submit() {
   const response = await fetch(SERVER_URL, {
@@ -21,25 +20,29 @@ async function submit() {
     }),
   })
   const jso = await response.json()
-  message.value = jso["email_status"]
-  reportSent.value=true
+  message.value = jso['email_status']
+  reportSent.value = true
 
   //TODO : if request fails, display error
 }
 </script>
 
 <template>
-  <PageLayout :title="$t('nav.send')">
-    <p v-if="!reportSent" class="text-left m-auto mt-4 mb-30">{{ $t('send.confirmation') }}</p>
+  <PageLayout :title="$t('stock.nav.send')">
+    <p v-if="!reportSent" class="text-left m-auto mt-4 mb-30">
+      {{ $t('stock.send.confirmation') }}
+    </p>
     <p v-if="reportSent" class="text-left m-auto mt-4 mb-30">{{ message }}</p>
 
     <div class="flex flex-row gap-2 justify-between">
       <RouterLink to="/list">
-        <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
+        <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
-      <PrimaryButton v-if="!reportSent" @click="submit()">{{ $t('button.send_confirm') }}</PrimaryButton>
+      <PrimaryButton v-if="!reportSent" @click="submit()">{{
+        $t('stock.button.send_confirm')
+      }}</PrimaryButton>
       <RouterLink to="/">
-      <PrimaryButton v-if="reportSent">{{ $t('button.back_to_home') }}</PrimaryButton>
+        <PrimaryButton v-if="reportSent">{{ $t('stock.button.back_to_home') }}</PrimaryButton>
       </RouterLink>
     </div>
   </PageLayout>

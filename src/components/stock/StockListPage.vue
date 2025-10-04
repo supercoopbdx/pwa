@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
@@ -8,16 +8,17 @@ import TableCell from '@/components/tables/TableCell.vue'
 import TableLayout from '@/layout/TableLayout.vue'
 import ButtonBase from '@/components/buttons/ButtonBase.vue'
 import CancelButton from '@/components/buttons/CancelButton.vue'
-import { useInventoryStore } from '@/stores/inventory.js'
-import { TrashIcon } from '@heroicons/vue/24/outline/index.js'
+import { useStockStore } from '@/stores/stock'
+import { TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+const router = useRouter()
+const store = useStockStore()
 const { t } = useI18n()
 
-const router = useRouter()
-const store = useInventoryStore()
+// TODO : clean this mess
 
 const items = computed(() => Object.values(store.products))
 
@@ -30,7 +31,7 @@ const productInfo = computed(() => {
   return items.value.reduce((acc, item) => {
     acc[item.barcode] = {
       name: item.name,
-      image: item.image
+      image: item.image,
     }
     return acc
   }, {})
@@ -53,7 +54,7 @@ function reset() {
 function send() {
   router.push({ path: '/send' })
 }
-import { ref } from 'vue'
+
 const showPopup = ref(false)
 const popupTop = ref(0)
 const popupLeft = ref(0)
@@ -80,13 +81,13 @@ function openPopup(event, content) {
 </script>
 
 <template>
-  <PageLayout :title="$t('nav.list', { zone: store.zone })">
+  <PageLayout :title="$t('stock.nav.list', { zone: store.zone })">
     <div class="flex flex-col min-h-screen pb-24">
       <!-- Bouton scanner centré avec marge -->
       <div class="flex justify-center mt-6 mb-6">
         <RouterLink to="/scan">
           <PrimaryButton class="text-2xl px-10 py-5">
-            {{ $t('button.scan_barcode') }}
+            {{ $t('stock.button.scan_barcode') }}
           </PrimaryButton>
         </RouterLink>
       </div>
@@ -96,10 +97,10 @@ function openPopup(event, content) {
         <TableLayout v-if="items.length">
           <template v-slot:thead>
             <tr>
-              <TableHead>{{ $t('list.image') }}</TableHead>
-              <TableHead>{{ $t('list.quantity') }}</TableHead>
-              <TableHead class="truncate max-w-[150px]">{{ $t('list.name') }}</TableHead>
-              <TableHead class="truncate max-w-[150px]">{{ $t('list.barcode') }}</TableHead>
+              <TableHead>{{ $t('stock.list.image') }}</TableHead>
+              <TableHead>{{ $t('stock.list.quantity') }}</TableHead>
+              <TableHead class="truncate max-w-[150px]">{{ $t('stock.list.name') }}</TableHead>
+              <TableHead class="truncate max-w-[150px]">{{ $t('stock.list.barcode') }}</TableHead>
               <TableHead class="w-10"></TableHead>
             </tr>
           </template>
@@ -107,18 +108,20 @@ function openPopup(event, content) {
             <TableRow v-for="item in items" :key="item.barcode">
               <!-- image -->
               <TableCell>
-                <img v-if="productInfo[item.barcode]?.image" 
-                    :src="`data:image/png;base64,${productInfo[item.barcode].image}`" 
-                    :alt="productInfo[item.barcode]?.name || 'Produit inconnu'"
-                    class="w-10 h-10 object-contain" />
+                <img
+                  v-if="productInfo[item.barcode]?.image"
+                  :src="`data:image/png;base64,${productInfo[item.barcode].image}`"
+                  :alt="productInfo[item.barcode]?.name || 'Produit inconnu'"
+                  class="w-10 h-10 object-contain"
+                />
               </TableCell>
 
               <!-- quantité (pas tronqué) -->
               <TableCell>{{ item.quantity }}</TableCell>
 
               <TableCell class="truncate max-w-[150px]">
-                <div 
-                  @click="openPopup($event, productInfo[item.barcode]?.name || 'Produit inconnu')" 
+                <div
+                  @click="openPopup($event, productInfo[item.barcode]?.name || 'Produit inconnu')"
                   class="cursor-pointer"
                 >
                   {{ productInfo[item.barcode]?.name || 'Produit inconnu' }}
@@ -128,7 +131,6 @@ function openPopup(event, content) {
                   v-if="showPopup"
                   class="fixed z-50 bg-white border shadow-lg p-2 rounded max-w-xs break-words"
                   :style="{ top: `${popupTop}px`, left: `${popupLeft}px` }"
-                  @click.outside="showPopup = false"
                 >
                   {{ popupContent }}
                 </div>
@@ -150,22 +152,20 @@ function openPopup(event, content) {
         </TableLayout>
 
         <div v-else class="text-center text-gray-500">
-          {{ $t('list.empty') }}
+          {{ $t('stock.list.empty') }}
         </div>
       </div>
     </div>
 
     <!-- Boutons fixes en bas -->
     <template #footer>
-      <SecondaryButton @click="back()">{{ $t('button.back') }}</SecondaryButton>
+      <SecondaryButton @click="back()">{{ $t('stock.button.back') }}</SecondaryButton>
       <div class="flex gap-4">
-        <CancelButton @click="reset()">{{ $t('button.reset') }}</CancelButton>
+        <CancelButton @click="reset()">{{ $t('stock.button.reset') }}</CancelButton>
         <PrimaryButton @click="send()" :disabled="!items.length">
-          {{ $t('button.send_list') }}
+          {{ $t('stock.button.send_list') }}
         </PrimaryButton>
       </div>
     </template>
-
   </PageLayout>
 </template>
-

@@ -7,7 +7,7 @@
   </button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 defineProps({
   type: {
     type: String,

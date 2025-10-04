@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
 import { StreamBarcodeReader } from '@teckel/vue-barcode-reader'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
@@ -15,10 +15,10 @@ function decode(barcode) {
 </script>
 
 <template>
-  <PageLayout :title="$t('nav.scan')">
+  <PageLayout :title="$t('stock.nav.scan')">
     <div v-if="loading">
       <img alt="Barcode" class="max-w-md m-auto" src="/barcode_scan.svg" />
-      <h3>{{ $t('scan.loading') }}</h3>
+      <h3>{{ $t('stock.scan.loading') }}</h3>
     </div>
 
     <StreamBarcodeReader
@@ -30,13 +30,13 @@ function decode(barcode) {
     />
     <template #footer>
       <RouterLink to="/list">
-        <SecondaryButton>{{ $t('button.back') }}</SecondaryButton>
+        <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
-      <div class="flex"> 
+      <div class="flex">
         <RouterLink to="/form" class="m-auto">
-            <PrimaryButton class="text-sm">{{ $t('button.manual_input') }}</PrimaryButton>
-          </RouterLink>
+          <PrimaryButton class="text-sm">{{ $t('stock.button.manual_input') }}</PrimaryButton>
+        </RouterLink>
       </div>
-    </template>  
+    </template>
   </PageLayout>
 </template>

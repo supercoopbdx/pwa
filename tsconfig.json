@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "erasableSyntaxOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "ES2020",
+    "types": [
+      "vite/client"
+    ]
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.vue"
+  ]
+}
