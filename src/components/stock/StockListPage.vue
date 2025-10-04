@@ -18,7 +18,6 @@ const router = useRouter()
 const store = useStockStore()
 const { t } = useI18n()
 
-// TODO : clean this mess
 const items = computed(() => Object.values(store.products))
 
 if (!store.zone) {
@@ -37,11 +36,11 @@ const productInfo = computed(() => {
 })
 
 function removeItem(barcode) {
-  store.removeItem(barcode)
+  store.removeProduct(barcode)
 }
 
 function back() {
-  router.push({ path: '/' })
+  router.push({ name: 'stock-landing' })
 }
 
 function reset() {

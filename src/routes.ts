@@ -37,13 +37,13 @@ export default [
     meta: { requiresAuth: true },
   },
   {
-    path: '/form',
+    path: '/stock/form',
     name: 'stock-form',
     component: StockFormPage,
     meta: { requiresAuth: true },
   },
   {
-    path: '/send',
+    path: '/stock/send',
     name: 'stock-send',
     component: StockSendPage,
     meta: { requiresAuth: true },
