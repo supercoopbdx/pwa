@@ -22,11 +22,11 @@ interface MenuItem {
   icon: any
 }
 
-const isOpen = ref(true)
+const isOpen = ref(false)
 
 // Define your menu items here
 const menuItems: MenuItem[] = [
-  { label: t('app.title'), path: '/', icon: HomeIcon },
+  { label: t('menu.home'), path: '/', icon: HomeIcon },
   { label: t('menu.stock'), path: '/stock', icon: ClipboardDocumentCheckIcon },
   { label: t('menu.inbound'), path: '/inbound', icon: InboxArrowDownIcon },
 ]

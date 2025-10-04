@@ -13,7 +13,7 @@ const props = defineProps({
       <PageTitle class="text-left md:text-center">{{ props.title }}</PageTitle>
     </div>
 
-    <div class="text-left md:text-left mt-10 mb-10">
+    <div class="text-left md:text-left my-10">
       <slot />
     </div>
 

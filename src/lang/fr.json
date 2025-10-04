@@ -5,6 +5,7 @@
     "pagenotfound": "Page non trouvée"
   },
   "menu": {
+    "home": "Accueil",
     "stock": "Inventaire",
     "inbound": "Réception"
   },
