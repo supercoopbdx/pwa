@@ -2,20 +2,18 @@
 import PageTitle from '@/components/titles/PageTitle.vue'
 import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
 
-
 const props = defineProps({
   title: { type: String, required: true },
 })
 </script>
 
 <template>
-  <main class="flex flex-col gap-6">
-    <div class="flex flow-row gap-2 items-center">
-      <HamburgerMenu />
+  <main class="fixed top-0 left-0 h-full w-full flex flex-col gap-6 p-6">
+    <div class="items-center">
       <PageTitle class="text-left md:text-center">{{ props.title }}</PageTitle>
     </div>
 
-    <div class="text-left md:text-left mt-10 mb-10">
+    <div class="text-left md:text-left my-10">
       <slot />
     </div>
 
@@ -26,4 +24,5 @@ const props = defineProps({
       <slot name="footer" />
     </div>
   </main>
+  <HamburgerMenu />
 </template>
