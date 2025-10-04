@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
@@ -12,7 +12,7 @@ const route = useRoute()
 const router = useRouter()
 const store = useStockStore()
 
-const barcode = ref(route.query.barcode ?? null)
+const barcode = ref(route.query.barcode as string ?? null)
 const quantity = ref(store.products[barcode.value]?.quantity ?? null)
 const productName = ref('')
 const productImage = ref('')
@@ -23,7 +23,7 @@ const valid = computed(() => !errors.value.barcode && !errors.value.quantity)
 
 const errors = computed(() => {
   return {
-    barcode: isNaN(barcode.value) || barcode.value?.length !== 13,
+    barcode: barcode.value?.length !== 13,
     quantity: isNaN(quantity.value),
   }
 })
@@ -31,7 +31,7 @@ const errors = computed(() => {
 watch(
   barcode,
   (newVal) => {
-    if (newVal && newVal.length === 13 && !isNaN(newVal)) {
+    if (newVal && newVal.length === 13) {
       fetchProductInfo(newVal)
     } else {
       productName.value = ''
@@ -42,7 +42,7 @@ watch(
   { immediate: true },
 ) // Avec { immediate: true }, le watcher s’exécute aussi au montage avec la valeur initiale (celle qui vient du scan via route.query).
 
-async function fetchProductInfo(barcode) {
+async function fetchProductInfo(barcode: string) {
   loading.value = true
   errorMessage.value = ''
   await store
@@ -67,7 +67,7 @@ function submit() {
   store.setItem(
     barcode.value,
     quantity.value ?? 0,
-    route.query.barcode,
+    route.query.barcode as string,
     productName.value,
     productImage.value,
   )

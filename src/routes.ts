@@ -4,12 +4,18 @@ import StockScanPage from '@/components/stock/StockScanPage.vue'
 import StockFormPage from '@/components/stock/StockFormPage.vue'
 import StockSendPage from '@/components/stock/StockSendPage.vue'
 import HomePage from '@/components/HomePage.vue'
+import LoginCallbackPage from '@/components/auth/LoginCallbackPage.vue'
 
 export default [
   {
     path: '/',
     name: 'home',
     component: HomePage,
+  },
+  {
+    path: '/login_callback',
+    name: 'login-callback',
+    component: LoginCallbackPage,
   },
   {
     path: '/stock',

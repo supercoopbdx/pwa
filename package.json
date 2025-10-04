@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@teckel/vue-barcode-reader": "^1.1.8",
+    "axios": "^1.12.2",
     "oidc-client-ts": "^3.3.0",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",
@@ -27,6 +28,7 @@
     "@vite-pwa/assets-generator": "^0.2.6",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/tsconfig": "^0.8.1",
     "eslint": "^9.37.0",
     "eslint-plugin-vue": "~10.0.0",
     "globals": "^16.0.0",

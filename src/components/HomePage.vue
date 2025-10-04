@@ -1,9 +1,9 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import PageLayout from '@/layout/PageLayout.vue'
 </script>
 
 <template>
-  <PageLayout :title="$t('home.title')">
-    <p>{{ $t('home.description') }}</p>
+  <PageLayout :title="$t('app.title')">
+    <p>{{ $t('app.description') }}</p>
   </PageLayout>
 </template>

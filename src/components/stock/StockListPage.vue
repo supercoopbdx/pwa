@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'

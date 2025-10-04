@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
 import PageLayout from '@/layout/PageLayout.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'

@@ -1,18 +1,15 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import config from '@/config'
 
 export const useStockStore = defineStore('stock', () => {
-  const zone = ref(JSON.parse(localStorage.getItem('zone') ?? ''))
-  const products = ref(JSON.parse(localStorage.getItem('items') ?? '') ?? {})
+  const zone = ref('')
+  const products = ref([])
 
   // TODO : clean this
   async function fetchProductInfo(barcode: string) {
-    if (products.value[barcode]?.name) return products.value[barcode]
-
     const response = await fetch(config.backend.baseURL + '/product-info-from-barcode', {
       method: 'POST',
-      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ barcode }),
     })
@@ -74,6 +71,13 @@ export const useStockStore = defineStore('stock', () => {
 
     localStorage.setItem('items', JSON.stringify(products.value))
   }
+
+  onMounted(() => {
+    zone.value = localStorage.getItem('zone') ?? ''
+    products.value = JSON.parse(localStorage.getItem('items') ?? '{}')
+
+    console.log('stock mounted', zone.value, products.value)
+  })
 
   return {
     zone,

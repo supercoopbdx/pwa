@@ -19,7 +19,8 @@
     },
     "target": "ES2020",
     "types": [
-      "vite/client"
+      "vite/client",
+      "vue-i18n/dist.vye-i18n.d.ts"
     ]
   },
   "include": [
@@ -27,4 +28,22 @@
     "./src/**/*.tsx",
     "./src/**/*.vue"
   ]
+//  "extends": "@vue/tsconfig/tsconfig.dom.json",
+//  "compilerOptions": {
+//    "baseUrl": ".",
+//    "moduleResolution": "bundler",
+//    "paths": {
+//      "@/*": ["src/*"]
+//    },
+//    "types": ["vite/client"]
+//  },
+//  "include": [
+//    "src/**/*.ts",
+//    "src/**/*.d.ts",
+//    "src/**/*.tsx",
+//    "src/**/*.vue",
+//    "tests/**/*.ts", // Include test files if needed
+//    "auto-imports.d.ts" // Include if using unplugin-auto-import
+//  ],
+//  "exclude": ["node_modules", "dist"]
 }

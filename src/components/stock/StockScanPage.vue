@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { StreamBarcodeReader } from '@teckel/vue-barcode-reader'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'

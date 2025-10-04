@@ -1,5 +1,7 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import PageTitle from '@/components/titles/PageTitle.vue'
+import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
+
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -7,8 +9,9 @@ const props = defineProps({
 </script>
 
 <template>
-  <main class="flex flex-col gap-6 px-4 md:px-8">
-    <div class="flex justify-between items-center">
+  <main class="flex flex-col gap-6">
+    <div class="flex flow-row gap-2 items-center">
+      <HamburgerMenu />
       <PageTitle class="text-left md:text-center">{{ props.title }}</PageTitle>
     </div>
 
