@@ -9,8 +9,8 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 const loading = ref(true)
 const router = useRouter()
 
-function decode(barcode) {
-  router.push({ path: '/form', query: { barcode } })
+function decode(barcode: string) {
+  router.push({ name: 'stock-form', query: { barcode } })
 }
 </script>
 
@@ -18,7 +18,7 @@ function decode(barcode) {
   <PageLayout :title="$t('stock.scan.title')">
     <div v-if="loading">
       <img alt="Barcode" class="max-w-md m-auto" src="/barcode_scan.svg" />
-      <h3>{{ $t('stock.scan.loading') }}</h3>
+      <h3 class="text-center">{{ $t('stock.scan.loading') }}</h3>
     </div>
 
     <StreamBarcodeReader
@@ -33,7 +33,7 @@ function decode(barcode) {
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
       <div class="flex">
-        <RouterLink to="/form" class="m-auto">
+        <RouterLink :to="{name: 'stock-form'}" class="m-auto">
           <PrimaryButton class="text-sm">{{ $t('stock.button.manual_input') }}</PrimaryButton>
         </RouterLink>
       </div>

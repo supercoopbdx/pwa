@@ -7,7 +7,7 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
   <PageLayout :title="$t('app.pagenotfound')">
     <div class="w-full text-center">
       <p class="mb-5">Il n'y a rien ici...</p>
-      <RouterLink to="/">
+      <RouterLink :to="{name:'stock-landing'}">
         <PrimaryButton>{{ $t('menu.home') }}</PrimaryButton>
       </RouterLink>
     </div>

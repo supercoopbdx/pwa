@@ -6,16 +6,19 @@ import FormLayout from '@/layout/FormLayout.vue'
 import FormInput from '@/components/inputs/FormInput.vue'
 import { useStockStore } from '@/stores/stock'
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 
-const store = useStockStore()
+const stockStore = useStockStore()
 const router = useRouter()
 
+const { zone, products } = storeToRefs(stockStore)
+
 const errors = computed(() => ({
-  zone: isNaN(store.zone) || store.zone?.length !== 3,
+  zone: !zone.value?.match(/^\d{3}$/),
 }))
 
 function submitZone() {
-  store.saveZone()
+  stockStore.saveZone()
   router.push({ name: 'stock-list' })
 }
 </script>
@@ -37,19 +40,23 @@ function submitZone() {
     <FormLayout>
       <FormInput
         type="text"
-        v-model="store.zone"
+        v-model="zone"
         :label="$t('stock.home.zone_number')"
         :required="true"
       />
-      <div v-if="errors.zone && store.zone?.length > 0" class="text-red-600">
+      <div v-if="errors.zone && zone?.length > 0" class="text-red-600">
         {{ $t('stock.home.zone_error') }}
       </div>
     </FormLayout>
 
-    <PrimaryButton class="w-full mt-6" @click="submitZone" :disabled="!store.zone || errors.zone">
-      {{
-        !Object.values(store.products).length ? $t('stock.home.start') : $t('stock.home.continue')
-      }}
-    </PrimaryButton>
+    <div class="text-center">
+      <PrimaryButton class="mt-6" @click="submitZone()" :disabled="!zone || errors.zone">
+        {{
+          !products.size
+            ? $t('stock.home.start')
+            : $t('stock.home.continue')
+        }}
+      </PrimaryButton>
+    </div>
   </PageLayout>
 </template>

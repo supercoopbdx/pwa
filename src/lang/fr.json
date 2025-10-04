@@ -23,7 +23,8 @@
       "submit": "Valider",
       "remove": "Supprimer",
       "send_confirm": "Confirmer l'envoi",
-      "reset": "Réinitialiser"
+      "reset": "Réinitialiser",
+      "cancel": "Annuler"
     },
     "home": {
       "title": "Inventaire",
@@ -57,12 +58,17 @@
     },
     "form": {
       "title": "Comptage produit",
+      "loading": "Chargement du produit...",
       "barcode": "Code-barre",
       "barcode_placeholder": "Scannez ou saisissez un code-barres",
       "quantity_placeholder": "Saisissez la quantité",
-      "barcode_error": "Le code-barres doit être un nombre à 13 chiffres",
       "quantity": "Quantité",
-      "quantity_error": "La quantité doit être un nombre"
+      "modify": "Modifier le code barre",
+      "errors" : {
+        "barcode": "Le code-barres doit être un nombre à 13 chiffres",
+        "quantity": "La quantité doit être un nombre entier",
+        "product_not_found": "Produit inconnu"
+      }
     },
     "send": {
       "title": "Envoi de la liste",

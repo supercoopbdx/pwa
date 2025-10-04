@@ -11,81 +11,43 @@ import CancelButton from '@/components/buttons/CancelButton.vue'
 import { useStockStore } from '@/stores/stock'
 import { TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
-import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
-const store = useStockStore()
+const stockStore = useStockStore()
 const { t } = useI18n()
 
-// TODO : clean this mess
+const { products } = storeToRefs(stockStore)
 
-const items = computed(() => Object.values(store.products))
-
-if (!store.zone) {
+if (!stockStore.zone) {
   router.push({ name: 'stock-landing' })
 }
 
-// Get product info directly from products objects
-const productInfo = computed(() => {
-  return items.value.reduce((acc, item) => {
-    acc[item.barcode] = {
-      name: item.name,
-      image: item.image,
-    }
-    return acc
-  }, {})
-})
-
-function removeItem(barcode) {
-  store.removeItem(barcode)
+function removeItem(barcode: string) {
+  stockStore.removeProduct(barcode)
 }
 
 function back() {
-  router.push({ path: '/' })
+  router.push({ name: 'stock-landing' })
 }
 
 function reset() {
-  if (confirm(t('list.reset'))) {
-    store.reset()
+  if (confirm(t('stock.list.reset'))) {
+    stockStore.reset()
   }
 }
 
 function send() {
   router.push({ path: '/send' })
 }
-
-const showPopup = ref(false)
-const popupTop = ref(0)
-const popupLeft = ref(0)
-const popupContent = ref('')
-
-function openPopup(event, content) {
-  const cell = event.currentTarget
-  const rect = cell.getBoundingClientRect()
-
-  // Position du popup
-  popupTop.value = rect.top + window.scrollY
-  popupLeft.value = Math.min(rect.left, window.innerWidth - 300) // 300 = max-width
-
-  // Contenu du popup
-  popupContent.value = content
-
-  // Toujours fermer le popup précédent avant d’ouvrir
-  showPopup.value = false
-  // et le réouvrir dans le prochain tick
-  setTimeout(() => {
-    showPopup.value = true
-  }, 0)
-}
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.list.title', { zone: store.zone })">
+  <PageLayout :title="$t('stock.list.title', { zone: stockStore.zone })">
     <div class="flex flex-col min-h-screen pb-24">
-      <!-- Bouton scanner centré avec marge -->
       <div class="flex justify-center mt-6 mb-6">
-        <RouterLink to="/scan">
+        <RouterLink :to="{ name: 'stock-scan' }">
           <PrimaryButton class="text-2xl px-10 py-5">
             {{ $t('stock.button.scan_barcode') }}
           </PrimaryButton>
@@ -94,57 +56,48 @@ function openPopup(event, content) {
 
       <!-- Table -->
       <div class="flex-1 overflow-y-auto px-2 sm:px-4 md:px-8">
-        <TableLayout v-if="items.length">
+        <TableLayout v-if="products.size">
           <template v-slot:thead>
             <tr>
               <TableHead>{{ $t('stock.list.image') }}</TableHead>
               <TableHead>{{ $t('stock.list.quantity') }}</TableHead>
-              <TableHead class="truncate max-w-[150px]">{{ $t('stock.list.name') }}</TableHead>
-              <TableHead class="truncate max-w-[150px]">{{ $t('stock.list.barcode') }}</TableHead>
+              <TableHead>{{ $t('stock.list.name') }}</TableHead>
+              <TableHead>{{ $t('stock.list.barcode') }}</TableHead>
               <TableHead class="w-10"></TableHead>
             </tr>
           </template>
           <template v-slot:tbody>
-            <TableRow v-for="item in items" :key="item.barcode">
+            <TableRow v-for="product in products.values()" :key="product.barcode">
               <!-- image -->
               <TableCell>
                 <img
-                  v-if="productInfo[item.barcode]?.image"
-                  :src="`data:image/png;base64,${productInfo[item.barcode].image}`"
-                  :alt="productInfo[item.barcode]?.name || 'Produit inconnu'"
-                  class="w-10 h-10 object-contain"
+                  :src="
+                    product.found
+                      ? `data:image/png;base64,${product.image}`
+                      : '/image-not-found-icon.svg'
+                  "
+                  class="w-15 h-15 object-contain"
                 />
               </TableCell>
 
               <!-- quantité (pas tronqué) -->
-              <TableCell>{{ item.quantity }}</TableCell>
+              <TableCell>{{ product.quantity }}</TableCell>
 
-              <TableCell class="truncate max-w-[150px]">
-                <div
-                  @click="openPopup($event, productInfo[item.barcode]?.name || 'Produit inconnu')"
-                  class="cursor-pointer"
-                >
-                  {{ productInfo[item.barcode]?.name || 'Produit inconnu' }}
-                </div>
-
-                <div
-                  v-if="showPopup"
-                  class="fixed z-50 bg-white border shadow-lg p-2 rounded max-w-xs break-words"
-                  :style="{ top: `${popupTop}px`, left: `${popupLeft}px` }"
-                >
-                  {{ popupContent }}
+              <TableCell>
+                <div class="cursor-pointer">
+                  {{ product.name ?? 'Produit inconnu' }}
                 </div>
               </TableCell>
 
               <!-- barcode tronqué -->
-              <TableCell class="truncate max-w-[150px]">
-                {{ item.barcode }}
+              <TableCell>
+                {{ product.barcode }}
               </TableCell>
 
               <!-- bouton poubelle -->
               <TableCell>
-                <ButtonBase @click="removeItem(item.barcode)">
-                  <TrashIcon class="w-5 h-5"></TrashIcon>
+                <ButtonBase @click="removeItem(product.barcode)">
+                  <TrashIcon class="w-7 h-7"></TrashIcon>
                 </ButtonBase>
               </TableCell>
             </TableRow>
@@ -162,7 +115,7 @@ function openPopup(event, content) {
       <SecondaryButton @click="back()">{{ $t('stock.button.back') }}</SecondaryButton>
       <div class="flex gap-4">
         <CancelButton @click="reset()">{{ $t('stock.button.reset') }}</CancelButton>
-        <PrimaryButton @click="send()" :disabled="!items.length">
+        <PrimaryButton @click="send()" :disabled="!products.size">
           {{ $t('stock.button.send_list') }}
         </PrimaryButton>
       </div>
