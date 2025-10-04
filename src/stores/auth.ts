@@ -1,5 +1,5 @@
 import { computed, onMounted, ref } from 'vue'
-import { authService } from '@/auth/authService.ts'
+import { authService } from '@/services/authService.ts'
 import { User } from 'oidc-client-ts'
 import { defineStore } from 'pinia'
 import { useRoute } from 'vue-router'
@@ -10,7 +10,6 @@ export const useAuthStore = defineStore('auth', () => {
   const route = useRoute()
 
   function login(redirectAfterLogin?: string) {
-    // if no path is provided, we redirect to current route
     if (!redirectAfterLogin) redirectAfterLogin = computed(() => route).value.fullPath
 
     sessionStorage.setItem('redirectAfterLogin', redirectAfterLogin)
@@ -31,8 +30,6 @@ export const useAuthStore = defineStore('auth', () => {
   async function checkAuth() {
     user.value = await authService.getUser()
     isAuthenticated.value = !!user.value
-
-    console.log('auth checked:', isAuthenticated.value)
   }
 
   onMounted(async () => {

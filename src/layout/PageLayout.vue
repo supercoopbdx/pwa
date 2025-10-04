@@ -23,7 +23,7 @@ const { isAuthenticated, login, logout } = useAuthStore()
       </div>
     </div>
 
-    <div class="text-left my-10">
+    <div class="text-left my-10 overflow-auto">
       <slot />
     </div>
 

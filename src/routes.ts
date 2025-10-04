@@ -25,7 +25,7 @@ export default [
     meta: { requiresAuth: true },
   },
   {
-    path: '/stock/list',
+    path: '/stock/list/',
     name: 'stock-list',
     component: StockListPage,
     meta: { requiresAuth: true },

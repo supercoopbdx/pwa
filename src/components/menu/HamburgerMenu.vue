@@ -47,7 +47,7 @@ const closeMenu = () => {
   <button
     @click="toggleMenu"
     aria-label="Open menu"
-    class="absolute top-0 left-0 h-20 w-20 z-50 p-5 cursor-pointer text-gray-700"
+    class="absolute top-0 left-0 h-12 w-12 z-50 p-1 m-4 rounded-lg cursor-pointer text-gray-700 bg-white hover:bg-gray-200"
   >
     <Bars3Icon v-if="!isOpen" />
     <XMarkIcon v-else></XMarkIcon>
@@ -59,13 +59,17 @@ const closeMenu = () => {
   <!-- Side Menu -->
   <nav
     v-if="isOpen"
-    class="fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-40 overflow-y-auto p-6"
+    class="fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-40 overflow-y-auto p-4"
   >
-    <div class="text-2xl font-semibold text-center">Menu</div>
+    <div class="text-4xl text-center ">Menu</div>
     <!-- Menu Items -->
-    <ul class="flex flex-col gap-1 my-2">
+    <ul class="flex flex-col gap-1 mt-5">
       <li v-for="item in menuItems" :key="item.path">
-        <RouterLink :to="item.path" @click="closeMenu" class="flex items-center gap-3 py-3 group">
+        <RouterLink
+          :to="item.path"
+          @click="closeMenu"
+          class="flex items-center gap-3 px-3 py-3 group hover:bg-gray-100 rounded-lg"
+        >
           <component :is="item.icon" class="h-6 w-6 text-gray-600 group-hover:text-blue-600" />
           <span class="group-hover:text-gray-900 font-medium">
             {{ item.label }}

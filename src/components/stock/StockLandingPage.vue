@@ -11,7 +11,7 @@ const store = useStockStore()
 const router = useRouter()
 
 const errors = computed(() => ({
-  zone: isNaN(store.zone) || store.zone?.length !== 3,
+  zone: isNaN(parseInt(store.zone)) || store.zone?.length !== 3,
 }))
 
 function submitZone() {
@@ -46,10 +46,10 @@ function submitZone() {
       </div>
     </FormLayout>
 
-    <PrimaryButton class="w-full mt-6" @click="submitZone" :disabled="!store.zone || errors.zone">
-      {{
-        !Object.values(store.products).length ? $t('stock.home.start') : $t('stock.home.continue')
-      }}
-    </PrimaryButton>
+    <div class="text-center">
+      <PrimaryButton class="mt-6" @click="submitZone()" :disabled="!store.zone || errors.zone">
+        {{ !Object.values(store.products).length ? $t('stock.home.start') : $t('stock.home.continue') }}
+      </PrimaryButton>
+    </div>
   </PageLayout>
 </template>

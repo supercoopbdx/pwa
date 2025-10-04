@@ -19,7 +19,6 @@ const store = useStockStore()
 const { t } = useI18n()
 
 // TODO : clean this mess
-
 const items = computed(() => Object.values(store.products))
 
 if (!store.zone) {
@@ -46,7 +45,7 @@ function back() {
 }
 
 function reset() {
-  if (confirm(t('list.reset'))) {
+  if (confirm(t('stock.list.reset'))) {
     store.reset()
   }
 }
@@ -85,7 +84,7 @@ function openPopup(event, content) {
     <div class="flex flex-col min-h-screen pb-24">
       <!-- Bouton scanner centré avec marge -->
       <div class="flex justify-center mt-6 mb-6">
-        <RouterLink to="/scan">
+        <RouterLink :to="{ name: 'stock-scan' }">
           <PrimaryButton class="text-2xl px-10 py-5">
             {{ $t('stock.button.scan_barcode') }}
           </PrimaryButton>
