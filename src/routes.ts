@@ -5,6 +5,7 @@ import StockFormPage from '@/components/stock/StockFormPage.vue'
 import StockSendPage from '@/components/stock/StockSendPage.vue'
 import HomePage from '@/components/HomePage.vue'
 import LoginCallbackPage from '@/components/auth/LoginCallbackPage.vue'
+import NotFound from '@/components/NotFound.vue'
 
 export default [
   {
@@ -47,4 +48,5 @@ export default [
     component: StockSendPage,
     meta: { requiresAuth: true },
   },
+  { path: '/:pathMatch(.*)*', component: NotFound },
 ]

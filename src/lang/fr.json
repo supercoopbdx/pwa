@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "Supercoop'App",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in convallis nisl. Praesent varius risus ac aliquam gravida. Proin nibh orci, iaculis quis erat sed, euismod hendrerit velit. Sed ullamcorper, orci sed ornare pretium, libero libero consectetur lorem, rutrum venenatis sapien nibh vitae urna. Curabitur tincidunt turpis vel diam vehicula, at hendrerit neque convallis. Nullam non molestie tortor. Nullam sodales sit amet ex ut tempor."
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in convallis nisl. Praesent varius risus ac aliquam gravida. Proin nibh orci, iaculis quis erat sed, euismod hendrerit velit. Sed ullamcorper, orci sed ornare pretium, libero libero consectetur lorem, rutrum venenatis sapien nibh vitae urna. Curabitur tincidunt turpis vel diam vehicula, at hendrerit neque convallis. Nullam non molestie tortor. Nullam sodales sit amet ex ut tempor.",
+    "pagenotfound": "Page non trouvée"
   },
   "menu": {
     "stock": "Inventaire",
