@@ -2,13 +2,10 @@ import { defineStore } from 'pinia'
 import { Ref, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth.ts'
 
-
 export const useStockStore = defineStore('stock', () => {
   const zone = ref(localStorage.getItem('stock-zone') ?? '')
-  const products: Ref<Array<StockProduct>> = ref(
-    JSON.parse(localStorage.getItem('stock-products') ?? '[]'),
-  )
-  const productsInfo: Ref<Array<StockProductInfo>> = ref([])
+  const products: Ref<object> = ref(JSON.parse(localStorage.getItem('stock-products') ?? '{}'))
+  const productsInfo: Ref<object> = ref({})
   const loading = ref(false)
 
   function saveZone() {
@@ -16,13 +13,13 @@ export const useStockStore = defineStore('stock', () => {
   }
 
   function getProduct(barcode: string) {
-    return products.value[parseInt(barcode)]
+    return products.value[barcode]
   }
 
   async function getProductInfo(barcode: string): Promise<StockProductInfo> {
-    console.log('getProductInfo', barcode, productsInfo.value[parseInt(barcode)])
+    console.log('getProductInfo', barcode, productsInfo.value[barcode])
 
-    const infos = productsInfo.value[parseInt(barcode)]
+    const infos = productsInfo.value[barcode]
     if (infos) return infos
 
     loading.value = true
@@ -63,13 +60,13 @@ export const useStockStore = defineStore('stock', () => {
 
         const result = response.json()
 
-        productsInfo.value[parseInt(barcode)] = {
+        productsInfo.value[barcode] = {
           name: result.product.name,
           image: result.image_base64,
           found: true,
         }
 
-        return productsInfo.value[parseInt(barcode)]
+        return productsInfo.value[barcode]
       })
       .finally(() => {
         loading.value = false
@@ -77,24 +74,17 @@ export const useStockStore = defineStore('stock', () => {
   }
 
   function saveProduct(barcode: string, quantity: number, oldBarcode?: string) {
-    products.value[parseInt(barcode)] = { barcode, quantity }
+    products.value[barcode] = { barcode, quantity, ...productsInfo.value[barcode] }
 
     if (oldBarcode && oldBarcode !== barcode) {
       removeProduct(oldBarcode)
     }
 
-    const productsWithInfos = products.value.map((product) => {
-      return {...product, ...productsInfo.value[parseInt(product.barcode)]}
-    })
-
-    localStorage.setItem(
-      'stock-products',
-      JSON.stringify(productsWithInfos),
-    )
+    localStorage.setItem('stock-products', JSON.stringify(products.value))
   }
 
   function removeProduct(barcode: string) {
-    delete products.value[parseInt(barcode)]
+    delete products.value[barcode]
 
     localStorage.setItem('stock-products', JSON.stringify(products.value))
   }

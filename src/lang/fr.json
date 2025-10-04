@@ -23,7 +23,8 @@
       "submit": "Valider",
       "remove": "Supprimer",
       "send_confirm": "Confirmer l'envoi",
-      "reset": "Réinitialiser"
+      "reset": "Réinitialiser",
+      "cancel": "Annuler"
     },
     "home": {
       "title": "Inventaire",

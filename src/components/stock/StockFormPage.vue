@@ -32,7 +32,6 @@ watch(
   async (newVal) => {
     if (newVal && !errors.value.barcode) {
       infos.value = await getProductInfo(barcode.value)
-      router.push({ name: router.currentRoute.value.name, query: { barcode: barcode.value } })
     } else {
       infos.value = undefined
     }
@@ -40,12 +39,8 @@ watch(
   { immediate: true },
 )
 
-function cancel() {
-  console.log('cancel')
-  infos.value = undefined
-}
-
 function submit() {
+  console.log('submit', barcode.value, quantity.value)
   if (!valid.value) return
   saveProduct(barcode.value, quantity.value ?? 0, route.query.barcode as string)
   router.push({ name: 'stock-list' })
@@ -71,7 +66,6 @@ function submit() {
               class="max-w-md max-h-32"
             />
           </div>
-          <SecondaryButton @click="cancel()">{{ $t('stock.form.modify')}}</SecondaryButton>
         </div>
       </div>
       <div>
@@ -102,7 +96,7 @@ function submit() {
 
     <template #footer>
       <RouterLink :to="{ name: 'stock-list' }">
-        <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
+        <SecondaryButton>{{ $t('stock.button.cancel') }}</SecondaryButton>
       </RouterLink>
       <PrimaryButton @click="submit()">{{ $t('stock.button.submit') }}</PrimaryButton>
     </template>
