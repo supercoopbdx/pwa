@@ -3,7 +3,7 @@ defineProps({
   label: { type: String, required: true },
   required: { type: Boolean },
   type: { type: String, required: true },
-  modelValue: { type: [String, Number], default: '' }, // expose modelValue
+  modelValue: { type: [String, Number], default: '' },
 })
 
 const emit = defineEmits(['update:modelValue'])

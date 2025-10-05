@@ -2,8 +2,8 @@
 import { useRouter } from 'vue-router'
 import PageLayout from '@/layout/PageLayout.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
-import FormLayout from '@/layout/FormLayout.vue'
-import FormInput from '@/components/inputs/FormInput.vue'
+import FormLayout from '@/components/forms/FormLayout.vue'
+import FormInput from '@/components/forms/FormInput.vue'
 import { useStockStore } from '@/stores/stock'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -30,8 +30,8 @@ function submitZone() {
       <ul class="flex flex-col gap-2">
         <li>{{ $t('stock.home.instructions.zone_number') }}</li>
         <li>{{ $t('stock.home.instructions.scan') }}</li>
-        <li>{{ $t('stock.home.instructions.manual') }}</li>
         <li>{{ $t('stock.home.instructions.count') }}</li>
+        <li>{{ $t('stock.home.instructions.restart') }}</li>
         <li>{{ $t('stock.home.instructions.send') }}</li>
       </ul>
       <p class="mt-6">{{ $t('stock.home.good_luck') }}</p>

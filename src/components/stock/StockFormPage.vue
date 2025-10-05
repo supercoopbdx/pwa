@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
-import FormInput from '@/components/inputs/FormInput.vue'
+import FormInput from '@/components/forms/FormInput.vue'
 import { useStockStore } from '@/stores/stock'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, Ref, ref, watch } from 'vue'
-import FormLayout from '@/layout/FormLayout.vue'
+import FormLayout from '@/components/forms/FormLayout.vue'
 import { storeToRefs } from 'pinia'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 

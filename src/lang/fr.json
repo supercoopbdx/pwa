@@ -30,11 +30,11 @@
       "title": "Inventaire",
       "instructions": {
         "title": "Utilisation :",
-        "zone_number": "Saisir le numéro de la zone à inventorier",
-        "scan": "Scanner le code barre d'un produit",
-        "manual": "Ou le saisir manuellement",
-        "count": "Saisir la quantité de produit",
-        "send": "Une fois la zone terminée, envoyer la liste"
+        "zone_number": "1. Saisir le numéro de la zone à inventorier",
+        "scan": "2. Scanner un produit ou saisir son code-barre",
+        "count": "3. Saisir la quantité de produit",
+        "restart": "4. Recommencer pour tous les produits de la zone",
+        "send": "5. Envoyer la liste une fois la zone terminée !"
       },
       "good_luck": "Bon comptage, et merci \uD83D\uDE42",
       "zone_number": "Numéro de la zone",
