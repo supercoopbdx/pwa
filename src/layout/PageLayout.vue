@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import PageTitle from '@/components/titles/PageTitle.vue'
 import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useAuthStore } from '@/stores/auth.ts'
@@ -10,20 +9,21 @@ const props = defineProps({
 })
 
 const { isAuthenticated, login, logout } = useAuthStore()
-
 </script>
 
 <template>
-  <main class="fixed top-0 left-0 h-full w-full flex flex-col gap-6 p-6">
-    <div class="items-center">
-      <PageTitle class="text-center">{{ props.title }}</PageTitle>
-      <div class="fixed right-6 top-6">
-        <PrimaryButton v-if="!isAuthenticated" @click="login()">{{ $t('auth.login') }}</PrimaryButton>
+  <main class="fixed top-0 left-0 h-full w-full flex flex-col">
+    <div class="fixed left-0 top-0 right-0 pb-5 items-center">
+      <h1 class="text-4xl font-bold text-center mt-20 md:mt-5">{{ props.title }}</h1>
+      <div class="fixed right-5 top-5">
+        <PrimaryButton v-if="!isAuthenticated" @click="login()">{{
+          $t('auth.login')
+        }}</PrimaryButton>
         <CancelButton v-else @click="logout()">{{ $t('auth.logout') }}</CancelButton>
       </div>
     </div>
 
-    <div class="text-left my-10 overflow-auto">
+    <div class="text-left h-[calc(100%-240px)] md:h-[calc(100%-150px)] mx-5 mt-35 md:mt-20 mb-24000">
       <slot />
     </div>
 

@@ -25,13 +25,13 @@ function submitZone() {
 
 <template>
   <PageLayout :title="$t('stock.home.title')">
-    <div class="text-left md:text-left">
-      <p class="mb-5">{{ $t('stock.home.introduction') }}</p>
+    <div class="mb-10 max-w-md mx-auto">
       <h3 class="font-semibold mb-2">{{ $t('stock.home.instructions.title') }}</h3>
-      <ul class="list-disc list-inside md:list-outside ml-0 md:ml-6">
+      <ul class="flex flex-col gap-2">
         <li>{{ $t('stock.home.instructions.zone_number') }}</li>
         <li>{{ $t('stock.home.instructions.scan') }}</li>
         <li>{{ $t('stock.home.instructions.manual') }}</li>
+        <li>{{ $t('stock.home.instructions.count') }}</li>
         <li>{{ $t('stock.home.instructions.send') }}</li>
       </ul>
       <p class="mt-6">{{ $t('stock.home.good_luck') }}</p>
@@ -51,11 +51,7 @@ function submitZone() {
 
     <div class="text-center">
       <PrimaryButton class="mt-6" @click="submitZone()" :disabled="!zone || errors.zone">
-        {{
-          !products.size
-            ? $t('stock.home.start')
-            : $t('stock.home.continue')
-        }}
+        {{ !products.size ? $t('stock.home.start') : $t('stock.home.continue') }}
       </PrimaryButton>
     </div>
   </PageLayout>

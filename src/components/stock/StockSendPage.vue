@@ -3,20 +3,21 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import { useStockStore } from '@/stores/stock'
-import { ref, toRaw } from 'vue'
+import { ref } from 'vue'
 
 const SERVER_URL = 'https://backend.supercoop.fr/send-email'
-const store = useStockStore()
 const reportSent = ref(false)
 const message = ref('')
+
+const { products, zone } = useStockStore()
 
 async function submit() {
   const response = await fetch(SERVER_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      zone: store.zone,
-      products: Object.values(toRaw(store.products)),
+      zone,
+      products: products.values(),
     }),
   })
   const jso = await response.json()
@@ -29,12 +30,12 @@ async function submit() {
 
 <template>
   <PageLayout :title="$t('stock.send.title')">
-    <p v-if="!reportSent" class="text-left m-auto mt-4 mb-30">
+    <p v-if="!reportSent" class="text-left m-auto mt-4 mb-10">
       {{ $t('stock.send.confirmation') }}
     </p>
-    <p v-if="reportSent" class="text-left m-auto mt-4 mb-30">{{ message }}</p>
+    <p v-if="reportSent" class="text-left m-auto mt-4">{{ message }}</p>
 
-    <div class="flex flex-row gap-2 justify-between">
+    <div class="flex flex-row justify-between">
       <RouterLink :to="{ name: 'stock-list' }">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
