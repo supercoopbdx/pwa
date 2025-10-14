@@ -10,6 +10,8 @@ import { ClipboardDocumentCheckIcon } from '@heroicons/vue/24/outline'
 const loading = ref(true)
 const router = useRouter()
 
+let hasTorch:boolean
+
 function decode(barcode: string) {
   router.push({ name: 'stock-form', query: { barcode } })
 }
@@ -28,13 +30,14 @@ function decode(barcode: string) {
       class="bg-gray-300"
       @decode="decode"
       @loaded="loading = false"
+      @update:hasTorch="hasTorch = $event"
     />
     <template #footer>
       <RouterLink :to="{ name: 'stock-list' }">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
       <div class="flex">
-        <RouterLink :to="{name: 'stock-form'}" class="m-auto">
+        <RouterLink :to="{ name: 'stock-form' }" class="m-auto">
           <PrimaryButton class="text-sm">{{ $t('stock.button.manual_input') }}</PrimaryButton>
         </RouterLink>
       </div>

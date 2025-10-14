@@ -41,7 +41,6 @@ watch(
 )
 
 function submit() {
-  console.log('submit', barcode.value, quantity.value)
   if (!valid.value) return
   stockStore.addProduct(barcode.value, quantity.value ?? 0, route.query.barcode as string)
   router.push({ name: 'stock-list' })

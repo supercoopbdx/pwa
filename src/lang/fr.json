@@ -77,6 +77,9 @@
     }
   },
   "inbound": {
+    "button": {
+      "back": "Retour"
+    },
     "home": {
       "title": "Réception",
       "start": "Commencer",
@@ -84,6 +87,10 @@
     },
     "order-list": {
       "title": "Commandes"
+    },
+    "products-list": {
+      "title": "Commande {po}",
+      "unit": "unité | unités"
     }
   }
 }

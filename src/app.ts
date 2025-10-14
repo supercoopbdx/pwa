@@ -4,9 +4,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { createI18n } from 'vue-i18n'
 import { createPinia } from 'pinia'
 import App from '@/components/App.vue'
-import routes from '@/routes'
+import routes from '@/router.ts'
 import french from '@/lang/fr.json'
 import { useAuthStore } from '@/stores/auth.ts'
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -35,7 +36,7 @@ router.beforeEach(async (to, from, next) => {
 
   // if no auth, then login
   if (!isAuthenticated) {
-    login(to.fullPath)
+    await login(to.fullPath)
     return false
   }
 

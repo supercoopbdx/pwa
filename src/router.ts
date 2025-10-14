@@ -8,6 +8,7 @@ import LoginCallbackPage from '@/components/LoginCallbackPage.vue'
 import NotFound from '@/components/NotFound.vue'
 import InboundLandingPage from '@/components/inbound/InboundLandingPage.vue'
 import InboundOrdersPage from '@/components/inbound/InboundOrdersPage.vue'
+import InboundProductsPage from '@/components/inbound/InboundProductsPage.vue'
 
 export default [
   {
@@ -60,6 +61,12 @@ export default [
     path: '/inbound/orders',
     name: 'inbound-orders',
     component: InboundOrdersPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/inbound/orders/:po/products',
+    name: 'inbound-products',
+    component: InboundProductsPage,
     meta: { requiresAuth: true },
   },
   { path: '/:pathMatch(.*)*', component: NotFound },
