@@ -1,0 +1,35 @@
+import { defineStore } from 'pinia'
+import { ref, Ref } from 'vue'
+
+export const useInboundStore = defineStore('orders', () => {
+  const orders: Ref<Map<string, InboundOrder>> = ref(new Map())
+
+  function fetchInboundOrders() {
+    const result = new Map<string, InboundOrder>()
+
+    const products = new Map<string, InboundProduct>()
+    products.set('0420000019749', {
+      barcode: '0420000019749',
+      name: '❤ AMAZONE Blanc 2023 – IGP Coteaux de Béziers - DTA ❤',
+      image: 'data:image/png;base64,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',
+      parcels: 4,
+      packSize: 6
+    })
+
+    result.set('PO23948729', {
+      po: 'PO23948729',
+      provider: 'Domaine LES TERRES D’ARMELLE - DTA ❤',
+      date: new Date(),
+      products
+    })
+
+    orders.value = result
+
+    return result
+  }
+
+  return {
+    orders,
+    fetchInboundOrders
+  }
+})

@@ -8,13 +8,14 @@ import { computed, Ref, ref, watch } from 'vue'
 import FormLayout from '@/components/forms/FormLayout.vue'
 import { storeToRefs } from 'pinia'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import { ClipboardDocumentCheckIcon, QrCodeIcon } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
 const router = useRouter()
 const stockStore = useStockStore()
 
 const barcode = ref((route.query.barcode as string) ?? null)
-const quantity = ref( stockStore.products.get(barcode.value)?.quantity ?? 0)
+const quantity = ref(stockStore.products.get(barcode.value)?.quantity ?? 0)
 const infos: Ref<StockProductInfo | undefined> = ref(undefined)
 const { loading } = storeToRefs(stockStore)
 
@@ -48,7 +49,7 @@ function submit() {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.form.title')">
+  <PageLayout :title="$t('stock.form.title')" :icon="ClipboardDocumentCheckIcon">
     <FormLayout>
       <div v-if="loading">
         <h3 class="text-center text-xl">{{ $t('stock.form.loading') }}</h3>
@@ -58,12 +59,11 @@ function submit() {
           <h3 class="text-lg font-semibold text-center">
             {{ infos?.found ? infos.name : $t('stock.form.errors.product_not_found') }}
           </h3>
-          <h4 class="text-center">{{ $t('stock.form.barcode') }} : {{ barcode }}</h4>
+          <h4 class="text-center">
+            <QrCodeIcon class="h-6 inline align-text-bottom" /> {{ barcode }}
+          </h4>
           <div class="flex items-center justify-center">
-            <img
-              :src="infos.image ?? '/image-not-found-icon.svg'"
-              class="max-w-md max-h-32"
-            />
+            <img :src="infos.image ?? '/image-not-found-icon.svg'" class="max-h-32" />
           </div>
         </div>
       </div>

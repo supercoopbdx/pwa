@@ -53,7 +53,7 @@
       "reset": "Vous êtes sur le point de vider la liste"
     },
     "scan": {
-      "title": "Scan de code-barre",
+      "title": "Scan code-barre",
       "loading": "Chargement de la caméra"
     },
     "form": {
@@ -74,6 +74,16 @@
       "title": "Envoi de la liste",
       "confirmation": "Vous êtes sur le point d'envoyer la liste, êtes-vous certain que c'est ce que vous voulez faire ?",
       "email_sent": "Email envoyé avec succès"
+    }
+  },
+  "inbound": {
+    "home": {
+      "title": "Réception",
+      "start": "Commencer",
+      "instructions": " Proin nec magna mollis, convallis sapien in, facilisis purus. Sed justo mi, ultricies sit amet tellus quis, porta porta tellus. Integer urna mi, posuere vitae finibus at, egestas a turpis. Cras vel sollicitudin neque. Phasellus lacinia pulvinar lorem, sed semper orci tristique vel. Vivamus facilisis nisl quis feugiat feugiat. Etiam ultrices, urna non sollicitudin iaculis, urna massa sagittis nulla, vel ullamcorper urna leo quis dui. Sed dolor nibh, rhoncus non ex sed, volutpat semper libero. "
+    },
+    "order-list": {
+      "title": "Commandes"
     }
   }
 }

@@ -42,8 +42,8 @@ async function submit() {
       <PrimaryButton v-if="!reportSent" @click="submit()">{{
         $t('stock.button.send_confirm')
       }}</PrimaryButton>
-      <RouterLink to="/">
-        <PrimaryButton v-if="reportSent">{{ $t('stock.button.back_to_home') }}</PrimaryButton>
+      <RouterLink to="/" v-if="reportSent">
+        <PrimaryButton>{{ $t('stock.button.back_to_home') }}</PrimaryButton>
       </RouterLink>
     </div>
   </PageLayout>

@@ -7,6 +7,7 @@ import FormInput from '@/components/forms/FormInput.vue'
 import { useStockStore } from '@/stores/stock'
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { ClipboardDocumentCheckIcon } from '@heroicons/vue/24/outline'
 
 const stockStore = useStockStore()
 const router = useRouter()
@@ -24,8 +25,8 @@ function submitZone() {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.home.title')">
-    <div class="mb-10 max-w-md mx-auto">
+  <PageLayout :title="$t('stock.home.title')" :icon="ClipboardDocumentCheckIcon">
+    <div class="mb-10 mx-auto">
       <h3 class="font-semibold mb-2">{{ $t('stock.home.instructions.title') }}</h3>
       <ul class="flex flex-col gap-2">
         <li>{{ $t('stock.home.instructions.zone_number') }}</li>
@@ -37,7 +38,7 @@ function submitZone() {
       <p class="mt-6">{{ $t('stock.home.good_luck') }}</p>
     </div>
 
-    <FormLayout>
+    <FormLayout class="mx-auto max-w-40">
       <FormInput
         type="text"
         v-model="zone"

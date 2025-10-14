@@ -13,7 +13,8 @@ export const useStockStore = defineStore('stock', () => {
   }
 
   function loadStorageProducts() {
-    return new Map<string, StockProduct>(JSON.parse(localStorage.getItem('stock-products') ?? ''))
+    const stored = localStorage.getItem('stock-products')
+    return stored ? new Map<string, StockProduct>(JSON.parse(stored)) : new Map<string, StockProduct>()
   }
 
   function persistProducts() {

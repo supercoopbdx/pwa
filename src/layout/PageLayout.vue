@@ -6,15 +6,19 @@ import CancelButton from '@/components/buttons/CancelButton.vue'
 
 const props = defineProps({
   title: { type: String, required: true },
+  icon: { type: Function, required: false },
 })
 
 const { isAuthenticated, login, logout } = useAuthStore()
 </script>
 
 <template>
-  <main class="fixed top-0 left-0 h-full w-full flex flex-col">
+  <main class="fixed top-0 left-0 h-full w-full flex flex-col p-5">
     <div class="fixed left-0 top-0 right-0 pb-5 items-center">
-      <h1 class="text-4xl font-bold text-center mt-20 md:mt-5">{{ props.title }}</h1>
+      <h1 class="text-3xl font-bold text-center mt-20 md:mt-5">
+        <component v-if="icon" :is="icon" class="h-9 inline align-top"></component>
+        {{ props.title }}
+      </h1>
       <div class="fixed right-5 top-5">
         <PrimaryButton v-if="!isAuthenticated" @click="login()">{{
           $t('auth.login')
@@ -23,7 +27,7 @@ const { isAuthenticated, login, logout } = useAuthStore()
       </div>
     </div>
 
-    <div class="text-left h-[calc(100%-240px)] md:h-[calc(100%-150px)] mx-5 mt-35 md:mt-20 mb-24000">
+    <div class="text-left h-[calc(100%-240px)] md:h-[calc(100%-150px)] mx-5 mt-35 md:mt-20 max-w-lg mx-auto">
       <slot />
     </div>
 

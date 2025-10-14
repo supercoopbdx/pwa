@@ -4,7 +4,7 @@ import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import CancelButton from '@/components/buttons/CancelButton.vue'
 import { useStockStore } from '@/stores/stock'
-import { QrCodeIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { ClipboardDocumentCheckIcon, QrCodeIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
@@ -39,9 +39,12 @@ function send() {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.list.title', { zone: stockStore.zone })">
+  <PageLayout
+    :title="$t('stock.list.title', { zone: stockStore.zone })"
+    :icon="ClipboardDocumentCheckIcon"
+  >
     <div class="flex flex-col h-full">
-      <div class="flex justify-center max-w-screen mb-5">
+      <div class="flex justify-center mb-5">
         <RouterLink :to="{ name: 'stock-scan' }">
           <PrimaryButton class="text-2xl px-10 py-5">
             {{ $t('stock.button.start') }}
@@ -53,7 +56,7 @@ function send() {
         {{ $t('stock.list.empty') }}
       </div>
 
-      <ul class="max-w-lg divide-y divide-gray-200 mx-auto">
+      <ul class="divide-y divide-gray-200 mx-auto">
         <li v-for="product in products.values()" :key="product.barcode" class="pb-3 sm:pb-4">
           <div class="flex items-center space-x-4 rtl:space-x-reverse">
             <div class="shrink-0">
@@ -67,7 +70,7 @@ function send() {
                 {{ product.name ?? $t('stock.form.errors.product_not_found') }}
               </p>
               <p class="text-sm text-gray-500">
-                <QrCodeIcon src="/barcode_scan.svg" alt="barcode" class="h-6 inline align-middle" />
+                <QrCodeIcon class="h-6 inline align-middle" />
                 {{ product.barcode }}
               </p>
             </div>

@@ -6,6 +6,8 @@ import StockSendPage from '@/components/stock/StockSendPage.vue'
 import HomePage from '@/components/HomePage.vue'
 import LoginCallbackPage from '@/components/LoginCallbackPage.vue'
 import NotFound from '@/components/NotFound.vue'
+import InboundLandingPage from '@/components/inbound/InboundLandingPage.vue'
+import InboundOrdersPage from '@/components/inbound/InboundOrdersPage.vue'
 
 export default [
   {
@@ -46,6 +48,18 @@ export default [
     path: '/stock/send',
     name: 'stock-send',
     component: StockSendPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/inbound',
+    name: 'inbound-landing',
+    component: InboundLandingPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/inbound/orders',
+    name: 'inbound-orders',
+    component: InboundOrdersPage,
     meta: { requiresAuth: true },
   },
   { path: '/:pathMatch(.*)*', component: NotFound },

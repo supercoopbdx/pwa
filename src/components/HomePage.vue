@@ -4,6 +4,6 @@ import PageLayout from '@/layout/PageLayout.vue'
 
 <template>
   <PageLayout :title="$t('app.title')">
-    <p class="max-w-lg mx-auto">{{ $t('app.description') }}</p>
+    <p>{{ $t('app.description') }}</p>
   </PageLayout>
 </template>

@@ -5,6 +5,7 @@ import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import { useRouter } from 'vue-router'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import { ClipboardDocumentCheckIcon } from '@heroicons/vue/24/outline'
 
 const loading = ref(true)
 const router = useRouter()
@@ -15,16 +16,16 @@ function decode(barcode: string) {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.scan.title')">
+  <PageLayout :title="$t('stock.scan.title')" :icon="ClipboardDocumentCheckIcon">
     <div v-if="loading">
-      <img alt="Barcode" class="max-w-md m-auto" src="/barcode_scan.svg" />
+      <img alt="Barcode" src="/barcode_scan.svg" />
       <h3 class="text-center">{{ $t('stock.scan.loading') }}</h3>
     </div>
 
     <StreamBarcodeReader
       torch
       no-front-cameras
-      class="bg-gray-300 max-w-md"
+      class="bg-gray-300"
       @decode="decode"
       @loaded="loading = false"
     />
