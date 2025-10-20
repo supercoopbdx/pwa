@@ -80,7 +80,8 @@
     "button": {
       "back": "Retour",
       "good": "Correct",
-      "error": "erreur"
+      "error": "erreur",
+      "submit": "Valider"
     },
     "home": {
       "title": "Réception",
@@ -105,7 +106,9 @@
       "within": "dans",
       "parcel": "colis",
       "of": "de",
-      "unit": "unité | unités"
+      "unit": "unité | unités",
+      "received": "Quantité reçue",
+      "comment": "Commentaire"
     }
   }
 }

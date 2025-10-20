@@ -1,27 +1,45 @@
 <script setup lang="ts">
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
-import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
-import { CheckCircleIcon, ExclamationTriangleIcon, QrCodeIcon, TruckIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckIcon,
+  ExclamationTriangleIcon,
+  QrCodeIcon,
+  TruckIcon,
+} from '@heroicons/vue/24/outline'
 import { useInboundStore } from '@/stores/inbound.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { onBeforeMount, ref, Ref } from 'vue'
-import CancelButton from '@/components/buttons/CancelButton.vue'
+import RedButton from '@/components/buttons/RedButton.vue'
+import GreenButton from '@/components/buttons/GreenButton.vue'
+import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import FormLayout from '@/components/forms/FormLayout.vue'
+import FormInput from '@/components/forms/FormInput.vue'
 
 const router = useRouter()
-const { getProduct, validateCount } = useInboundStore()
+const { getProduct, productCountValid, productCountError } = useInboundStore()
 const { po, barcode } = useRoute().params
 const product: Ref<InboundProduct | undefined> = ref()
 const loading = ref(true)
+const showErrorForm = ref(false)
+const received = ref(0)
+const comment = ref('')
 
 onBeforeMount(async () => {
   product.value = await getProduct(po.toString(), barcode.toString())
+  received.value = product.value?.inbound?.received ?? 0
+  comment.value = product.value?.inbound?.comment ?? ''
   loading.value = false
 })
 
-function correct() {
-  validateCount(po.toString(), barcode.toString())
-  router.push({name: 'inbound-products'})
+function valid() {
+  productCountValid(po.toString(), barcode.toString())
+  router.push({ name: 'inbound-products' })
+}
+
+function submit() {
+  productCountError(po.toString(), barcode.toString(), received.value, comment.value)
+  router.push({ name: 'inbound-products' })
 }
 </script>
 
@@ -58,18 +76,25 @@ function correct() {
         {{ product.parcels }} {{ $t('inbound.form.parcel') }} {{ $t('inbound.form.of') }}
         {{ product.packSize }} {{ $t('inbound.form.unit', product.packSize) }}<br />
       </div>
+      <FormLayout v-if="showErrorForm">
+        <FormInput type="number" :label="$t('inbound.form.received')" v-model="received" />
+        <FormInput type="textarea" :label="$t('inbound.form.comment')" v-model="comment" />
+      </FormLayout>
     </div>
     <template #footer>
       <RouterLink :to="{ name: 'inbound-products' }">
         <SecondaryButton>{{ $t('inbound.button.back') }}</SecondaryButton>
       </RouterLink>
-      <CancelButton
+      <RedButton v-if="!showErrorForm" @click="showErrorForm = true"
         ><ExclamationTriangleIcon class="inline-flex h-6 align-text-bottom" />
         {{ $t('inbound.button.good') }}
-      </CancelButton>
-      <PrimaryButton @click="correct()"
-        ><CheckCircleIcon class="inline-flex h-6 align-text-bottom" />
+      </RedButton>
+      <GreenButton v-if="!showErrorForm" @click="valid()"
+        ><CheckIcon class="inline-flex h-6 align-text-bottom" />
         {{ $t('inbound.button.good') }}
+      </GreenButton>
+      <PrimaryButton v-if="showErrorForm" @click="submit()">
+        {{ $t('inbound.button.submit') }}
       </PrimaryButton>
     </template>
   </PageLayout>

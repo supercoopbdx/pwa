@@ -121,11 +121,17 @@ export const useInboundStore = defineStore('orders', () => {
     return orders.value?.get(po)?.products.get(barcode)
   }
 
-  async function validateCount(po: string, barcode: string) {
-    // TODO : mark product count as valid
+  async function productCountValid(po: string, barcode: string) {
     const product = orders.value?.get(po)?.products?.get(barcode)
     if (!product) throw new Error('product not found')
     product.inbound = { ok: true }
+  }
+
+  async function productCountError(po: string, barcode: string, received: number, comment: string) {
+    const product = orders.value?.get(po)?.products?.get(barcode)
+    if (!product) throw new Error('product not found')
+
+    product.inbound = { ok: false, received, comment }
   }
 
   return {
@@ -133,6 +139,7 @@ export const useInboundStore = defineStore('orders', () => {
     getOrders,
     getOrder,
     getProduct,
-    validateCount,
+    productCountValid,
+    productCountError
   }
 })

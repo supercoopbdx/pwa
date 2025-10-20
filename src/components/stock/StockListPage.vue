@@ -2,7 +2,7 @@
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
-import CancelButton from '@/components/buttons/CancelButton.vue'
+import RedButton from '@/components/buttons/RedButton.vue'
 import { useStockStore } from '@/stores/stock'
 import { ClipboardDocumentCheckIcon, QrCodeIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
@@ -82,7 +82,7 @@ function reset() {
         {{ $t('stock.button.back') }}
       </SecondaryButton>
       <div class="flex gap-4">
-        <CancelButton @click="reset()">{{ $t('stock.button.reset') }}</CancelButton>
+        <RedButton @click="reset()">{{ $t('stock.button.reset') }}</RedButton>
         <PrimaryButton @click="$router.push({ name: 'stock-send' })" :disabled="!products.size">
           {{ $t('stock.button.finish') }}
         </PrimaryButton>

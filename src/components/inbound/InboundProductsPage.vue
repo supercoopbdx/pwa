@@ -1,17 +1,32 @@
 <script setup lang="ts">
 import { useInboundStore } from '@/stores/inbound.ts'
 import PageLayout from '@/layout/PageLayout.vue'
-import { ChevronRightIcon, QrCodeIcon, TruckIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckIcon,
+  ChevronRightIcon,
+  ExclamationTriangleIcon,
+  QrCodeIcon,
+  TruckIcon,
+} from '@heroicons/vue/24/outline'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import { useRoute } from 'vue-router'
-import { onBeforeMount, ref, Ref } from 'vue'
+import { computed, onBeforeMount, ref, Ref } from 'vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import GreenButton from '@/components/buttons/GreenButton.vue'
+import RedButton from '@/components/buttons/RedButton.vue'
 
 const { getOrder } = useInboundStore()
 
 const po = useRoute().params.po.toString()
 const order: Ref<InboundOrder | undefined> = ref()
 const loading = ref(true)
+
+const isOrderValid = computed(() => {
+  if (!order || !order.value?.products) return false
+  for (let [, product] of order.value?.products) {
+    if (!product.inbound) return false
+  }
+})
 
 onBeforeMount(async () => {
   order.value = await getOrder(po)
@@ -34,9 +49,9 @@ onBeforeMount(async () => {
         </RouterLink>
       </div>
 
-      <ul v-if="order" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col gap-2 my-5">
-        <li v-for="[barcode, product] in order.products" :key="barcode" class="sm:pb-4">
-          <div class="flex items-center space-x-2 rtl:space-x-reverse">
+      <ul v-if="order" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
+        <li v-for="[barcode, product] in order.products" :key="barcode">
+          <div class="flex items-center space-x-2 rtl:space-x-reverse py-2">
             <div class="shrink-0">
               <img
                 class="w-15 h-15 rounded-lg"
@@ -59,9 +74,15 @@ onBeforeMount(async () => {
             </div>
             <div class="flex flex-col">
               <RouterLink :to="{ name: 'inbound-form', params: { barcode: product.barcode } }">
-                <PrimaryButton>
+                <PrimaryButton v-if="!product.inbound">
                   <ChevronRightIcon class="w-7 h-7" />
                 </PrimaryButton>
+                <GreenButton v-else-if="product.inbound.ok">
+                  <CheckIcon class="w-7 h-7" />
+                </GreenButton>
+                <RedButton v-else>
+                  <ExclamationTriangleIcon class="w-7 h-7" />
+                </RedButton>
               </RouterLink>
             </div>
           </div>
