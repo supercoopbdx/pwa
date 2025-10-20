@@ -5,7 +5,7 @@ export const useInboundStore = defineStore('orders', () => {
   const orders: Ref<Map<string, InboundOrder> | undefined> = ref()
 
   async function getOrders() {
-    const jsonOrders:Array<any> = await new Promise((resolve) =>
+    const jsonOrders: Array<any> = await new Promise((resolve) =>
       setTimeout(() => {
         resolve([
           {
@@ -95,12 +95,14 @@ export const useInboundStore = defineStore('orders', () => {
         order.po,
         {
           ...order,
-          products: new Map(order.products.map((product: InboundProduct) => [product.barcode, product])),
+          products: new Map(
+            order.products.map((product: InboundProduct) => [product.barcode, product]),
+          ),
         },
       ]),
     )
 
-    return orders
+    return orders.value
   }
 
   async function getOrder(po: string) {
@@ -111,9 +113,26 @@ export const useInboundStore = defineStore('orders', () => {
     return orders.value?.get(po)
   }
 
+  async function getProduct(po: string, barcode: string): Promise<InboundProduct | undefined> {
+    if (!orders.value) {
+      await getOrders()
+    }
+
+    return orders.value?.get(po)?.products.get(barcode)
+  }
+
+  async function validateCount(po: string, barcode: string) {
+    // TODO : mark product count as valid
+    const product = orders.value?.get(po)?.products?.get(barcode)
+    if (!product) throw new Error('product not found')
+    product.inbound = { ok: true }
+  }
+
   return {
     orders,
     getOrders,
-    getOrder
+    getOrder,
+    getProduct,
+    validateCount,
   }
 })

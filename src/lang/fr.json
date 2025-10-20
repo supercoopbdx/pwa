@@ -64,7 +64,7 @@
       "quantity_placeholder": "Saisissez la quantité",
       "quantity": "Quantité",
       "modify": "Modifier le code barre",
-      "errors" : {
+      "errors": {
         "barcode": "Le code-barres doit être un nombre à 13 chiffres",
         "quantity": "La quantité doit être un nombre entier",
         "product_not_found": "Produit inconnu"
@@ -78,7 +78,9 @@
   },
   "inbound": {
     "button": {
-      "back": "Retour"
+      "back": "Retour",
+      "good": "Correct",
+      "error": "erreur"
     },
     "home": {
       "title": "Réception",
@@ -86,10 +88,23 @@
       "instructions": " Proin nec magna mollis, convallis sapien in, facilisis purus. Sed justo mi, ultricies sit amet tellus quis, porta porta tellus. Integer urna mi, posuere vitae finibus at, egestas a turpis. Cras vel sollicitudin neque. Phasellus lacinia pulvinar lorem, sed semper orci tristique vel. Vivamus facilisis nisl quis feugiat feugiat. Etiam ultrices, urna non sollicitudin iaculis, urna massa sagittis nulla, vel ullamcorper urna leo quis dui. Sed dolor nibh, rhoncus non ex sed, volutpat semper libero. "
     },
     "order-list": {
-      "title": "Commandes"
+      "title": "Commandes",
+      "loading": "Chargement des commandes...",
+      "empty": "Aucune commande à réceptionner"
     },
     "products-list": {
       "title": "Commande {po}",
+      "loading": "Chargement des produits...",
+      "empty": "Aucun produit n'a été trouvé",
+      "unit": "unité | unités"
+    },
+    "form": {
+      "title": "Comptage produit",
+      "loading": "Chargement du produit...",
+      "empty": "Le produit n'a pas été trouvé",
+      "within": "dans",
+      "parcel": "colis",
+      "of": "de",
       "unit": "unité | unités"
     }
   }

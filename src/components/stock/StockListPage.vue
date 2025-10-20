@@ -35,7 +35,7 @@ function reset() {
     :title="$t('stock.list.title', { zone: stockStore.zone })"
     :icon="ClipboardDocumentCheckIcon"
   >
-    <div class="flex justify-center">
+    <div class="flex justify-center mb-5">
       <RouterLink :to="{ name: 'stock-scan' }">
         <PrimaryButton class="text-2xl px-10 py-5">
           {{ $t('stock.button.start') }}
@@ -47,7 +47,7 @@ function reset() {
       {{ $t('stock.list.empty') }}
     </div>
 
-    <ul class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col gap-2 my-5">
+    <ul class="divide-y divide-gray-200 mx-auto flex flex-col gap-2">
       <li v-for="[barcode, product] in products" :key="barcode" class="pb-2">
         <div class="flex items-center space-x-4 rtl:space-x-reverse">
           <div class="shrink-0">

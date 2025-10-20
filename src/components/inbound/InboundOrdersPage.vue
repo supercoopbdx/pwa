@@ -8,17 +8,29 @@ import {
   TruckIcon,
 } from '@heroicons/vue/24/outline'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import { onBeforeMount, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
 const { getOrders } = useInboundStore()
-const orders = getOrders()
+const { orders } = storeToRefs(useInboundStore())
+const loading = ref(true)
+
+onBeforeMount(async () => {
+  await getOrders()
+  loading.value = false
+})
 </script>
 
 <template>
   <PageLayout :title="$t('inbound.order-list.title')" :icon="TruckIcon">
-    <ul class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col gap-2 my-5">
+    <div v-if="loading">
+      <h3 class="text-center text-xl">{{ $t('inbound.order-list.loading') }}</h3>
+    </div>
+    <div v-else-if="!orders?.size">{{ $t('inbound.order-list.empty') }}</div>
+    <ul v-else class="divide-y divide-gray-200 mx-auto flex flex-col gap-2">
       <li v-for="[po, order] in orders" :key="po" class="sm:pb-4">
         <div class="flex items-center space-x-4 rtl:space-x-reverse">
-          <div class="flex-1 min-w-0 grow">
+          <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 text-clip">
               {{ order.provider }}
             </p>

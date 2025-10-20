@@ -29,6 +29,7 @@ export const useStockStore = defineStore('stock', () => {
 
     loading.value = true
 
+    // TODO : Replace this with axios call including auth access token
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({

@@ -3,6 +3,7 @@ import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import CancelButton from '@/components/buttons/CancelButton.vue'
+import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -23,7 +24,7 @@ const { isAuthenticated, login, logout } = useAuthStore()
         <PrimaryButton v-if="!isAuthenticated" @click="login()">{{
           $t('auth.login')
         }}</PrimaryButton>
-        <CancelButton v-else @click="logout()">{{ $t('auth.logout') }}</CancelButton>
+        <SecondaryButton v-else @click="logout()">{{ $t('auth.logout') }}</SecondaryButton>
       </div>
     </div>
 

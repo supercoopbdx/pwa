@@ -54,15 +54,18 @@ function submit() {
         <h3 class="text-center text-xl">{{ $t('stock.form.loading') }}</h3>
       </div>
       <div v-if="!loading">
-        <div v-if="infos" class="flex flex-col gap-2">
-          <h3 class="text-lg font-semibold text-center">
-            {{ infos?.found ? infos.name : $t('stock.form.errors.product_not_found') }}
-          </h3>
-          <h4 class="text-center">
-            <QrCodeIcon class="h-6 inline align-text-bottom" /> {{ barcode }}
-          </h4>
-          <div class="flex items-center justify-center">
-            <img :src="infos.image ?? '/image-not-found-icon.svg'" class="max-h-32" />
+        <div v-if="infos" class="flex items-center space-x-2 rtl:space-x-reverse">
+          <div class="shrink-0">
+            <img class="w-15 h-15 rounded-lg" :src="infos.image ?? '/image-not-found-icon.svg'" />
+          </div>
+          <div class="flex-1 min-w-0 grow">
+            <p class="text-sm font-medium text-gray-900 text-clip">
+              {{ infos?.found ? infos.name : $t('stock.form.errors.product_not_found') }}
+            </p>
+            <p class="text-sm text-gray-500">
+              <QrCodeIcon class="h-5 inline align-text-bottom" />
+              {{ barcode }}
+            </p>
           </div>
         </div>
       </div>

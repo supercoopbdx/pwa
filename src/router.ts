@@ -9,6 +9,8 @@ import NotFound from '@/components/NotFound.vue'
 import InboundLandingPage from '@/components/inbound/InboundLandingPage.vue'
 import InboundOrdersPage from '@/components/inbound/InboundOrdersPage.vue'
 import InboundProductsPage from '@/components/inbound/InboundProductsPage.vue'
+import InboundScanPage from '@/components/inbound/InboundScanPage.vue'
+import InboundFormPage from '@/components/inbound/InboundFormPage.vue'
 
 export default [
   {
@@ -67,6 +69,18 @@ export default [
     path: '/inbound/orders/:po/products',
     name: 'inbound-products',
     component: InboundProductsPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/inbound/orders/:po/products/scan',
+    name: 'inbound-scan',
+    component: InboundScanPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/inbound/orders/:po/products/:barcode',
+    name: 'inbound-form',
+    component: InboundFormPage,
     meta: { requiresAuth: true },
   },
   { path: '/:pathMatch(.*)*', component: NotFound },

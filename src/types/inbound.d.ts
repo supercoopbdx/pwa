@@ -4,6 +4,11 @@ type InboundProduct = {
   image: string
   parcels: number
   packSize: number
+  inbound?: {
+    ok: boolean,
+    received?: number,
+    comment?: string
+  }
 }
 
 type InboundOrder = {
