@@ -5,26 +5,15 @@ import PageLayout from '@/layout/PageLayout.vue'
 import { useStockStore } from '@/stores/stock'
 import { ref } from 'vue'
 
-const SERVER_URL = 'https://backend.supercoop.fr/send-email'
 const reportSent = ref(false)
 const message = ref('')
 
-const { products, zone } = useStockStore()
+const { send } = useStockStore()
 
 async function submit() {
-  const response = await fetch(SERVER_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      zone,
-      products: products.values(),
-    }),
-  })
-  const jso = await response.json()
+  const jso = await send()
   message.value = jso['email_status']
   reportSent.value = true
-
-  //TODO : if request fails, display error
 }
 </script>
 
@@ -33,18 +22,18 @@ async function submit() {
     <p v-if="!reportSent" class="text-left m-auto mt-4 mb-10">
       {{ $t('stock.send.confirmation') }}
     </p>
-    <p v-if="reportSent" class="text-left m-auto mt-4">{{ message }}</p>
+    <p v-else class="text-left m-auto mt-4">{{ message }}</p>
 
-    <div class="flex flex-row justify-between">
+    <template #footer>
       <RouterLink :to="{ name: 'stock-list' }">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
       <PrimaryButton v-if="!reportSent" @click="submit()">{{
         $t('stock.button.send_confirm')
       }}</PrimaryButton>
-      <RouterLink to="/" v-if="reportSent">
+      <RouterLink v-else :to="{ name: 'stock-landing' }">
         <PrimaryButton>{{ $t('stock.button.back_to_home') }}</PrimaryButton>
       </RouterLink>
-    </div>
+    </template>
   </PageLayout>
 </template>

@@ -103,7 +103,7 @@
     "form": {
       "title": "Produit",
       "loading": "Chargement du produit...",
-      "empty": "Le produit n'a pas été trouvé",
+      "empty": "Le produit n'existe pas dans la commande",
       "within": "dans",
       "parcel": "colis",
       "of": "de",

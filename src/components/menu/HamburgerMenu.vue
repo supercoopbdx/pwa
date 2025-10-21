@@ -12,8 +12,10 @@ import {
 import { useI18n } from 'vue-i18n'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useAuthStore } from '@/stores/auth.ts'
+import { storeToRefs } from 'pinia'
 
-const { user, isAuthenticated, login } = useAuthStore()
+const { login } = useAuthStore()
+const { user } = storeToRefs(useAuthStore())
 const { t } = useI18n()
 
 interface MenuItem {
@@ -80,7 +82,7 @@ const closeMenu = () => {
 
     <div class="fixed bottom-5">
       <div>
-        <PrimaryButton v-if="!isAuthenticated" @click="login()">
+        <PrimaryButton v-if="!user" @click="login($route.fullPath)">
           {{ $t('auth.login') }}
         </PrimaryButton>
         <div v-else>

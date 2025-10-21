@@ -6,6 +6,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "ES2020",
     "moduleResolution": "node",
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "noUnusedLocals": true,
@@ -20,13 +21,14 @@
     "target": "ES2020",
     "types": [
       "vite/client",
-      "vue-i18n/dist.vye-i18n.d.ts"
+      "vue-i18n/dist/vue-i18n"
     ]
   },
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./src/**/*.vue"
+    "./src/**/*.vue",
+    "./node_module/**/*.ts"
   ]
 //  "extends": "@vue/tsconfig/tsconfig.dom.json",
 //  "compilerOptions": {

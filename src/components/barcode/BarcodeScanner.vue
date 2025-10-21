@@ -75,11 +75,7 @@ const startScanning = async () => {
   const detector = new window.BarcodeDetector({ formats: ['ean_13'] })
 
   async function scan() {
-    if (
-      !context ||
-      !video.readyState ||
-      video.readyState !== video.HAVE_ENOUGH_DATA
-    ) {
+    if (!context || !video.readyState || video.readyState !== video.HAVE_ENOUGH_DATA) {
       animationFrameId = requestAnimationFrame(scan)
       return
     }
@@ -118,7 +114,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative w-full h-full">
+  <div class="relative w-full h-full max-h-100">
     <div v-if="error" class="p-4 bg-red-50 text-red-600 rounded-lg mb-4">
       {{ error }}
     </div>
@@ -129,7 +125,7 @@ onUnmounted(() => {
 
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
-          class="w-64 h-64 border-2 border-white rounded-lg shadow-[0_0_0_9999px_rgba(0,0,0,0.5)]"
+          class="w-95 h-64 border-2 border-white rounded-lg shadow-[0_0_0_9999px_rgba(0,0,0,0.5)]"
         ></div>
       </div>
     </div>

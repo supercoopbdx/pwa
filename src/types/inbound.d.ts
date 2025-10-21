@@ -11,9 +11,16 @@ type InboundProduct = {
   }
 }
 
-type InboundOrder = {
-  po?: string
+type MappedInboundOrder = {
+  po: string
   provider: string
   date: Date
   products: Map<string, InboundProduct>
+}
+
+type InboundOrderResponse = {
+  po: string
+  provider: string
+  date: Date
+  products: InboundProduct[]
 }

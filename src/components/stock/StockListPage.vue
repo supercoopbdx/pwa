@@ -16,6 +16,7 @@ const { t } = useI18n()
 const { products } = storeToRefs(stockStore)
 
 if (!stockStore.zone) {
+  // if zone is not set, we go back to landing page
   router.push({ name: 'stock-landing' })
 }
 
@@ -54,7 +55,7 @@ function reset() {
             <img
               class="w-15 h-15 rounded-lg"
               :src="product.found ? `${product.image}` : '/image-not-found-icon.svg'"
-            />
+              alt="product image" />
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 text-clip">
@@ -82,7 +83,7 @@ function reset() {
         {{ $t('stock.button.back') }}
       </SecondaryButton>
       <div class="flex gap-4">
-        <RedButton @click="reset()">{{ $t('stock.button.reset') }}</RedButton>
+        <RedButton @click="reset()" :disabled="!products.size">{{ $t('stock.button.reset') }}</RedButton>
         <PrimaryButton @click="$router.push({ name: 'stock-send' })" :disabled="!products.size">
           {{ $t('stock.button.finish') }}
         </PrimaryButton>

@@ -48,7 +48,7 @@ function submit() {
     <div v-if="loading">
       <h3 class="text-center text-xl">{{ $t('inbound.form.loading') }}</h3>
     </div>
-    <div v-else-if="!product">{{ $t('inbound.products-list.empty') }}</div>
+    <div v-else-if="!product">{{ $t('inbound.form.empty') }}</div>
     <div v-else class="flex flex-col gap-2">
       <div class="flex items-center space-x-2 rtl:space-x-reverse">
         <div class="shrink-0">
@@ -85,15 +85,15 @@ function submit() {
       <RouterLink :to="{ name: 'inbound-products' }">
         <SecondaryButton>{{ $t('inbound.button.back') }}</SecondaryButton>
       </RouterLink>
-      <RedButton v-if="!showErrorForm" @click="showErrorForm = true"
+      <RedButton v-if="!showErrorForm" :disabled="!product" @click="showErrorForm = true"
         ><ExclamationTriangleIcon class="inline-flex h-6 align-text-bottom" />
-        {{ $t('inbound.button.good') }}
+        {{ $t('inbound.button.error') }}
       </RedButton>
-      <GreenButton v-if="!showErrorForm" @click="valid()"
+      <GreenButton v-if="!showErrorForm" :disabled="!product" @click="valid()"
         ><CheckIcon class="inline-flex h-6 align-text-bottom" />
         {{ $t('inbound.button.good') }}
       </GreenButton>
-      <PrimaryButton v-if="showErrorForm" @click="submit()">
+      <PrimaryButton v-if="showErrorForm"  @click="submit()">
         {{ $t('inbound.button.submit') }}
       </PrimaryButton>
     </template>

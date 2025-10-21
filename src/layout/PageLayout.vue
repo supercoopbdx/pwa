@@ -2,15 +2,16 @@
 import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useAuthStore } from '@/stores/auth.ts'
-import RedButton from '@/components/buttons/RedButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps({
   title: { type: String, required: true },
   icon: { type: Function, required: false },
 })
 
-const { isAuthenticated, login, logout } = useAuthStore()
+const { login, logout } = useAuthStore()
+const { user } = storeToRefs(useAuthStore())
 </script>
 
 <template>
@@ -21,7 +22,7 @@ const { isAuthenticated, login, logout } = useAuthStore()
         {{ props.title }}
       </h1>
       <div class="fixed right-5 top-5">
-        <PrimaryButton v-if="!isAuthenticated" @click="login()">{{
+        <PrimaryButton v-if="!user" @click="login($route.fullPath)">{{
           $t('auth.login')
         }}</PrimaryButton>
         <SecondaryButton v-else @click="logout()">{{ $t('auth.logout') }}</SecondaryButton>
@@ -29,7 +30,7 @@ const { isAuthenticated, login, logout } = useAuthStore()
     </div>
 
     <div
-      class="text-left  mt-30 md:mt-20 max-w-lg mx-auto overflow-y-auto"
+      class="text-left mt-30 md:mt-20 max-w-lg mx-auto overflow-y-auto"
       :class="{
         'h-[calc(100%-175px)] md:h-[calc(100%-135px)]': $slots.footer,
       }"

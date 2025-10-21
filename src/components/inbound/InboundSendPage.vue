@@ -29,7 +29,7 @@ async function submit() {
     <p v-if="reportSent" class="text-left m-auto mt-4">{{ message }}</p>
 
     <div class="flex flex-row justify-between">
-      <RouterLink :to="{ name: 'stock-list' }">
+      <RouterLink :to="{ name: 'inbound-products' }">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
       <PrimaryButton v-if="!reportSent" @click="submit()">{{
