@@ -80,8 +80,9 @@
     "button": {
       "back": "Retour",
       "good": "Correct",
-      "error": "erreur",
-      "submit": "Valider"
+      "error": "Erreur",
+      "submit": "Valider",
+      "complete": "Terminer"
     },
     "home": {
       "title": "Réception",
@@ -100,7 +101,7 @@
       "unit": "unité | unités"
     },
     "form": {
-      "title": "Comptage produit",
+      "title": "Produit",
       "loading": "Chargement du produit...",
       "empty": "Le produit n'a pas été trouvé",
       "within": "dans",

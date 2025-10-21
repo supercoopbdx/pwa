@@ -2,6 +2,9 @@ import { defineStore } from 'pinia'
 import { Ref, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth.ts'
 
+// TODO : read server URL from config instead
+const SERVER_URL = 'https://backend.supercoop.fr/send-email'
+
 export const useStockStore = defineStore('stock', () => {
   const zone = ref(localStorage.getItem('stock-zone') ?? '')
   const products: Ref<Map<string, StockProduct>> = ref(loadStorageProducts())
@@ -105,6 +108,19 @@ export const useStockStore = defineStore('stock', () => {
     persistProducts()
   }
 
+  async function send() {
+    // TODO : replace this with AXIOS request and include access token
+    const response = await fetch(SERVER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        zone,
+        products: products.value.values(),
+      }),
+    })
+    return await response.json()
+  }
+
   return {
     loading,
     zone,
@@ -115,5 +131,6 @@ export const useStockStore = defineStore('stock', () => {
     addProduct,
     removeProduct,
     reset,
+    send
   }
 })

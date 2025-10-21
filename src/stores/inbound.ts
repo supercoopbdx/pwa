@@ -1,10 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, Ref } from 'vue'
 
+// TODO : read server URL from config instead
+const SERVER_URL = 'https://backend.supercoop.fr/send-email'
+
 export const useInboundStore = defineStore('orders', () => {
   const orders: Ref<Map<string, InboundOrder> | undefined> = ref()
 
   async function getOrders() {
+    // TODO : replace this with AXIOS request and include access token
     const jsonOrders: Array<any> = await new Promise((resolve) =>
       setTimeout(() => {
         resolve([
@@ -134,12 +138,29 @@ export const useInboundStore = defineStore('orders', () => {
     product.inbound = { ok: false, received, comment }
   }
 
+  async function sendOrder(po: string) {
+    const order = orders.value?.get(po)
+    if (!order) throw new Error('Order not found')
+
+    // TODO : replace this with AXIOS request and include access token
+    const response = await fetch(SERVER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      // body: JSON.stringify({
+      //   zone,
+      //   products: products.value.values(),
+      // }),
+    })
+    return await response.json()
+  }
+
   return {
     orders,
     getOrders,
     getOrder,
     getProduct,
     productCountValid,
-    productCountError
+    productCountError,
+    sendOrder,
   }
 })

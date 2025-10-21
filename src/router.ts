@@ -11,6 +11,7 @@ import InboundOrdersPage from '@/components/inbound/InboundOrdersPage.vue'
 import InboundProductsPage from '@/components/inbound/InboundProductsPage.vue'
 import InboundScanPage from '@/components/inbound/InboundScanPage.vue'
 import InboundFormPage from '@/components/inbound/InboundFormPage.vue'
+import InboundSendPage from '@/components/inbound/InboundSendPage.vue'
 
 export default [
   {
@@ -39,7 +40,7 @@ export default [
     path: '/stock/scan',
     name: 'stock-scan',
     component: StockScanPage,
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
   },
   {
     path: '/stock/form',
@@ -81,6 +82,12 @@ export default [
     path: '/inbound/orders/:po/products/:barcode',
     name: 'inbound-form',
     component: InboundFormPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/inbound/orders/:po/send',
+    name: 'inbound-send',
+    component: InboundSendPage,
     meta: { requiresAuth: true },
   },
   { path: '/:pathMatch(.*)*', component: NotFound },

@@ -8,13 +8,12 @@ import routes from '@/router.ts'
 import french from '@/lang/fr.json'
 import { useAuthStore } from '@/stores/auth.ts'
 
-
 const router = createRouter({
   history: createWebHistory(),
   routes,
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const { checkAuth, login, loginCallback } = useAuthStore()
 
   // this route is a callback from auth portal with authorization code

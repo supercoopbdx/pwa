@@ -21,11 +21,12 @@ const po = useRoute().params.po.toString()
 const order: Ref<InboundOrder | undefined> = ref()
 const loading = ref(true)
 
-const isOrderValid = computed(() => {
+const isOrderComplete = computed(() => {
   if (!order || !order.value?.products) return false
   for (let [, product] of order.value?.products) {
     if (!product.inbound) return false
   }
+  return true
 })
 
 onBeforeMount(async () => {
@@ -92,6 +93,9 @@ onBeforeMount(async () => {
     <template #footer>
       <RouterLink :to="{ name: 'inbound-orders' }">
         <SecondaryButton>{{ $t('inbound.button.back') }}</SecondaryButton>
+      </RouterLink>
+      <RouterLink v-if="isOrderComplete" :to="{ name: 'inbound-send' }">
+        <PrimaryButton>{{ $t('inbound.button.complete') }}</PrimaryButton>
       </RouterLink>
     </template>
   </PageLayout>
