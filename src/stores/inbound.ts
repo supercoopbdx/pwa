@@ -90,7 +90,7 @@ export const useInboundStore = defineStore('orders', () => {
 
     // TODO : make this work in the backend
     orders.value = await axios
-      .get(`${config.backend.baseURL}/inbound-orders`)
+      .get(`${config.backend.baseURL}/orders/inbound`)
       .then((response: { data: InboundOrderResponse[] }) => {
         // TODO : handle errors
         return new Map(
@@ -147,7 +147,17 @@ export const useInboundStore = defineStore('orders', () => {
 
     // TODO : make this work in the backend
     return axios
-      .post(`${config.backend.baseURL}/send-inbound-email`, {
+      .post(`${config.backend.baseURL}/orders/inbound/process/${po}`, {
+        products: Array.from(orders.value?.get(po)?.products?.values() ?? []).map(
+          ({ barcode, inbound }) => {
+            return {
+              barcode,
+              ok: inbound?.ok,
+              received: inbound?.received,
+              comment: inbound?.comment,
+            }
+          },
+        ),
       })
       .then((response) => {
         return response.data
