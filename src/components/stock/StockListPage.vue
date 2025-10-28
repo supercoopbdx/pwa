@@ -2,14 +2,9 @@
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
-import TableHead from '@/components/tables/TableHead.vue'
-import TableRow from '@/components/tables/TableRow.vue'
-import TableCell from '@/components/tables/TableCell.vue'
-import TableLayout from '@/layout/TableLayout.vue'
-import ButtonBase from '@/components/buttons/ButtonBase.vue'
-import CancelButton from '@/components/buttons/CancelButton.vue'
+import RedButton from '@/components/buttons/RedButton.vue'
 import { useStockStore } from '@/stores/stock'
-import { TrashIcon } from '@heroicons/vue/24/outline'
+import { ClipboardDocumentCheckIcon, QrCodeIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
@@ -21,6 +16,7 @@ const { t } = useI18n()
 const { products } = storeToRefs(stockStore)
 
 if (!stockStore.zone) {
+  // if zone is not set, we go back to landing page
   router.push({ name: 'stock-landing' })
 }
 
@@ -28,95 +24,68 @@ function removeItem(barcode: string) {
   stockStore.removeProduct(barcode)
 }
 
-function back() {
-  router.push({ name: 'stock-landing' })
-}
-
 function reset() {
   if (confirm(t('stock.list.reset'))) {
     stockStore.reset()
   }
 }
-
-function send() {
-  router.push({ path: '/send' })
-}
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.list.title', { zone: stockStore.zone })">
-    <div class="flex flex-col min-h-screen pb-24">
-      <div class="flex justify-center mt-6 mb-6">
-        <RouterLink :to="{ name: 'stock-scan' }">
-          <PrimaryButton class="text-2xl px-10 py-5">
-            {{ $t('stock.button.scan_barcode') }}
-          </PrimaryButton>
-        </RouterLink>
-      </div>
-
-      <!-- Table -->
-      <div class="flex-1 overflow-y-auto px-2 sm:px-4 md:px-8">
-        <TableLayout v-if="products.size">
-          <template v-slot:thead>
-            <tr>
-              <TableHead>{{ $t('stock.list.image') }}</TableHead>
-              <TableHead>{{ $t('stock.list.quantity') }}</TableHead>
-              <TableHead>{{ $t('stock.list.name') }}</TableHead>
-              <TableHead>{{ $t('stock.list.barcode') }}</TableHead>
-              <TableHead class="w-10"></TableHead>
-            </tr>
-          </template>
-          <template v-slot:tbody>
-            <TableRow v-for="product in products.values()" :key="product.barcode">
-              <!-- image -->
-              <TableCell>
-                <img
-                  :src="
-                    product.found
-                      ? `data:image/png;base64,${product.image}`
-                      : '/image-not-found-icon.svg'
-                  "
-                  class="w-15 h-15 object-contain"
-                />
-              </TableCell>
-
-              <!-- quantité (pas tronqué) -->
-              <TableCell>{{ product.quantity }}</TableCell>
-
-              <TableCell>
-                <div class="cursor-pointer">
-                  {{ product.name ?? 'Produit inconnu' }}
-                </div>
-              </TableCell>
-
-              <!-- barcode tronqué -->
-              <TableCell>
-                {{ product.barcode }}
-              </TableCell>
-
-              <!-- bouton poubelle -->
-              <TableCell>
-                <ButtonBase @click="removeItem(product.barcode)">
-                  <TrashIcon class="w-7 h-7"></TrashIcon>
-                </ButtonBase>
-              </TableCell>
-            </TableRow>
-          </template>
-        </TableLayout>
-
-        <div v-else class="text-center text-gray-500">
-          {{ $t('stock.list.empty') }}
-        </div>
-      </div>
+  <PageLayout
+    :title="$t('stock.list.title', { zone: stockStore.zone })"
+    :icon="ClipboardDocumentCheckIcon"
+  >
+    <div class="flex justify-center mb-5">
+      <RouterLink :to="{ name: 'stock-scan' }">
+        <PrimaryButton class="text-2xl px-10 py-5">
+          {{ $t('stock.button.start') }}
+        </PrimaryButton>
+      </RouterLink>
     </div>
+
+    <div v-if="!products.size" class="text-center text-gray-500 my-5">
+      {{ $t('stock.list.empty') }}
+    </div>
+
+    <ul class="divide-y divide-gray-200 mx-auto flex flex-col gap-2">
+      <li v-for="[barcode, product] in products" :key="barcode" class="pb-2">
+        <div class="flex items-center space-x-4 rtl:space-x-reverse">
+          <div class="shrink-0">
+            <img
+              class="w-15 h-15 rounded-lg"
+              :src="product.found ? `${product.image}` : '/image-not-found-icon.svg'"
+              alt="product image" />
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900 text-clip">
+              {{ product.name ?? $t('stock.form.errors.product_not_found') }}
+            </p>
+            <p class="text-sm text-gray-500">
+              <QrCodeIcon class="h-5 inline align-text-bottom" />
+              {{ product.barcode }}
+            </p>
+          </div>
+          <div class="inline-flex items-center text-base font-semibold text-gray-900">
+            {{ product.quantity }}
+          </div>
+
+          <PrimaryButton @click="removeItem(product.barcode)">
+            <TrashIcon class="w-7 h-7"></TrashIcon>
+          </PrimaryButton>
+        </div>
+      </li>
+    </ul>
 
     <!-- Boutons fixes en bas -->
     <template #footer>
-      <SecondaryButton @click="back()">{{ $t('stock.button.back') }}</SecondaryButton>
+      <SecondaryButton @click="$router.push({ name: 'stock-landing' })">
+        {{ $t('stock.button.back') }}
+      </SecondaryButton>
       <div class="flex gap-4">
-        <CancelButton @click="reset()">{{ $t('stock.button.reset') }}</CancelButton>
-        <PrimaryButton @click="send()" :disabled="!products.size">
-          {{ $t('stock.button.send_list') }}
+        <RedButton @click="reset()" :disabled="!products.size">{{ $t('stock.button.reset') }}</RedButton>
+        <PrimaryButton @click="$router.push({ name: 'stock-send' })" :disabled="!products.size">
+          {{ $t('stock.button.finish') }}
         </PrimaryButton>
       </div>
     </template>

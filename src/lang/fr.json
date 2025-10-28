@@ -17,26 +17,26 @@
     "button": {
       "back": "Retour",
       "back_to_home": "Retour à l'accueil",
-      "send_list": "Envoyer la liste",
-      "scan_barcode": "Scanner un code-barre",
+      "start": "Scanner Code Barre",
       "manual_input": "Saisie manuelle",
       "submit": "Valider",
       "remove": "Supprimer",
       "send_confirm": "Confirmer l'envoi",
       "reset": "Réinitialiser",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "finish": "Terminer"
     },
     "home": {
       "title": "Inventaire",
-      "introduction": "Bienvenue sur la fonction inventaire de l'application SUPERCOOP.",
       "instructions": {
-        "title": "Pour bien l'utiliser :",
-        "zone_number": "Identifie le n° de la zone à inventorier et saisie la dans le champ \"Numéro de la zone\"",
-        "scan": "Appui sur le bouton \"Scanner un Code Barre\" et scanne chaque produit à inventorier en saisissant la quantité effectivement comptée.",
-        "manual": "Si le Code Barre n'est pas lu, tu as la possibilité de le saisir manuellement.",
-        "send": "Une fois le comptage de la zone terminé, tu peux envoyer le rapport à l'aide du bouton \"Envoyer la liste\""
+        "title": "Utilisation :",
+        "zone_number": "1. Saisir le numéro de la zone à inventorier",
+        "scan": "2. Scanner un produit ou saisir son code-barre",
+        "count": "3. Saisir la quantité de produit",
+        "restart": "4. Recommencer pour tous les produits de la zone",
+        "send": "5. Envoyer la liste une fois la zone terminée !"
       },
-      "good_luck": "Bon comptage !!!",
+      "good_luck": "Bon comptage, et merci \uD83D\uDE42",
       "zone_number": "Numéro de la zone",
       "zone_error": "La zone doit être un numéro à 3 chiffres",
       "start": "Démarrer l'inventaire",
@@ -53,7 +53,7 @@
       "reset": "Vous êtes sur le point de vider la liste"
     },
     "scan": {
-      "title": "Scanner un code-barre",
+      "title": "Scan code-barre",
       "loading": "Chargement de la caméra"
     },
     "form": {
@@ -64,7 +64,7 @@
       "quantity_placeholder": "Saisissez la quantité",
       "quantity": "Quantité",
       "modify": "Modifier le code barre",
-      "errors" : {
+      "errors": {
         "barcode": "Le code-barres doit être un nombre à 13 chiffres",
         "quantity": "La quantité doit être un nombre entier",
         "product_not_found": "Produit inconnu"
@@ -74,6 +74,42 @@
       "title": "Envoi de la liste",
       "confirmation": "Vous êtes sur le point d'envoyer la liste, êtes-vous certain que c'est ce que vous voulez faire ?",
       "email_sent": "Email envoyé avec succès"
+    }
+  },
+  "inbound": {
+    "button": {
+      "back": "Retour",
+      "good": "Correct",
+      "error": "Erreur",
+      "submit": "Valider",
+      "complete": "Terminer"
+    },
+    "home": {
+      "title": "Réception",
+      "start": "Commencer",
+      "instructions": " Proin nec magna mollis, convallis sapien in, facilisis purus. Sed justo mi, ultricies sit amet tellus quis, porta porta tellus. Integer urna mi, posuere vitae finibus at, egestas a turpis. Cras vel sollicitudin neque. Phasellus lacinia pulvinar lorem, sed semper orci tristique vel. Vivamus facilisis nisl quis feugiat feugiat. Etiam ultrices, urna non sollicitudin iaculis, urna massa sagittis nulla, vel ullamcorper urna leo quis dui. Sed dolor nibh, rhoncus non ex sed, volutpat semper libero. "
+    },
+    "order-list": {
+      "title": "Commandes",
+      "loading": "Chargement des commandes...",
+      "empty": "Aucune commande à réceptionner"
+    },
+    "products-list": {
+      "title": "Commande {po}",
+      "loading": "Chargement des produits...",
+      "empty": "Aucun produit n'a été trouvé",
+      "unit": "unité | unités"
+    },
+    "form": {
+      "title": "Produit",
+      "loading": "Chargement du produit...",
+      "empty": "Le produit n'existe pas dans la commande",
+      "within": "dans",
+      "parcel": "colis",
+      "of": "de",
+      "unit": "unité | unités",
+      "received": "Quantité reçue",
+      "comment": "Commentaire"
     }
   }
 }

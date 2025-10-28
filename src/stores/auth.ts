@@ -1,44 +1,49 @@
-import { computed, onMounted, ref } from 'vue'
-import { authService } from '@/services/authService.ts'
-import { User } from 'oidc-client-ts'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useRoute } from 'vue-router'
+import { User, UserManager } from 'oidc-client-ts'
+import config from '@/config.ts'
+import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
-  const isAuthenticated = ref<boolean>(false)
-  const route = useRoute()
+  const router = useRouter()
+  const userManager = new UserManager({
+    authority: config.oidc.authority,
+    client_id: config.oidc.client_id,
+    client_secret: config.oidc.client_secret,
+    redirect_uri: `${window.location.origin}${router.resolve({name: 'login-callback'}).fullPath}`,
+    response_type: 'code',
+    scope: config.oidc.scope,
+    post_logout_redirect_uri: `${window.location.origin}/`,
+    silent_redirect_uri: window.location.origin + '/silent-renew.html',
+    automaticSilentRenew: true,
+    loadUserInfo: true,
+  })
 
-  function login(redirectAfterLogin?: string) {
-    if (!redirectAfterLogin) redirectAfterLogin = computed(() => route).value.fullPath
+  async function checkAuth() {
+    user.value = await userManager.getUser()
+  }
 
+  function login(redirectAfterLogin: string) {
     sessionStorage.setItem('redirectAfterLogin', redirectAfterLogin)
-    return authService.signinRedirect()
+    return userManager.signinRedirect({
+      nonce: Math.random().toString().substring(2),
+    })
   }
 
   async function loginCallback(): Promise<string> {
-    await authService.signinRedirectCallback()
-    await checkAuth()
+    await userManager.signinCallback()
+    user.value = await userManager.getUser()
     return sessionStorage.getItem('redirectAfterLogin') ?? '/'
   }
 
   async function logout() {
-    await authService.signoutRedirect()
-    await checkAuth()
+    await userManager.signoutRedirect()
+    user.value = await userManager.getUser()
   }
-
-  async function checkAuth() {
-    user.value = await authService.getUser()
-    isAuthenticated.value = !!user.value
-  }
-
-  onMounted(async () => {
-    await checkAuth()
-  })
 
   return {
     user,
-    isAuthenticated,
     checkAuth,
     login,
     loginCallback,

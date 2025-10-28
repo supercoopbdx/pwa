@@ -5,15 +5,17 @@ import {
   Bars3Icon,
   ClipboardDocumentCheckIcon,
   HomeIcon,
-  InboxArrowDownIcon,
+  TruckIcon,
   UserCircleIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useAuthStore } from '@/stores/auth.ts'
+import { storeToRefs } from 'pinia'
 
-const { user, isAuthenticated, login } = useAuthStore()
+const { login } = useAuthStore()
+const { user } = storeToRefs(useAuthStore())
 const { t } = useI18n()
 
 interface MenuItem {
@@ -28,7 +30,7 @@ const isOpen = ref(false)
 const menuItems: MenuItem[] = [
   { label: t('menu.home'), path: '/', icon: HomeIcon },
   { label: t('menu.stock'), path: '/stock', icon: ClipboardDocumentCheckIcon },
-  { label: t('menu.inbound'), path: '/inbound', icon: InboxArrowDownIcon },
+  { label: t('menu.inbound'), path: '/inbound', icon: TruckIcon },
 ]
 
 const toggleMenu = () => {
@@ -61,7 +63,7 @@ const closeMenu = () => {
     v-if="isOpen"
     class="fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-40 overflow-y-auto p-4"
   >
-    <div class="text-4xl text-center ">Menu</div>
+    <div class="text-4xl text-center">Menu</div>
     <!-- Menu Items -->
     <ul class="flex flex-col gap-1 mt-5">
       <li v-for="item in menuItems" :key="item.path">
@@ -80,7 +82,7 @@ const closeMenu = () => {
 
     <div class="fixed bottom-5">
       <div>
-        <PrimaryButton v-if="!isAuthenticated" @click="login()">
+        <PrimaryButton v-if="!user" @click="login($route.fullPath)">
           {{ $t('auth.login') }}
         </PrimaryButton>
         <div v-else>

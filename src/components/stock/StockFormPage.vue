@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
-import FormInput from '@/components/inputs/FormInput.vue'
+import FormInput from '@/components/forms/FormInput.vue'
 import { useStockStore } from '@/stores/stock'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, Ref, ref, watch } from 'vue'
-import FormLayout from '@/layout/FormLayout.vue'
+import FormLayout from '@/components/forms/FormLayout.vue'
 import { storeToRefs } from 'pinia'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import { ClipboardDocumentCheckIcon, QrCodeIcon } from '@heroicons/vue/24/outline'
 
 const route = useRoute()
 const router = useRouter()
 const stockStore = useStockStore()
 
 const barcode = ref((route.query.barcode as string) ?? null)
-const quantity = ref( stockStore.products.get(barcode.value)?.quantity ?? 0)
+const quantity = ref(stockStore.products.get(barcode.value)?.quantity ?? 0)
 const infos: Ref<StockProductInfo | undefined> = ref(undefined)
 const { loading } = storeToRefs(stockStore)
 
@@ -40,7 +41,6 @@ watch(
 )
 
 function submit() {
-  console.log('submit', barcode.value, quantity.value)
   if (!valid.value) return
   stockStore.addProduct(barcode.value, quantity.value ?? 0, route.query.barcode as string)
   router.push({ name: 'stock-list' })
@@ -48,22 +48,24 @@ function submit() {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.form.title')">
+  <PageLayout :title="$t('stock.form.title')" :icon="ClipboardDocumentCheckIcon">
     <FormLayout>
       <div v-if="loading">
         <h3 class="text-center text-xl">{{ $t('stock.form.loading') }}</h3>
       </div>
       <div v-if="!loading">
-        <div v-if="infos" class="flex flex-col gap-2">
-          <h3 class="text-lg font-semibold text-center">
-            {{ infos?.found ? infos.name : $t('stock.form.errors.product_not_found') }}
-          </h3>
-          <h4 class="text-center">{{ $t('stock.form.barcode') }} : {{ barcode }}</h4>
-          <div class="flex items-center justify-center">
-            <img
-              :src="infos.image ?? '/image-not-found-icon.svg'"
-              class="max-w-md max-h-32"
-            />
+        <div v-if="infos" class="flex items-center space-x-2 rtl:space-x-reverse">
+          <div class="shrink-0">
+            <img class="w-15 h-15 rounded-lg" :src="infos.image ?? '/image-not-found-icon.svg'" />
+          </div>
+          <div class="flex-1 min-w-0 grow">
+            <p class="text-sm font-medium text-gray-900 text-clip">
+              {{ infos?.found ? infos.name : $t('stock.form.errors.product_not_found') }}
+            </p>
+            <p class="text-sm text-gray-500">
+              <QrCodeIcon class="h-5 inline align-text-bottom" />
+              {{ barcode }}
+            </p>
           </div>
         </div>
       </div>
