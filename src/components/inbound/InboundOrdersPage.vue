@@ -36,7 +36,7 @@ onBeforeMount(async () => {
             </p>
             <p class="text-sm text-gray-500">
               <CalendarDaysIcon class="h-5 inline align-text-bottom" />
-              {{ order.date.toLocaleDateString() }}<br />
+              {{ new Date(order.date).toLocaleDateString() }}<br />
               <HashtagIcon class="h-5 inline align-text-bottom" />
               {{ order.po }}
             </p>
