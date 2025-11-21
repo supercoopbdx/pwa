@@ -18,7 +18,7 @@ import RedButton from '@/components/buttons/RedButton.vue'
 const { getOrder } = useInboundStore()
 
 const po = useRoute().params.po.toString()
-const order: Ref<MappedInboundOrder | undefined> = ref()
+const order: Ref<InboundOrderLines | undefined> = ref()
 const loading = ref(true)
 
 const isOrderComplete = computed(() => {

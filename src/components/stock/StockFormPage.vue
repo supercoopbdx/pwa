@@ -42,7 +42,7 @@ watch(
 
 function submit() {
   if (!valid.value) return
-  stockStore.addProduct(barcode.value, quantity.value ?? 0, route.query.barcode as string)
+  stockStore.addProduct(barcode.value, quantity.value ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image ?? '')
   router.push({ name: 'stock-list' })
 }
 </script>

@@ -54,15 +54,14 @@ export const useStockStore = defineStore('stock', () => {
       })
   }
 
-  function addProduct(barcode: string, quantity: number, oldBarcode?: string) {
+  function addProduct(barcode: string, quantity: number, found: boolean, name: string, image: string) {
     products.value.set(barcode, {
       barcode,
       quantity,
-      ...(productsInfo.value.get(barcode) ?? { found: false }),
+      found,
+      name,
+      image
     })
-
-    if (oldBarcode && oldBarcode !== barcode) products.value.delete(barcode)
-
     persistProducts()
   }
 
@@ -77,21 +76,25 @@ export const useStockStore = defineStore('stock', () => {
   }
 
   async function send() {
-    // TODO : make this work in the backend
-    axios
-      .post(`${config.backend.baseURL}/zone/process/${zone.value}`, {
-        products: Array.from(products.value.values()).map(({ barcode, quantity }) => {
-          return { barcode, quantity }
-        }),
-      })
-      .then((response) => {
-        return response.data
-      })
-      .catch((error) => {
-        console.error(error)
-        alert(error.message)
-      })
+    try {
+      const response = await axios.post(
+        `${config.backend.baseURL}/zone/process/${zone.value}`,
+        {
+          products: Array.from(products.value.values()).map(({ barcode, quantity }) => ({
+            barcode,
+            quantity,
+          })),
+        }
+      )
+      console.log(response.data)
+      return response.data  
+    } catch (error: any) {
+      console.error(error)
+      alert(error.message)
+      return { email_status: 'error', message: error.message } // retourne un objet pour éviter undefined
+    }
   }
+
 
   return {
     zone,

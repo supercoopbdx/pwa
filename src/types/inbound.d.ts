@@ -15,12 +15,18 @@ type MappedInboundOrder = {
   po: string
   provider: string
   date: Date
+  n_products: number
+}
+
+type InboundOrderLines = {
+  po : string,
   products: Map<string, InboundProduct>
 }
+
 
 type InboundOrderResponse = {
   po: string
   provider: string
   date: Date
-  products: InboundProduct[]
+  n_products: number
 }

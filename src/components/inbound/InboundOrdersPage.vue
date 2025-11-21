@@ -42,7 +42,7 @@ onBeforeMount(async () => {
             </p>
           </div>
           <div class="inline-flex items-center text-base font-semibold text-gray-900">
-            {{ order.products.size }}
+            {{ order.n_products }}
           </div>
 
           <PrimaryButton @click="$router.push({ name: 'inbound-products', params: { po } })">

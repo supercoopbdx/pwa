@@ -11,8 +11,10 @@ const message = ref('')
 const { send } = useStockStore()
 
 async function submit() {
+  console.log('send exists?', send)  // doit afficher la fonction
   const jso = await send()
-  message.value = jso['email_status']
+  console.log(jso)
+  message.value = jso["email_status"]  
   reportSent.value = true
 }
 </script>
