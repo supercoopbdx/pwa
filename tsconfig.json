@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "erasableSyntaxOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "ES2020",
+    "types": [
+      "vite/client",
+      "vue-i18n/dist/vue-i18n"
+    ]
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.vue",
+    "./node_module/**/*.ts"
+  ]
+//  "extends": "@vue/tsconfig/tsconfig.dom.json",
+//  "compilerOptions": {
+//    "baseUrl": ".",
+//    "moduleResolution": "bundler",
+//    "paths": {
+//      "@/*": ["src/*"]
+//    },
+//    "types": ["vite/client"]
+//  },
+//  "include": [
+//    "src/**/*.ts",
+//    "src/**/*.d.ts",
+//    "src/**/*.tsx",
+//    "src/**/*.vue",
+//    "tests/**/*.ts", // Include test files if needed
+//    "auto-imports.d.ts" // Include if using unplugin-auto-import
+//  ],
+//  "exclude": ["node_modules", "dist"]
+}

@@ -1,33 +1,49 @@
-<script lang="ts" setup>
-import PageTitle from '@/components/titles/PageTitle.vue'
-import AuthButtons from '@/components/AuthButtons.vue'
+<script setup lang="ts">
+import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
+import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
+import { useAuthStore } from '@/stores/auth.ts'
+import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps({
   title: { type: String, required: true },
+  icon: { type: Function, required: false },
 })
-const emit = defineEmits(['toggleAuth'])
+
+const { login, logout } = useAuthStore()
+const { user } = storeToRefs(useAuthStore())
 </script>
 
 <template>
-  <main class="flex flex-col gap-6 px-4  md:px-8">
-    <!-- Header -->
-    <div class="flex justify-between items-center">
-      <PageTitle class="text-left md:text-center">{{ props.title }}</PageTitle>
-      <AuthButtons />
+  <main class="fixed top-0 left-0 h-full w-full flex flex-col p-5">
+    <div class="fixed left-0 top-0 right-0 pb-5 items-center">
+      <h1 class="text-3xl font-bold text-center mt-20 md:mt-7">
+        <component v-if="icon" :is="icon" class="h-9 inline align-top"></component>
+        {{ props.title }}
+      </h1>
+      <div class="fixed right-5 top-5">
+        <PrimaryButton v-if="!user" @click="login($route.fullPath)">{{
+          $t('auth.login')
+        }}</PrimaryButton>
+        <SecondaryButton v-else @click="logout()">{{ $t('auth.logout') }}</SecondaryButton>
+      </div>
     </div>
 
-    <!-- Contenu -->
-    <div class="text-left md:text-left mt-10 mb-10">
+    <div
+      class="text-left mt-30 md:mt-20 max-w-lg mx-auto overflow-y-auto"
+      :class="{
+        'h-[calc(100%-175px)] md:h-[calc(100%-135px)]': $slots.footer,
+      }"
+    >
       <slot />
     </div>
 
-      <!-- Footer (actions en bas si fourni) -->
     <div
       v-if="$slots.footer"
       class="fixed bottom-0 left-0 right-0 bg-white border-t px-4 py-3 flex justify-between items-center shadow-md"
     >
       <slot name="footer" />
     </div>
-    
   </main>
+  <HamburgerMenu />
 </template>

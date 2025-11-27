@@ -3,7 +3,7 @@ import ButtonBase from '@/components/buttons/ButtonBase.vue'
 </script>
 
 <template>
-  <ButtonBase class="text-blue-500 font-semibold hover:bg-blue-500 hover:text-white">
+  <ButtonBase class="bg-green-600 text-white hover:bg-green-800">
     <slot />
   </ButtonBase>
 </template>
