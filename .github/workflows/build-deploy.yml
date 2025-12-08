@@ -27,7 +27,7 @@ jobs:
           VITE_OIDC_AUTHORITY: ${{ vars.VITE_OIDC_AUTHORITY }}
           VITE_OIDC_CLIENT_ID: ${{ secrets.VITE_OIDC_CLIENT_ID }}
           VITE_OIDC_CLIENT_SECRET: ${{ secrets.VITE_OIDC_CLIENT_SECRET }}
-          VITE_OIDC_SCOPE: ${{ secrets.VITE_OIDC_SCOPE }}
+          VITE_OIDC_SCOPE: ${{ vars.VITE_OIDC_SCOPE }}
           VITE_BACKEND_BASEURL: ${{ vars.VITE_BACKEND_BASEURL }}
 
       - name: Upload production-ready build files
