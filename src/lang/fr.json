@@ -92,6 +92,8 @@
     "order-list": {
       "title": "Commandes",
       "loading": "Chargement des commandes...",
+      "search_placeholder": "Rechercher par fournisseur, PO ou trigramme...",
+      "no_results": "Aucun résultat trouvé",
       "empty": "Aucune commande à réceptionner"
     },
     "products-list": {

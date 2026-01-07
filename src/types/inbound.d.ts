@@ -29,4 +29,6 @@ type InboundOrderResponse = {
   provider: string
   date: Date
   n_products: number
+  received : boolean
+
 }

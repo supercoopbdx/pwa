@@ -23,9 +23,9 @@ export default defineConfig({
         config: true,
       },
       manifest: {
-        name: 'Inventaire Supercoop',
-        short_name: 'inventaire',
-        description: "App pour faire l'inventaire supercoop",
+        name: 'Supercoop App',
+        short_name: 'SuperApp',
+        description: "App pour faire l'inventaire et la réception produit supercoop",
         theme_color: '#ffffff',
       },
       workbox: {

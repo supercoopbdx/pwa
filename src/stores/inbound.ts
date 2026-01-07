@@ -21,6 +21,7 @@ export const useInboundStore = defineStore('orders', () => {
               provider: order.provider,
               date: new Date(order.date),
               n_products: order.n_products,
+              is_already_processed: order.received
             },
           ]),
         )
@@ -88,17 +89,23 @@ export const useInboundStore = defineStore('orders', () => {
   async function sendOrder(po: string) {
     const order = orders_lines.value?.get(po)
     if (!order) throw new Error('Order not found')
-
     // TODO : make this work in the backend
     return axios
       .post(`${config.backend.baseURL}/orders/inbound/process/${po}`, {
         products: Array.from(order.products.values() ?? []).map(
-          ({ barcode, inbound }) => {
+          ({ parcels, packSize, barcode, inbound, name }) => {
+            const received_quantity = inbound?.ok && inbound.received === undefined
+            ? parcels
+            : inbound?.received;
+            
             return {
               barcode,
+              name: name,
+              packsize: packSize,
+              received_quantity: received_quantity?.toString(),
+              ordered_quantity: parcels.toString(),
               ok: inbound?.ok,
-              received: inbound?.received,
-              comment: inbound?.comment,
+              comment: inbound?.comment
             }
           },
         ),
