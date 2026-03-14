@@ -1,0 +1,74 @@
+# Changelog
+
+Toutes les modifications notables de ce projet sont documentées dans ce fichier.
+
+Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/),
+et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
+
+---
+
+## [0.3.8] - 2026-03-14
+
+### Corrigé
+- Prefetch des images utilise désormais axios avec le cache partagé
+- Récupération des images via axios pour inclure le Bearer token (correction erreur 401)
+- Affichage du placeholder quand une image ne charge pas (gestionnaire `@error`)
+
+---
+
+## [0.3.7] - 2026-03-14
+
+### Corrigé
+- Stock : utilise `image_url` fournie par le backend pour les images produit
+- Inbound : utilise `image_url` directement (alignement avec le backend)
+- Inbound : mapping `image_url` → `image` dans la réponse backend
+- Scanner : import de `NotFoundException` depuis `@zxing/library`
+- Inbound : préfixe les URLs d'images avec le `baseURL` du backend
+- Scanner : remplacement de `BarcodeDetector` + polyfill par **ZXing** (meilleure compatibilité)
+- Stock : correction de l'état de chargement dans `StockFormPage`
+- Router : ajout de `requiresAuth` sur la route `stock-scan`
+- Types : ajout du champ `is_already_processed` dans `MappedInboundOrder`
+- Remplacement des `alert()` bloquants par des toasts non-bloquants ; suppression des fichiers JS legacy
+- Correction du doublon `tailwindcss()` dans `vite.config.js`
+- Correction du nom de la variable `VITE_BACKEND_BASEURL` dans `.env.example`
+
+---
+
+## [0.3.6] - 2026-03-14
+
+### Ajouté
+- Affichage du numéro de version en bas de chaque page
+- Inbound : prefetch des images pour les commandes visibles + alerte produits sans code barre
+- Inbound : lazy loading avec placeholder sur les images produit
+
+---
+
+## [0.3.5] - 2026-03-14
+
+### Ajouté
+- Bouton de chargement lors de l'envoi d'une commande
+- Visualisation des commandes déjà traitées (affichées en gris avec une icône "check") avec possibilité de les retraiter
+- Renommage de l'application en **Supercoop App** / **SuperApp** sur les raccourcis
+
+### Sécurité
+- Suppression du `.npmrc` exposé dans le dépôt
+- Remplacement de `npm install` par `npm ci` dans la CI (installation propre)
+- Désactivation de l'exécution automatique des scripts npm lors de l'installation de paquets
+
+### CI/CD
+- Correction des variables d'environnement de déploiement (vars vs secrets)
+- Correction du déclencheur : passage de `push` à `release` pour le déploiement
+
+---
+
+## [0.3.x] - Historique antérieur
+
+### Ajouté
+- Authentification avec axios et intercepteur pour l'ajout du `access_token`
+- Scanner de code barre personnalisé (BarcodeDetection API + polyfills, puis migré vers ZXing)
+- Module réception : liste des commandes, détail produit, page de scan, formulaire d'erreur produit
+- Module stock : liste en vue mobile, formulaire de correction, page par zone
+- Menu de navigation, page 404
+- Internationalisation (i18n) et routing
+- Mise en place du projet PWA avec Vite + Vue + Tailwind CSS
+- Déploiement via GitHub Actions
