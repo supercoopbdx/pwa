@@ -16,11 +16,12 @@ const hints = new Map()
 hints.set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.EAN_13])
 
 const reader = new BrowserMultiFormatReader(hints)
+let controls: { stop: () => void } | null = null
 
 async function startCamera() {
   if (!videoRef.value) return
   try {
-    await reader.decodeFromVideoDevice(undefined, videoRef.value, (result, err) => {
+    controls = await reader.decodeFromVideoDevice(undefined, videoRef.value, (result, err) => {
       if (result) {
         emit('scan', result.getText())
         stopCamera()
@@ -37,7 +38,8 @@ async function startCamera() {
 }
 
 function stopCamera() {
-  reader.reset()
+  controls?.stop()
+  controls = null
 }
 
 onMounted(() => {
