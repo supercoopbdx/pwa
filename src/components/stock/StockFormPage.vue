@@ -8,7 +8,7 @@ import { computed, Ref, ref, watch } from 'vue'
 import FormLayout from '@/components/forms/FormLayout.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { ClipboardDocumentCheckIcon, QrCodeIcon } from '@heroicons/vue/24/outline'
-import config from '@/config.ts'
+import AuthImage from '@/components/AuthImage.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -57,7 +57,7 @@ function submit() {
       <div v-if="!loading">
         <div v-if="infos" class="flex items-center space-x-2 rtl:space-x-reverse">
           <div class="shrink-0">
-            <img class="w-15 h-15 rounded-lg" :src="infos.image_url ? `${config.backend.baseURL}${infos.image_url}` : '/image-not-found-icon.svg'" @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'" />
+            <AuthImage :path="infos.image_url ?? ''" img-class="w-15 h-15 rounded-lg" />
           </div>
           <div class="flex-1 min-w-0 grow">
             <p class="text-sm font-medium text-gray-900 text-clip">

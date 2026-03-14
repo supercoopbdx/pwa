@@ -4,7 +4,7 @@ import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
 import { useStockStore } from '@/stores/stock'
-import config from '@/config.ts'
+import AuthImage from '@/components/AuthImage.vue'
 import { ClipboardDocumentCheckIcon, QrCodeIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -53,11 +53,7 @@ function reset() {
       <li v-for="[barcode, product] in products" :key="barcode" class="pb-2">
         <div class="flex items-center space-x-4 rtl:space-x-reverse">
           <div class="shrink-0">
-            <img
-              class="w-15 h-15 rounded-lg"
-              :src="product.image_url ? `${config.backend.baseURL}${product.image_url}` : '/image-not-found-icon.svg'"
-              @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'"
-              alt="product image" />
+            <AuthImage :path="product.image_url ?? ''" img-class="w-15 h-15 rounded-lg" />
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 text-clip">

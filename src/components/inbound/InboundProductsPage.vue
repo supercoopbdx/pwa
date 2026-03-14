@@ -10,17 +10,13 @@ import {
 } from '@heroicons/vue/24/outline'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import { useRoute } from 'vue-router'
-import { computed, onBeforeMount, reactive, ref, Ref } from 'vue'
+import { computed, onBeforeMount, ref, Ref } from 'vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import GreenButton from '@/components/buttons/GreenButton.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
-import config from '@/config.ts'
-
-const imageUrl = (path: string) =>
-  path ? `${config.backend.baseURL}${path}` : '/image-not-found-icon.svg'
+import AuthImage from '@/components/AuthImage.vue'
 
 const { getOrder } = useInboundStore()
-const loadedImages = reactive(new Set<string>())
 
 const po = useRoute().params.po.toString()
 const order: Ref<InboundOrderLines | undefined> = ref()
@@ -63,11 +59,7 @@ onBeforeMount(async () => {
           <li v-for="product in productsWithoutBarcode" :key="product.name" class="py-2">
             <div class="flex items-center space-x-2">
               <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
-                <img
-                  class="w-15 h-15 rounded-lg"
-                  :src="imageUrl(product.image_url)"
-                  @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'"
-                />
+                <AuthImage :path="product.image_url" img-class="w-15 h-15 rounded-lg" />
               </div>
               <p class="text-sm font-medium text-gray-900">{{ product.name }}</p>
             </div>
@@ -91,17 +83,8 @@ onBeforeMount(async () => {
       <ul v-if="order && allHaveBarcodes" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
         <li v-for="[barcode, product] in order.products" :key="barcode">
           <div class="flex items-center space-x-2 rtl:space-x-reverse py-2">
-            <div
-              class="shrink-0 w-15 h-15 rounded-lg"
-              :class="{ 'bg-gray-200 animate-pulse': !loadedImages.has(barcode) }"
-            >
-              <img
-                class="w-15 h-15 rounded-lg"
-                :src="imageUrl(product.image_url)"
-                loading="lazy"
-                @load="loadedImages.add(barcode)"
-                @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'"
-              />
+            <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
+              <AuthImage :path="product.image_url" img-class="w-15 h-15 rounded-lg" />
             </div>
             <div class="flex-1 min-w-0 grow">
               <p class="text-sm font-medium text-gray-900 text-clip">

@@ -8,7 +8,7 @@ import {
   TruckIcon,
 } from '@heroicons/vue/24/outline'
 import { useInboundStore } from '@/stores/inbound.ts'
-import config from '@/config.ts'
+import AuthImage from '@/components/AuthImage.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { onBeforeMount, ref, Ref } from 'vue'
 import RedButton from '@/components/buttons/RedButton.vue'
@@ -53,11 +53,7 @@ function submit() {
     <div v-else class="flex flex-col gap-2">
       <div class="flex items-center space-x-2 rtl:space-x-reverse">
         <div class="shrink-0">
-          <img
-            class="w-15 h-15 rounded-lg"
-            :src="product.image_url ? `${config.backend.baseURL}${product.image_url}` : '/image-not-found-icon.svg'"
-            @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'"
-          />
+          <AuthImage :path="product.image_url" img-class="w-15 h-15 rounded-lg" />
         </div>
         <div class="flex-1 min-w-0 grow">
           <p class="text-sm font-medium text-gray-900 text-clip">
