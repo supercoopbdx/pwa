@@ -20,7 +20,6 @@ export default defineConfig({
     tailwindcss(),
     vue(),
     vueDevTools(),
-    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: false,
