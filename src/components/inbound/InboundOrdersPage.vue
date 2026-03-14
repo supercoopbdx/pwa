@@ -12,9 +12,10 @@ import {
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { onBeforeMount, onUnmounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import config from '@/config.ts'
+import { useImageCache } from '@/composables/useImageCache.ts'
 
 const { getOrders, getOrder } = useInboundStore()
+const { prefetch } = useImageCache()
 const { orders } = storeToRefs(useInboundStore())
 const loading = ref(true)
 const searchQuery = ref('')
@@ -45,10 +46,7 @@ function prefetchOrderImages(po: string) {
   getOrder(po).then((orderLines) => {
     if (!orderLines) return
     for (const product of orderLines.products.values()) {
-      if (product.image_url) {
-        const img = new Image()
-        img.src = `${config.backend.baseURL}${product.image_url}`
-      }
+      prefetch(product.image_url)
     }
   })
 }
