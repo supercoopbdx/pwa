@@ -8,6 +8,7 @@ import { computed, Ref, ref, watch } from 'vue'
 import FormLayout from '@/components/forms/FormLayout.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { ClipboardDocumentCheckIcon, QrCodeIcon } from '@heroicons/vue/24/outline'
+import config from '@/config.ts'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,7 +43,7 @@ watch(
 
 function submit() {
   if (!valid.value) return
-  stockStore.addProduct(barcode.value, quantity.value ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image ?? '')
+  stockStore.addProduct(barcode.value, quantity.value ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image_url ?? '')
   router.push({ name: 'stock-list' })
 }
 </script>
@@ -56,7 +57,7 @@ function submit() {
       <div v-if="!loading">
         <div v-if="infos" class="flex items-center space-x-2 rtl:space-x-reverse">
           <div class="shrink-0">
-            <img class="w-15 h-15 rounded-lg" :src="infos.image ?? '/image-not-found-icon.svg'" />
+            <img class="w-15 h-15 rounded-lg" :src="infos.image_url ? `${config.backend.baseURL}${infos.image_url}` : '/image-not-found-icon.svg'" />
           </div>
           <div class="flex-1 min-w-0 grow">
             <p class="text-sm font-medium text-gray-900 text-clip">

@@ -4,6 +4,7 @@ import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
 import { useStockStore } from '@/stores/stock'
+import config from '@/config.ts'
 import { ClipboardDocumentCheckIcon, QrCodeIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -54,7 +55,7 @@ function reset() {
           <div class="shrink-0">
             <img
               class="w-15 h-15 rounded-lg"
-              :src="product.found ? `${product.image}` : '/image-not-found-icon.svg'"
+              :src="product.image_url ? `${config.backend.baseURL}${product.image_url}` : '/image-not-found-icon.svg'"
               alt="product image" />
           </div>
           <div class="flex-1 min-w-0">

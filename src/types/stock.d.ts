@@ -1,6 +1,6 @@
 type StockProductInfo = {
   name?: string
-  image?: string
+  image_url?: string
   found: boolean
 }
 
