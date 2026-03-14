@@ -56,6 +56,7 @@ function submit() {
           <img
             class="w-15 h-15 rounded-lg"
             :src="product.image_url ? `${config.backend.baseURL}${product.image_url}` : '/image-not-found-icon.svg'"
+            @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'"
           />
         </div>
         <div class="flex-1 min-w-0 grow">

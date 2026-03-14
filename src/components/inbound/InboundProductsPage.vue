@@ -66,6 +66,7 @@ onBeforeMount(async () => {
                 <img
                   class="w-15 h-15 rounded-lg"
                   :src="imageUrl(product.image_url)"
+                  @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'"
                 />
               </div>
               <p class="text-sm font-medium text-gray-900">{{ product.name }}</p>
@@ -99,6 +100,7 @@ onBeforeMount(async () => {
                 :src="imageUrl(product.image_url)"
                 loading="lazy"
                 @load="loadedImages.add(barcode)"
+                @error="(e) => (e.target as HTMLImageElement).src = '/image-not-found-icon.svg'"
               />
             </div>
             <div class="flex-1 min-w-0 grow">
