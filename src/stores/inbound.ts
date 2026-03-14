@@ -2,8 +2,10 @@ import { defineStore } from 'pinia'
 import { ref, Ref } from 'vue'
 import config from '@/config.ts'
 import axios from 'axios'
+import { useNotificationStore } from '@/stores/notifications.ts'
 
 export const useInboundStore = defineStore('orders', () => {
+  const { notify } = useNotificationStore()
   const orders: Ref<Map<string, MappedInboundOrder> | null> = ref(null)
   const orders_lines: Ref<Map<string, InboundOrderLines>> = ref(new Map())
 
@@ -28,7 +30,7 @@ export const useInboundStore = defineStore('orders', () => {
       })
       .catch((error) => {
         console.error(error)
-        alert(error.message)
+        notify(error.message)
         return null
       })
 
@@ -58,7 +60,7 @@ export const useInboundStore = defineStore('orders', () => {
       return orderLines
     } catch (error: any) {
       console.error(error)
-      alert(error.message)
+      notify(error.message)
       return undefined
     }
   }
@@ -115,7 +117,7 @@ export const useInboundStore = defineStore('orders', () => {
       })
       .catch((error) => {
         console.error(error)
-        alert(error.message)
+        notify(error.message)
       })
   }
 

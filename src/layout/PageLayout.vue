@@ -3,6 +3,7 @@ import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
+import NotificationToast from '@/components/NotificationToast.vue'
 import { storeToRefs } from 'pinia'
 
 declare const __APP_VERSION__: string
@@ -18,6 +19,7 @@ const { user } = storeToRefs(useAuthStore())
 </script>
 
 <template>
+  <NotificationToast />
   <main class="fixed top-0 left-0 h-full w-full flex flex-col p-5">
     <span class="fixed bottom-1 right-2 text-xs text-gray-300 select-none">v{{ appVersion }}</span>
     <div class="fixed left-0 top-0 right-0 pb-5 items-center">

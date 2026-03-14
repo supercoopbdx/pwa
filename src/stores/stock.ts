@@ -2,8 +2,10 @@ import { defineStore } from 'pinia'
 import { Ref, ref } from 'vue'
 import axios from 'axios'
 import config from '@/config.ts'
+import { useNotificationStore } from '@/stores/notifications.ts'
 
 export const useStockStore = defineStore('stock', () => {
+  const { notify } = useNotificationStore()
   const zone = ref(localStorage.getItem('stock-zone') ?? '')
   const products: Ref<Map<string, StockProduct>> = ref(loadStorageProducts())
   const productsInfo: Ref<Map<string, StockProductInfo>> = ref(new Map())
@@ -50,7 +52,7 @@ export const useStockStore = defineStore('stock', () => {
       })
       .catch((error) => {
         console.error(error)
-        alert(error.message)
+        notify(error.message)
       })
   }
 
@@ -90,8 +92,8 @@ export const useStockStore = defineStore('stock', () => {
       return response.data  
     } catch (error: any) {
       console.error(error)
-      alert(error.message)
-      return { email_status: 'error', message: error.message } // retourne un objet pour éviter undefined
+      notify(error.message)
+      return { email_status: 'error', message: error.message }
     }
   }
 
