@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import { BrowserMultiFormatReader, NotFoundException } from '@zxing/browser'
-import { BarcodeFormat, DecodeHintType } from '@zxing/library'
+import { BrowserMultiFormatReader } from '@zxing/browser'
+import { BarcodeFormat, DecodeHintType, NotFoundException } from '@zxing/library'
 
 const emit = defineEmits<{
   loaded: [playing: boolean]
