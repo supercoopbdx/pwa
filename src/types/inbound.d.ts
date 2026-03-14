@@ -1,7 +1,7 @@
 type InboundProduct = {
   name: string
   barcode: string
-  image: string
+  image_url: string
   parcels: number
   packSize: number
   inbound?: {

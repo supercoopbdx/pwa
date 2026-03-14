@@ -45,9 +45,9 @@ function prefetchOrderImages(po: string) {
   getOrder(po).then((orderLines) => {
     if (!orderLines) return
     for (const product of orderLines.products.values()) {
-      if (product.image) {
+      if (product.image_url) {
         const img = new Image()
-        img.src = `${config.backend.baseURL}${product.image}`
+        img.src = `${config.backend.baseURL}${product.image_url}`
       }
     }
   })

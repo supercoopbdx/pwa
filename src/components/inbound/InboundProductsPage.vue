@@ -65,7 +65,7 @@ onBeforeMount(async () => {
               <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
                 <img
                   class="w-15 h-15 rounded-lg"
-                  :src="imageUrl(product.image)"
+                  :src="imageUrl(product.image_url)"
                 />
               </div>
               <p class="text-sm font-medium text-gray-900">{{ product.name }}</p>
@@ -96,7 +96,7 @@ onBeforeMount(async () => {
             >
               <img
                 class="w-15 h-15 rounded-lg"
-                :src="imageUrl(product.image)"
+                :src="imageUrl(product.image_url)"
                 loading="lazy"
                 @load="loadedImages.add(barcode)"
               />

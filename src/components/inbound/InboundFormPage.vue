@@ -8,6 +8,7 @@ import {
   TruckIcon,
 } from '@heroicons/vue/24/outline'
 import { useInboundStore } from '@/stores/inbound.ts'
+import config from '@/config.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { onBeforeMount, ref, Ref } from 'vue'
 import RedButton from '@/components/buttons/RedButton.vue'
@@ -54,7 +55,7 @@ function submit() {
         <div class="shrink-0">
           <img
             class="w-15 h-15 rounded-lg"
-            :src="product.image ? `${product.image}` : '/image-not-found-icon.svg'"
+            :src="product.image_url ? `${config.backend.baseURL}${product.image_url}` : '/image-not-found-icon.svg'"
           />
         </div>
         <div class="flex-1 min-w-0 grow">
