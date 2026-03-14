@@ -10,12 +10,13 @@ import {
 } from '@heroicons/vue/24/outline'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import { useRoute } from 'vue-router'
-import { computed, onBeforeMount, ref, Ref } from 'vue'
+import { computed, onBeforeMount, reactive, ref, Ref } from 'vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import GreenButton from '@/components/buttons/GreenButton.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
 
 const { getOrder } = useInboundStore()
+const loadedImages = reactive(new Set<string>())
 
 const po = useRoute().params.po.toString()
 const order: Ref<InboundOrderLines | undefined> = ref()
@@ -53,10 +54,15 @@ onBeforeMount(async () => {
       <ul v-if="order" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
         <li v-for="[barcode, product] in order.products" :key="barcode">
           <div class="flex items-center space-x-2 rtl:space-x-reverse py-2">
-            <div class="shrink-0">
+            <div
+              class="shrink-0 w-15 h-15 rounded-lg"
+              :class="{ 'bg-gray-200 animate-pulse': !loadedImages.has(barcode) }"
+            >
               <img
                 class="w-15 h-15 rounded-lg"
                 :src="product.image ? `${product.image}` : '/image-not-found-icon.svg'"
+                loading="lazy"
+                @load="loadedImages.add(barcode)"
               />
             </div>
             <div class="flex-1 min-w-0 grow">
