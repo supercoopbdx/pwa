@@ -44,7 +44,7 @@ const router = createRouter({
       path: '/stock/scan',
       name: 'stock-scan',
       component: StockScanPage,
-      // meta: { requiresAuth: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/stock/form',
