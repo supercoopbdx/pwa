@@ -30,6 +30,13 @@ const isOrderComplete = computed(() => {
   return true
 })
 
+const productsWithoutBarcode = computed(() => {
+  if (!order.value?.products) return []
+  return Array.from(order.value.products.values()).filter((p) => !p.barcode)
+})
+
+const allHaveBarcodes = computed(() => productsWithoutBarcode.value.length === 0)
+
 onBeforeMount(async () => {
   order.value = await getOrder(po)
   loading.value = false
@@ -43,15 +50,40 @@ onBeforeMount(async () => {
     </div>
     <div v-else-if="!order?.products?.size">{{ $t('inbound.products-list.empty') }}</div>
     <div v-else>
-      <div class="flex justify-center mb-5">
-        <RouterLink :to="{ name: 'inbound-scan' }">
-          <PrimaryButton class="text-2xl px-10 py-5">
-            {{ $t('stock.button.start') }}
-          </PrimaryButton>
-        </RouterLink>
+      <!-- Alerte : produits sans code barre -->
+      <div v-if="!allHaveBarcodes" class="mb-5">
+        <p class="text-red-600 font-semibold mb-3">
+          Les produits suivants doivent avoir un code barre pour pouvoir faire la réception :
+        </p>
+        <ul class="divide-y divide-gray-200 mb-4">
+          <li v-for="product in productsWithoutBarcode" :key="product.name" class="py-2">
+            <div class="flex items-center space-x-2">
+              <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
+                <img
+                  class="w-15 h-15 rounded-lg"
+                  :src="product.image ? product.image : '/image-not-found-icon.svg'"
+                />
+              </div>
+              <p class="text-sm font-medium text-gray-900">{{ product.name }}</p>
+            </div>
+          </li>
+        </ul>
+        <p class="text-gray-600 italic">Merci de contacter un joker ou un salarié.</p>
       </div>
 
-      <ul v-if="order" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
+      <!-- Cas nominal : tous les produits ont un code barre -->
+      <template v-if="allHaveBarcodes">
+        <p class="text-green-600 font-semibold mb-3">Tous les produits ont un code barre.</p>
+        <div class="flex justify-center mb-5">
+          <RouterLink :to="{ name: 'inbound-scan' }">
+            <PrimaryButton class="text-2xl px-10 py-5">
+              {{ $t('stock.button.start') }}
+            </PrimaryButton>
+          </RouterLink>
+        </div>
+      </template>
+
+      <ul v-if="order && allHaveBarcodes" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
         <li v-for="[barcode, product] in order.products" :key="barcode">
           <div class="flex items-center space-x-2 rtl:space-x-reverse py-2">
             <div

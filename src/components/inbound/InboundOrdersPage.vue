@@ -10,10 +10,10 @@ import {
   CheckCircleIcon,
 } from '@heroicons/vue/24/outline'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
-import { onBeforeMount, ref, computed } from 'vue'
+import { onBeforeMount, onUnmounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
-const { getOrders } = useInboundStore()
+const { getOrders, getOrder } = useInboundStore()
 const { orders } = storeToRefs(useInboundStore())
 const loading = ref(true)
 const searchQuery = ref('')
@@ -28,7 +28,6 @@ const filteredOrders = computed(() => {
     return orders.value ?? new Map()
   }
 
-
   const query = searchQuery.value.toLowerCase().trim()
 
   return new Map(
@@ -41,10 +40,41 @@ const filteredOrders = computed(() => {
   )
 })
 
+function prefetchOrderImages(po: string) {
+  getOrder(po).then((orderLines) => {
+    if (!orderLines) return
+    for (const product of orderLines.products.values()) {
+      if (product.image) {
+        const img = new Image()
+        img.src = product.image
+      }
+    }
+  })
+}
+
+const observer = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) {
+      const po = (entry.target as HTMLElement).dataset.po!
+      prefetchOrderImages(po)
+      observer.unobserve(entry.target)
+    }
+  }
+})
+
+function observeOrderItem(el: HTMLElement | null, po: string) {
+  if (!el) return
+  el.dataset.po = po
+  observer.observe(el)
+}
 
 onBeforeMount(async () => {
   await getOrders()
   loading.value = false
+})
+
+onUnmounted(() => {
+  observer.disconnect()
 })
 </script>
 
@@ -83,6 +113,7 @@ onBeforeMount(async () => {
         :key="po"
         class="sm:pb-4"
         :class="{ 'opacity-60': order.is_already_processed }"
+        :ref="(el) => observeOrderItem(el as HTMLElement | null, po)"
       >
         <div class="flex items-center space-x-4 rtl:space-x-reverse">
 
