@@ -6,7 +6,6 @@ import { useStockStore } from '@/stores/stock'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, Ref, ref, watch } from 'vue'
 import FormLayout from '@/components/forms/FormLayout.vue'
-import { storeToRefs } from 'pinia'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { ClipboardDocumentCheckIcon, QrCodeIcon } from '@heroicons/vue/24/outline'
 
@@ -17,7 +16,7 @@ const stockStore = useStockStore()
 const barcode = ref((route.query.barcode as string) ?? null)
 const quantity = ref(stockStore.products.get(barcode.value)?.quantity ?? 0)
 const infos: Ref<StockProductInfo | undefined> = ref(undefined)
-const { loading } = storeToRefs(stockStore)
+const loading = ref(false)
 
 const valid = computed(() => !errors.value.barcode && !errors.value.quantity)
 const errors = computed(() => {
@@ -30,9 +29,10 @@ const errors = computed(() => {
 watch(
   barcode,
   async (newVal) => {
-    console.log('newVal', newVal, errors.value)
     if (newVal && !errors.value.barcode) {
+      loading.value = true
       infos.value = await stockStore.getProductInfo(barcode.value)
+      loading.value = false
     } else {
       infos.value = undefined
     }
