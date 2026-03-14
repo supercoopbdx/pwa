@@ -52,7 +52,9 @@ export const useInboundStore = defineStore('orders', () => {
       if (!response.data) return undefined
 
       // Transformer le tableau en Map
-      const productsMap = new Map(response.data.map((p) => [p.barcode, p]))
+      const productsMap = new Map(
+        response.data.map((p: any) => [p.barcode, { ...p, image: p.image_url ?? p.image ?? '' }])
+      )
 
       const orderLines: InboundOrderLines = { po, products: productsMap }
 
