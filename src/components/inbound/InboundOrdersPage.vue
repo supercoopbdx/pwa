@@ -12,6 +12,7 @@ import {
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { onBeforeMount, onUnmounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import config from '@/config.ts'
 
 const { getOrders, getOrder } = useInboundStore()
 const { orders } = storeToRefs(useInboundStore())
@@ -46,7 +47,7 @@ function prefetchOrderImages(po: string) {
     for (const product of orderLines.products.values()) {
       if (product.image) {
         const img = new Image()
-        img.src = product.image
+        img.src = `${config.backend.baseURL}${product.image}`
       }
     }
   })

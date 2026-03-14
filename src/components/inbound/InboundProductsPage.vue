@@ -14,6 +14,10 @@ import { computed, onBeforeMount, reactive, ref, Ref } from 'vue'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import GreenButton from '@/components/buttons/GreenButton.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
+import config from '@/config.ts'
+
+const imageUrl = (path: string) =>
+  path ? `${config.backend.baseURL}${path}` : '/image-not-found-icon.svg'
 
 const { getOrder } = useInboundStore()
 const loadedImages = reactive(new Set<string>())
@@ -61,7 +65,7 @@ onBeforeMount(async () => {
               <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
                 <img
                   class="w-15 h-15 rounded-lg"
-                  :src="product.image ? product.image : '/image-not-found-icon.svg'"
+                  :src="imageUrl(product.image)"
                 />
               </div>
               <p class="text-sm font-medium text-gray-900">{{ product.name }}</p>
@@ -92,7 +96,7 @@ onBeforeMount(async () => {
             >
               <img
                 class="w-15 h-15 rounded-lg"
-                :src="product.image ? `${product.image}` : '/image-not-found-icon.svg'"
+                :src="imageUrl(product.image)"
                 loading="lazy"
                 @load="loadedImages.add(barcode)"
               />
