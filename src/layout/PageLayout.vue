@@ -5,6 +5,9 @@ import { useAuthStore } from '@/stores/auth.ts'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import { storeToRefs } from 'pinia'
 
+declare const __APP_VERSION__: string
+const appVersion = __APP_VERSION__
+
 const props = defineProps({
   title: { type: String, required: true },
   icon: { type: Function, required: false },
@@ -16,6 +19,7 @@ const { user } = storeToRefs(useAuthStore())
 
 <template>
   <main class="fixed top-0 left-0 h-full w-full flex flex-col p-5">
+    <span class="fixed bottom-1 right-2 text-xs text-gray-300 select-none">v{{ appVersion }}</span>
     <div class="fixed left-0 top-0 right-0 pb-5 items-center">
       <h1 class="text-3xl font-bold text-center mt-20 md:mt-7">
         <component v-if="icon" :is="icon" class="h-9 inline align-top"></component>

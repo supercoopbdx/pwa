@@ -5,9 +5,15 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 import mkcert from 'vite-plugin-mkcert'
+import { readFileSync } from 'node:fs'
+
+const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+  },
   base: '/',
   plugins: [
     mkcert(),
