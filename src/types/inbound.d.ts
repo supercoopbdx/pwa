@@ -16,6 +16,7 @@ type MappedInboundOrder = {
   provider: string
   date: Date
   n_products: number
+  is_already_processed: boolean
 }
 
 type InboundOrderLines = {
