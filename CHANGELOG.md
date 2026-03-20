@@ -7,6 +7,22 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.4.0] - 2026-03-20
+
+### Ajouté
+- Réception : affichage de l'unité réelle des produits (unités/kg/litre)
+- Scan : mutualisation de l'écran de scan en composant partagé
+
+### Corrigé
+- Réception : affichage du colisage dans le formulaire d'erreur
+
+### Refactorisé
+- Renommage complet : `inbound` → `reception` dans tout le code
+- Renommage complet : `order/orders` → `commande/commandes`
+- Renommage complet : `stock` → `inventaire`
+
+---
+
 ## [0.3.8] - 2026-03-14
 
 ### Corrigé
