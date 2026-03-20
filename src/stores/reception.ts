@@ -4,26 +4,26 @@ import config from '@/config.ts'
 import axios from 'axios'
 import { useNotificationStore } from '@/stores/notifications.ts'
 
-export const useReceptionStore = defineStore('orders', () => {
+export const useReceptionStore = defineStore('commandes', () => {
   const { notify } = useNotificationStore()
-  const orders: Ref<Map<string, MappedReceptionOrder> | null> = ref(null)
-  const orders_lines: Ref<Map<string, ReceptionOrderLines>> = ref(new Map())
+  const commandes: Ref<Map<string, MappedReceptionCommande> | null> = ref(null)
+  const commandes_lines: Ref<Map<string, ReceptionCommandeLines>> = ref(new Map())
 
-  async function getOrders() {
+  async function getCommandes() {
 
-    orders.value = await axios
-      .get(`${config.backend.baseURL}/orders/reception`)
-      .then((response: { data: ReceptionOrderResponse[] }) => {
+    commandes.value = await axios
+      .get(`${config.backend.baseURL}/commandes/reception`)
+      .then((response: { data: ReceptionCommandeResponse[] }) => {
         // TODO : handle errors
         return new Map(
-          response.data.map((order) => [
-            order.po,
+          response.data.map((commande) => [
+            commande.po,
             {
-              po: order.po,
-              provider: order.provider,
-              date: new Date(order.date),
-              n_products: order.n_products,
-              is_already_processed: order.received
+              po: commande.po,
+              provider: commande.provider,
+              date: new Date(commande.date),
+              n_products: commande.n_products,
+              is_already_processed: commande.received
             },
           ]),
         )
@@ -34,18 +34,18 @@ export const useReceptionStore = defineStore('orders', () => {
         return null
       })
 
-    return orders.value
+    return commandes.value
   }
 
 
-  async function getOrder(po: string): Promise<ReceptionOrderLines | undefined> {
+  async function getCommande(po: string): Promise<ReceptionCommandeLines | undefined> {
     try {
       // Si déjà en cache, retourne directement
-      if (orders_lines.value?.has(po)) {
-        return orders_lines.value.get(po)
+      if (commandes_lines.value?.has(po)) {
+        return commandes_lines.value.get(po)
       }
 
-      const response = await axios.get<ReceptionProduct[]>(`${config.backend.baseURL}/order/info`, {
+      const response = await axios.get<ReceptionProduct[]>(`${config.backend.baseURL}/commande/info`, {
         params: { po },
       })
 
@@ -54,10 +54,10 @@ export const useReceptionStore = defineStore('orders', () => {
       // Transformer le tableau en Map
       const productsMap = new Map(response.data.map((p) => [p.barcode, p]))
 
-      const orderLines: ReceptionOrderLines = { po, products: productsMap }
+      const commandeLines: ReceptionCommandeLines = { po, products: productsMap }
 
-      orders_lines.value.set(po, orderLines)
-      return orderLines
+      commandes_lines.value.set(po, commandeLines)
+      return commandeLines
     } catch (error: any) {
       console.error(error)
       notify(error.message)
@@ -67,13 +67,13 @@ export const useReceptionStore = defineStore('orders', () => {
 
   async function getProduct(po: string, barcode: string): Promise<ReceptionProduct | undefined> {
     // Si les lignes sont déjà en cache
-    if (orders_lines.value?.has(po)) {
-      return orders_lines.value.get(po)?.products.get(barcode)
+    if (commandes_lines.value?.has(po)) {
+      return commandes_lines.value.get(po)?.products.get(barcode)
     }
 
     // Sinon, récupérer depuis le backend et mettre en cache
-    const orderLines = await getOrder(po)
-    return orderLines?.products.get(barcode)
+    const commandeLines = await getCommande(po)
+    return commandeLines?.products.get(barcode)
   }
 
   async function productCountValid(po: string, barcode: string) {
@@ -88,13 +88,13 @@ export const useReceptionStore = defineStore('orders', () => {
     product.reception = { ok: false, received, comment }
   }
 
-  async function sendOrder(po: string) {
-    const order = orders_lines.value?.get(po)
-    if (!order) throw new Error('Order not found')
+  async function sendCommande(po: string) {
+    const commande = commandes_lines.value?.get(po)
+    if (!commande) throw new Error('Commande non trouvée')
     // TODO : make this work in the backend
     return axios
-      .post(`${config.backend.baseURL}/orders/reception/process/${po}`, {
-        products: Array.from(order.products.values() ?? []).map(
+      .post(`${config.backend.baseURL}/commandes/reception/process/${po}`, {
+        products: Array.from(commande.products.values() ?? []).map(
           ({ parcels, packSize, barcode, reception, name }) => {
             const received_quantity = reception?.ok && reception?.received === undefined
             ? parcels
@@ -122,12 +122,12 @@ export const useReceptionStore = defineStore('orders', () => {
   }
 
   return {
-    orders,
-    getOrders,
-    getOrder,
+    commandes,
+    getCommandes,
+    getCommande,
     getProduct,
     productCountValid,
     productCountError,
-    sendOrder,
+    sendCommande,
   }
 })

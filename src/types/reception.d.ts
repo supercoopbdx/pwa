@@ -11,7 +11,7 @@ type ReceptionProduct = {
   }
 }
 
-type MappedReceptionOrder = {
+type MappedReceptionCommande = {
   po: string
   provider: string
   date: Date
@@ -19,13 +19,13 @@ type MappedReceptionOrder = {
   is_already_processed: boolean
 }
 
-type ReceptionOrderLines = {
+type ReceptionCommandeLines = {
   po : string,
   products: Map<string, ReceptionProduct>
 }
 
 
-type ReceptionOrderResponse = {
+type ReceptionCommandeResponse = {
   po: string
   provider: string
   date: Date

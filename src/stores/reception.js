@@ -2,9 +2,9 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 // TODO : read server URL from config instead
 const SERVER_URL = 'https://backend.supercoop.fr/send-email';
-export const useReceptionStore = defineStore('orders', () => {
-    const orders = ref();
-    async function getOrders() {
+export const useReceptionStore = defineStore('commandes', () => {
+    const commandes = ref();
+    async function getCommandes() {
         // TODO : replace this with AXIOS request and include access token
         const jsonOrders = await new Promise((resolve) => setTimeout(() => {
             resolve([
@@ -80,43 +80,43 @@ export const useReceptionStore = defineStore('orders', () => {
                 },
             ]);
         }, 1000));
-        orders.value = new Map(jsonOrders.map((order) => [
-            order.po,
+        commandes.value = new Map(jsonOrders.map((commande) => [
+            commande.po,
             {
-                ...order,
-                products: new Map(order.products.map((product) => [product.barcode, product])),
+                ...commande,
+                products: new Map(commande.products.map((product) => [product.barcode, product])),
             },
         ]));
-        return orders.value;
+        return commandes.value;
     }
-    async function getOrder(po) {
-        if (!orders.value) {
-            await getOrders();
+    async function getCommande(po) {
+        if (!commandes.value) {
+            await getCommandes();
         }
-        return orders.value?.get(po);
+        return commandes.value?.get(po);
     }
     async function getProduct(po, barcode) {
-        if (!orders.value) {
-            await getOrders();
+        if (!commandes.value) {
+            await getCommandes();
         }
-        return orders.value?.get(po)?.products.get(barcode);
+        return commandes.value?.get(po)?.products.get(barcode);
     }
     async function productCountValid(po, barcode) {
-        const product = orders.value?.get(po)?.products?.get(barcode);
+        const product = commandes.value?.get(po)?.products?.get(barcode);
         if (!product)
             throw new Error('product not found');
         product.reception = { ok: true };
     }
     async function productCountError(po, barcode, received, comment) {
-        const product = orders.value?.get(po)?.products?.get(barcode);
+        const product = commandes.value?.get(po)?.products?.get(barcode);
         if (!product)
             throw new Error('product not found');
         product.reception = { ok: false, received, comment };
     }
-    async function sendOrder(po) {
-        const order = orders.value?.get(po);
-        if (!order)
-            throw new Error('Order not found');
+    async function sendCommande(po) {
+        const commande = commandes.value?.get(po);
+        if (!commande)
+            throw new Error('Commande non trouvée');
         // TODO : replace this with AXIOS request and include access token
         const response = await fetch(SERVER_URL, {
             method: 'POST',
@@ -129,12 +129,12 @@ export const useReceptionStore = defineStore('orders', () => {
         return await response.json();
     }
     return {
-        orders,
-        getOrders,
-        getOrder,
+        commandes,
+        getCommandes,
+        getCommande,
         getProduct,
         productCountValid,
         productCountError,
-        sendOrder,
+        sendCommande,
     };
 });

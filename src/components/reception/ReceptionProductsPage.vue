@@ -16,29 +16,29 @@ import GreenButton from '@/components/buttons/GreenButton.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
 import AuthImage from '@/components/AuthImage.vue'
 
-const { getOrder } = useReceptionStore()
+const { getCommande } = useReceptionStore()
 
 const po = useRoute().params.po.toString()
-const order: Ref<ReceptionOrderLines | undefined> = ref()
+const commande: Ref<ReceptionCommandeLines | undefined> = ref()
 const loading = ref(true)
 
-const isOrderComplete = computed(() => {
-  if (!order || !order.value?.products) return false
-  for (let [, product] of order.value?.products) {
+const isCommandeComplete = computed(() => {
+  if (!commande || !commande.value?.products) return false
+  for (let [, product] of commande.value?.products) {
     if (!product.reception) return false
   }
   return true
 })
 
 const productsWithoutBarcode = computed(() => {
-  if (!order.value?.products) return []
-  return Array.from(order.value.products.values()).filter((p) => !p.barcode)
+  if (!commande.value?.products) return []
+  return Array.from(commande.value.products.values()).filter((p) => !p.barcode)
 })
 
 const allHaveBarcodes = computed(() => productsWithoutBarcode.value.length === 0)
 
 onBeforeMount(async () => {
-  order.value = await getOrder(po)
+  commande.value = await getCommande(po)
   loading.value = false
 })
 </script>
@@ -48,7 +48,7 @@ onBeforeMount(async () => {
     <div v-if="loading">
       <h3 class="text-center text-xl">{{ $t('reception.products-list.loading') }}</h3>
     </div>
-    <div v-else-if="!order?.products?.size">{{ $t('reception.products-list.empty') }}</div>
+    <div v-else-if="!commande?.products?.size">{{ $t('reception.products-list.empty') }}</div>
     <div v-else>
       <!-- Alerte : produits sans code barre -->
       <div v-if="!allHaveBarcodes" class="mb-5">
@@ -80,8 +80,8 @@ onBeforeMount(async () => {
         </div>
       </template>
 
-      <ul v-if="order && allHaveBarcodes" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
-        <li v-for="[barcode, product] in order.products" :key="barcode">
+      <ul v-if="commande && allHaveBarcodes" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
+        <li v-for="[barcode, product] in commande.products" :key="barcode">
           <div class="flex items-center space-x-2 rtl:space-x-reverse py-2">
             <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
               <AuthImage :path="product.image_url" img-class="w-15 h-15 rounded-lg" />
@@ -118,10 +118,10 @@ onBeforeMount(async () => {
       </ul>
     </div>
     <template #footer>
-      <RouterLink :to="{ name: 'reception-orders' }">
+      <RouterLink :to="{ name: 'reception-commandes' }">
         <SecondaryButton>{{ $t('reception.button.back') }}</SecondaryButton>
       </RouterLink>
-      <RouterLink v-if="isOrderComplete" :to="{ name: 'reception-send' }">
+      <RouterLink v-if="isCommandeComplete" :to="{ name: 'reception-send' }">
         <PrimaryButton>{{ $t('reception.button.complete') }}</PrimaryButton>
       </RouterLink>
     </template>

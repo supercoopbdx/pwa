@@ -7,7 +7,7 @@ import HomePage from '@/components/HomePage.vue'
 import LoginCallbackPage from '@/components/LoginCallbackPage.vue'
 import NotFound from '@/components/NotFound.vue'
 import ReceptionLandingPage from '@/components/reception/ReceptionLandingPage.vue'
-import ReceptionOrdersPage from '@/components/reception/ReceptionOrdersPage.vue'
+import ReceptionCommandesPage from '@/components/reception/ReceptionCommandesPage.vue'
 import ReceptionProductsPage from '@/components/reception/ReceptionProductsPage.vue'
 import ReceptionScanPage from '@/components/reception/ReceptionScanPage.vue'
 import ReceptionFormPage from '@/components/reception/ReceptionFormPage.vue'
@@ -65,31 +65,31 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/reception/orders',
-      name: 'reception-orders',
-      component: ReceptionOrdersPage,
+      path: '/reception/commandes',
+      name: 'reception-commandes',
+      component: ReceptionCommandesPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/reception/orders/:po/products',
+      path: '/reception/commandes/:po/products',
       name: 'reception-products',
       component: ReceptionProductsPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/reception/orders/:po/products/scan',
+      path: '/reception/commandes/:po/products/scan',
       name: 'reception-scan',
       component: ReceptionScanPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/reception/orders/:po/products/:barcode',
+      path: '/reception/commandes/:po/products/:barcode',
       name: 'reception-form',
       component: ReceptionFormPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/reception/orders/:po/send',
+      path: '/reception/commandes/:po/send',
       name: 'reception-send',
       component: ReceptionSendPage,
       meta: { requiresAuth: true },

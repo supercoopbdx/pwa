@@ -9,14 +9,14 @@ import { useRoute } from 'vue-router'
 const reportSent = ref(false)
 const message = ref('')
 const loading = ref(false)  // État de chargement
-const { sendOrder } = useReceptionStore()
+const { sendCommande } = useReceptionStore()
 const { po } = useRoute().params
 
 async function submit() {
   loading.value = true
 
   try {
-    const response = await sendOrder(po.toString())
+    const response = await sendCommande(po.toString())
     message.value = response?.email_status ?? 'Commande traitée avec succès'
     reportSent.value = true
   } catch (error: any) {

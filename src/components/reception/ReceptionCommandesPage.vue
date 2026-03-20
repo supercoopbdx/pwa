@@ -14,9 +14,9 @@ import { onBeforeMount, onUnmounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useImageCache } from '@/composables/useImageCache.ts'
 
-const { getOrders, getOrder } = useReceptionStore()
+const { getCommandes, getCommande } = useReceptionStore()
 const { prefetch } = useImageCache()
-const { orders } = storeToRefs(useReceptionStore())
+const { commandes } = storeToRefs(useReceptionStore())
 const loading = ref(true)
 const searchQuery = ref('')
 
@@ -25,27 +25,27 @@ const searchQuery = ref('')
  * - Numéro de PO
  * - Nom du fournisseur
  */
-const filteredOrders = computed(() => {
-  if (!orders.value || !searchQuery.value) {
-    return orders.value ?? new Map()
+const filteredCommandes = computed(() => {
+  if (!commandes.value || !searchQuery.value) {
+    return commandes.value ?? new Map()
   }
 
   const query = searchQuery.value.toLowerCase().trim()
 
   return new Map(
-    Array.from(orders.value.entries()).filter(([po, order]) => {
+    Array.from(commandes.value.entries()).filter(([po, commande]) => {
       return (
         po.toLowerCase().includes(query) ||
-        order.provider.toLowerCase().includes(query)
+        commande.provider.toLowerCase().includes(query)
       )
     })
   )
 })
 
-function prefetchOrderImages(po: string) {
-  getOrder(po).then((orderLines) => {
-    if (!orderLines) return
-    for (const product of orderLines.products.values()) {
+function prefetchCommandeImages(po: string) {
+  getCommande(po).then((commandeLines) => {
+    if (!commandeLines) return
+    for (const product of commandeLines.products.values()) {
       prefetch(product.image_url)
     }
   })
@@ -55,20 +55,20 @@ const observer = new IntersectionObserver((entries) => {
   for (const entry of entries) {
     if (entry.isIntersecting) {
       const po = (entry.target as HTMLElement).dataset.po!
-      prefetchOrderImages(po)
+      prefetchCommandeImages(po)
       observer.unobserve(entry.target)
     }
   }
 })
 
-function observeOrderItem(el: HTMLElement | null, po: string) {
+function observeCommandeItem(el: HTMLElement | null, po: string) {
   if (!el) return
   el.dataset.po = po
   observer.observe(el)
 }
 
 onBeforeMount(async () => {
-  await getOrders()
+  await getCommandes()
   loading.value = false
 })
 
@@ -78,7 +78,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <PageLayout :title="$t('reception.order-list.title')" :icon="TruckIcon">
+  <PageLayout :title="$t('reception.commande-list.title')" :icon="TruckIcon">
     <!-- Barre de recherche (affichée uniquement quand les données sont chargées) -->
     <div v-if="!loading" class="relative mb-4">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -87,7 +87,7 @@ onUnmounted(() => {
       <input
         v-model="searchQuery"
         type="text"
-        :placeholder="$t('reception.order-list.search_placeholder')"
+        :placeholder="$t('reception.commande-list.search_placeholder')"
         class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
       />
     </div>
@@ -95,49 +95,49 @@ onUnmounted(() => {
     <!-- Chargement -->
     <div v-if="loading">
       <h3 class="text-center text-xl">
-        {{ $t('reception.order-list.loading') }}
+        {{ $t('reception.commande-list.loading') }}
       </h3>
     </div>
 
     <!-- Aucun résultat -->
-    <div v-else-if="!filteredOrders.size">
+    <div v-else-if="!filteredCommandes.size">
       <p class="text-center text-gray-500">
-        {{ $t('reception.order-list.no_results') }}
+        {{ $t('reception.commande-list.no_results') }}
       </p>
     </div>
 
      <ul v-else class="divide-y divide-gray-200 mx-auto flex flex-col gap-2">
       <li
-        v-for="[po, order] in filteredOrders"
+        v-for="[po, commande] in filteredCommandes"
         :key="po"
         class="sm:pb-4"
-        :class="{ 'opacity-60': order.is_already_processed }"
-        :ref="(el) => observeOrderItem(el as HTMLElement | null, po)"
+        :class="{ 'opacity-60': commande.is_already_processed }"
+        :ref="(el) => observeCommandeItem(el as HTMLElement | null, po)"
       >
         <div class="flex items-center space-x-4 rtl:space-x-reverse">
 
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 flex items-center gap-2">
-              {{ order.provider }}
+              {{ commande.provider }}
 
               <!-- Icône commande réceptionnée -->
               <CheckCircleIcon
-                v-if="order.is_already_processed"
+                v-if="commande.is_already_processed"
                 class="h-5 w-5 text-green-600"
                 title="Commande déjà réceptionnée"
               />
             </p>
             <p class="text-sm text-gray-500">
               <CalendarDaysIcon class="h-5 inline align-text-bottom" />
-              {{ new Date(order.date).toLocaleDateString() }}
+              {{ new Date(commande.date).toLocaleDateString() }}
               <br />
               <HashtagIcon class="h-5 inline align-text-bottom" />
-              {{ order.po }}
+              {{ commande.po }}
             </p>
           </div>
 
           <div class="inline-flex items-center text-base font-semibold text-gray-900">
-            {{ order.n_products }}
+            {{ commande.n_products }}
           </div>
 
           <PrimaryButton

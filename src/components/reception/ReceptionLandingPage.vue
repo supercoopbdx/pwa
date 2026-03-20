@@ -11,7 +11,7 @@ import { TruckIcon } from '@heroicons/vue/24/outline'
         <p class="">{{ $t('reception.home.instructions') }}</p>
       </div>
 
-      <RouterLink :to="{ name: 'reception-orders' }">
+      <RouterLink :to="{ name: 'reception-commandes' }">
         <PrimaryButton class="mt-6">
           {{ $t('reception.home.start') }}
         </PrimaryButton>
