@@ -4,6 +4,7 @@ type ReceptionProduct = {
   image_url: string
   parcels: number
   packSize: number
+  unit: string
   reception?: {
     ok: boolean,
     received?: number,

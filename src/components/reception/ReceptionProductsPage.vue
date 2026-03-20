@@ -96,8 +96,7 @@ onBeforeMount(async () => {
               </p>
               <div class="items-center text-l font-semibold text-gray-900">
                 {{ product.parcels }} x {{ product.packSize }} =
-                {{ product.parcels * product.packSize }}
-                {{ $t('reception.products-list.unit', product.parcels * product.packSize) }}
+                {{ product.parcels * product.packSize }} {{ product.unit }}
               </div>
             </div>
             <div class="flex flex-col">

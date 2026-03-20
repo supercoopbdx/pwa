@@ -99,8 +99,7 @@
     "products-list": {
       "title": "Commande {po}",
       "loading": "Chargement des produits...",
-      "empty": "Aucun produit n'a été trouvé",
-      "unit": "unité | unités"
+      "empty": "Aucun produit n'a été trouvé"
     },
     "form": {
       "title": "Produit",
@@ -109,7 +108,6 @@
       "within": "dans",
       "parcel": "colis",
       "of": "de",
-      "unit": "unité | unités",
       "received": "Colis reçus",
       "comment": "Commentaire"
     }
