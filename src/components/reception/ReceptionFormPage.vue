@@ -75,7 +75,14 @@ function submit() {
         {{ product.packSize }} {{ $t('reception.form.unit', product.packSize) }}<br />
       </div>
       <FormLayout v-if="showErrorForm">
-        <FormInput type="number" :label="$t('reception.form.received')" v-model="received" />
+        <div>
+          <FormInput type="number" :label="$t('reception.form.received')" v-model="received" />
+          <p class="text-sm text-gray-500 mt-1">
+            = {{ received * product.packSize }}
+            {{ $t('reception.form.unit', received * product.packSize) }}
+            ({{ product.packSize }} {{ $t('reception.form.unit', product.packSize) }}/{{ $t('reception.form.parcel') }})
+          </p>
+        </div>
         <FormInput type="textarea" :label="$t('reception.form.comment')" v-model="comment" />
       </FormLayout>
     </div>
