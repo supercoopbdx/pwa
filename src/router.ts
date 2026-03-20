@@ -6,12 +6,12 @@ import StockSendPage from '@/components/stock/StockSendPage.vue'
 import HomePage from '@/components/HomePage.vue'
 import LoginCallbackPage from '@/components/LoginCallbackPage.vue'
 import NotFound from '@/components/NotFound.vue'
-import InboundLandingPage from '@/components/inbound/InboundLandingPage.vue'
-import InboundOrdersPage from '@/components/inbound/InboundOrdersPage.vue'
-import InboundProductsPage from '@/components/inbound/InboundProductsPage.vue'
-import InboundScanPage from '@/components/inbound/InboundScanPage.vue'
-import InboundFormPage from '@/components/inbound/InboundFormPage.vue'
-import InboundSendPage from '@/components/inbound/InboundSendPage.vue'
+import ReceptionLandingPage from '@/components/reception/ReceptionLandingPage.vue'
+import ReceptionOrdersPage from '@/components/reception/ReceptionOrdersPage.vue'
+import ReceptionProductsPage from '@/components/reception/ReceptionProductsPage.vue'
+import ReceptionScanPage from '@/components/reception/ReceptionScanPage.vue'
+import ReceptionFormPage from '@/components/reception/ReceptionFormPage.vue'
+import ReceptionSendPage from '@/components/reception/ReceptionSendPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.ts'
 
@@ -59,39 +59,39 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/inbound',
-      name: 'inbound-landing',
-      component: InboundLandingPage,
+      path: '/reception',
+      name: 'reception-landing',
+      component: ReceptionLandingPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/inbound/orders',
-      name: 'inbound-orders',
-      component: InboundOrdersPage,
+      path: '/reception/orders',
+      name: 'reception-orders',
+      component: ReceptionOrdersPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/inbound/orders/:po/products',
-      name: 'inbound-products',
-      component: InboundProductsPage,
+      path: '/reception/orders/:po/products',
+      name: 'reception-products',
+      component: ReceptionProductsPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/inbound/orders/:po/products/scan',
-      name: 'inbound-scan',
-      component: InboundScanPage,
+      path: '/reception/orders/:po/products/scan',
+      name: 'reception-scan',
+      component: ReceptionScanPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/inbound/orders/:po/products/:barcode',
-      name: 'inbound-form',
-      component: InboundFormPage,
+      path: '/reception/orders/:po/products/:barcode',
+      name: 'reception-form',
+      component: ReceptionFormPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/inbound/orders/:po/send',
-      name: 'inbound-send',
-      component: InboundSendPage,
+      path: '/reception/orders/:po/send',
+      name: 'reception-send',
+      component: ReceptionSendPage,
       meta: { requiresAuth: true },
     },
     { path: '/:pathMatch(.*)*', component: NotFound },

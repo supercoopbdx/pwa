@@ -1,17 +1,17 @@
-type InboundProduct = {
+type ReceptionProduct = {
   name: string
   barcode: string
   image_url: string
   parcels: number
   packSize: number
-  inbound?: {
+  reception?: {
     ok: boolean,
     received?: number,
     comment?: string
   }
 }
 
-type MappedInboundOrder = {
+type MappedReceptionOrder = {
   po: string
   provider: string
   date: Date
@@ -19,13 +19,13 @@ type MappedInboundOrder = {
   is_already_processed: boolean
 }
 
-type InboundOrderLines = {
+type ReceptionOrderLines = {
   po : string,
-  products: Map<string, InboundProduct>
+  products: Map<string, ReceptionProduct>
 }
 
 
-type InboundOrderResponse = {
+type ReceptionOrderResponse = {
   po: string
   provider: string
   date: Date

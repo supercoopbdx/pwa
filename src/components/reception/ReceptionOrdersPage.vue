@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useInboundStore } from '@/stores/inbound.ts'
+import { useReceptionStore } from '@/stores/reception.ts'
 import PageLayout from '@/layout/PageLayout.vue'
 import {
   CalendarDaysIcon,
@@ -14,9 +14,9 @@ import { onBeforeMount, onUnmounted, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useImageCache } from '@/composables/useImageCache.ts'
 
-const { getOrders, getOrder } = useInboundStore()
+const { getOrders, getOrder } = useReceptionStore()
 const { prefetch } = useImageCache()
-const { orders } = storeToRefs(useInboundStore())
+const { orders } = storeToRefs(useReceptionStore())
 const loading = ref(true)
 const searchQuery = ref('')
 
@@ -78,7 +78,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <PageLayout :title="$t('inbound.order-list.title')" :icon="TruckIcon">
+  <PageLayout :title="$t('reception.order-list.title')" :icon="TruckIcon">
     <!-- Barre de recherche (affichée uniquement quand les données sont chargées) -->
     <div v-if="!loading" class="relative mb-4">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -87,7 +87,7 @@ onUnmounted(() => {
       <input
         v-model="searchQuery"
         type="text"
-        :placeholder="$t('inbound.order-list.search_placeholder')"
+        :placeholder="$t('reception.order-list.search_placeholder')"
         class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
       />
     </div>
@@ -95,14 +95,14 @@ onUnmounted(() => {
     <!-- Chargement -->
     <div v-if="loading">
       <h3 class="text-center text-xl">
-        {{ $t('inbound.order-list.loading') }}
+        {{ $t('reception.order-list.loading') }}
       </h3>
     </div>
 
     <!-- Aucun résultat -->
     <div v-else-if="!filteredOrders.size">
       <p class="text-center text-gray-500">
-        {{ $t('inbound.order-list.no_results') }}
+        {{ $t('reception.order-list.no_results') }}
       </p>
     </div>
 
@@ -141,7 +141,7 @@ onUnmounted(() => {
           </div>
 
           <PrimaryButton
-            @click="$router.push({ name: 'inbound-products', params: { po } })"
+            @click="$router.push({ name: 'reception-products', params: { po } })"
           >
             <ChevronRightIcon class="w-7 h-7" />
           </PrimaryButton>

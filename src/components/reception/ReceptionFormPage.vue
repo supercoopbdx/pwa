@@ -7,7 +7,7 @@ import {
   QrCodeIcon,
   TruckIcon,
 } from '@heroicons/vue/24/outline'
-import { useInboundStore } from '@/stores/inbound.ts'
+import { useReceptionStore } from '@/stores/reception.ts'
 import AuthImage from '@/components/AuthImage.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { onBeforeMount, ref, Ref } from 'vue'
@@ -18,9 +18,9 @@ import FormLayout from '@/components/forms/FormLayout.vue'
 import FormInput from '@/components/forms/FormInput.vue'
 
 const router = useRouter()
-const { getProduct, productCountValid, productCountError } = useInboundStore()
+const { getProduct, productCountValid, productCountError } = useReceptionStore()
 const { po, barcode } = useRoute().params
-const product: Ref<InboundProduct | undefined> = ref()
+const product: Ref<ReceptionProduct | undefined> = ref()
 const loading = ref(true)
 const showErrorForm = ref(false)
 const received = ref(0)
@@ -28,28 +28,28 @@ const comment = ref('')
 
 onBeforeMount(async () => {
   product.value = await getProduct(po.toString(), barcode.toString())
-  received.value = product.value?.inbound?.received ?? 0
-  comment.value = product.value?.inbound?.comment ?? ''
+  received.value = product.value?.reception?.received ?? 0
+  comment.value = product.value?.reception?.comment ?? ''
   loading.value = false
 })
 
 function valid() {
   productCountValid(po.toString(), barcode.toString())
-  router.push({ name: 'inbound-products' })
+  router.push({ name: 'reception-products' })
 }
 
 function submit() {
   productCountError(po.toString(), barcode.toString(), received.value, comment.value)
-  router.push({ name: 'inbound-products' })
+  router.push({ name: 'reception-products' })
 }
 </script>
 
 <template>
-  <PageLayout :title="$t('inbound.form.title')" :icon="TruckIcon">
+  <PageLayout :title="$t('reception.form.title')" :icon="TruckIcon">
     <div v-if="loading">
-      <h3 class="text-center text-xl">{{ $t('inbound.form.loading') }}</h3>
+      <h3 class="text-center text-xl">{{ $t('reception.form.loading') }}</h3>
     </div>
-    <div v-else-if="!product">{{ $t('inbound.form.empty') }}</div>
+    <div v-else-if="!product">{{ $t('reception.form.empty') }}</div>
     <div v-else class="flex flex-col gap-2">
       <div class="flex items-center space-x-2 rtl:space-x-reverse">
         <div class="shrink-0">
@@ -67,32 +67,32 @@ function submit() {
       </div>
       <div class="text-center text-3xl font-semibold text-gray-900">
         {{ product.parcels * product.packSize }}
-        {{ $t('inbound.form.unit', product.parcels * product.packSize) }}
+        {{ $t('reception.form.unit', product.parcels * product.packSize) }}
       </div>
       <div class="text-center text-lg font-semibold">
-        {{ $t('inbound.form.within') }}
-        {{ product.parcels }} {{ $t('inbound.form.parcel') }} {{ $t('inbound.form.of') }}
-        {{ product.packSize }} {{ $t('inbound.form.unit', product.packSize) }}<br />
+        {{ $t('reception.form.within') }}
+        {{ product.parcels }} {{ $t('reception.form.parcel') }} {{ $t('reception.form.of') }}
+        {{ product.packSize }} {{ $t('reception.form.unit', product.packSize) }}<br />
       </div>
       <FormLayout v-if="showErrorForm">
-        <FormInput type="number" :label="$t('inbound.form.received')" v-model="received" />
-        <FormInput type="textarea" :label="$t('inbound.form.comment')" v-model="comment" />
+        <FormInput type="number" :label="$t('reception.form.received')" v-model="received" />
+        <FormInput type="textarea" :label="$t('reception.form.comment')" v-model="comment" />
       </FormLayout>
     </div>
     <template #footer>
-      <RouterLink :to="{ name: 'inbound-products' }">
-        <SecondaryButton>{{ $t('inbound.button.back') }}</SecondaryButton>
+      <RouterLink :to="{ name: 'reception-products' }">
+        <SecondaryButton>{{ $t('reception.button.back') }}</SecondaryButton>
       </RouterLink>
       <RedButton v-if="!showErrorForm" :disabled="!product" @click="showErrorForm = true"
         ><ExclamationTriangleIcon class="inline-flex h-6 align-text-bottom" />
-        {{ $t('inbound.button.error') }}
+        {{ $t('reception.button.error') }}
       </RedButton>
       <GreenButton v-if="!showErrorForm" :disabled="!product" @click="valid()"
         ><CheckIcon class="inline-flex h-6 align-text-bottom" />
-        {{ $t('inbound.button.good') }}
+        {{ $t('reception.button.good') }}
       </GreenButton>
       <PrimaryButton v-if="showErrorForm"  @click="submit()">
-        {{ $t('inbound.button.submit') }}
+        {{ $t('reception.button.submit') }}
       </PrimaryButton>
     </template>
   </PageLayout>

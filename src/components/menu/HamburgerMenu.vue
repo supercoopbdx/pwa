@@ -30,7 +30,7 @@ const isOpen = ref(false)
 const menuItems: MenuItem[] = [
   { label: t('menu.home'), path: '/', icon: HomeIcon },
   { label: t('menu.stock'), path: '/stock', icon: ClipboardDocumentCheckIcon },
-  { label: t('menu.inbound'), path: '/inbound', icon: TruckIcon },
+  { label: t('menu.reception'), path: '/reception', icon: TruckIcon },
 ]
 
 const toggleMenu = () => {

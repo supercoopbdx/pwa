@@ -3,13 +3,13 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import { ref } from 'vue'
-import { useInboundStore } from '@/stores/inbound.ts'
+import { useReceptionStore } from '@/stores/reception.ts'
 import { useRoute } from 'vue-router'
 
 const reportSent = ref(false)
 const message = ref('')
 const loading = ref(false)  // État de chargement
-const { sendOrder } = useInboundStore()
+const { sendOrder } = useReceptionStore()
 const { po } = useRoute().params
 
 async function submit() {
@@ -40,7 +40,7 @@ async function submit() {
     <p v-if="reportSent" class="text-left m-auto mt-4">{{ message }}</p>
 
     <div class="flex flex-row justify-between">
-      <RouterLink :to="{ name: 'inbound-products' }">
+      <RouterLink :to="{ name: 'reception-products' }">
         <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
       </RouterLink>
       <PrimaryButton v-if="!reportSent" @click="submit() " :disabled="loading">{{

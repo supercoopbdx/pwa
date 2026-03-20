@@ -7,7 +7,7 @@
   "menu": {
     "home": "Accueil",
     "stock": "Inventaire",
-    "inbound": "Réception"
+    "reception": "Réception"
   },
   "auth": {
     "login": "Connexion",
@@ -76,7 +76,7 @@
       "email_sent": "Email envoyé avec succès"
     }
   },
-  "inbound": {
+  "reception": {
     "button": {
       "back": "Retour",
       "good": "Correct",

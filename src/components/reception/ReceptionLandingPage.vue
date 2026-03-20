@@ -5,15 +5,15 @@ import { TruckIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <template>
-  <PageLayout :title="$t('inbound.home.title')" :icon="TruckIcon">
+  <PageLayout :title="$t('reception.home.title')" :icon="TruckIcon">
     <div class="text-center">
       <div class="mb-10">
-        <p class="">{{ $t('inbound.home.instructions') }}</p>
+        <p class="">{{ $t('reception.home.instructions') }}</p>
       </div>
 
-      <RouterLink :to="{ name: 'inbound-orders' }">
+      <RouterLink :to="{ name: 'reception-orders' }">
         <PrimaryButton class="mt-6">
-          {{ $t('inbound.home.start') }}
+          {{ $t('reception.home.start') }}
         </PrimaryButton>
       </RouterLink>
     </div>

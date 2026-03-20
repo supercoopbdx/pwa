@@ -4,16 +4,16 @@ import config from '@/config.ts'
 import axios from 'axios'
 import { useNotificationStore } from '@/stores/notifications.ts'
 
-export const useInboundStore = defineStore('orders', () => {
+export const useReceptionStore = defineStore('orders', () => {
   const { notify } = useNotificationStore()
-  const orders: Ref<Map<string, MappedInboundOrder> | null> = ref(null)
-  const orders_lines: Ref<Map<string, InboundOrderLines>> = ref(new Map())
+  const orders: Ref<Map<string, MappedReceptionOrder> | null> = ref(null)
+  const orders_lines: Ref<Map<string, ReceptionOrderLines>> = ref(new Map())
 
   async function getOrders() {
 
     orders.value = await axios
       .get(`${config.backend.baseURL}/orders/inbound`)
-      .then((response: { data: InboundOrderResponse[] }) => {
+      .then((response: { data: ReceptionOrderResponse[] }) => {
         // TODO : handle errors
         return new Map(
           response.data.map((order) => [
@@ -38,14 +38,14 @@ export const useInboundStore = defineStore('orders', () => {
   }
 
 
-  async function getOrder(po: string): Promise<InboundOrderLines | undefined> {
+  async function getOrder(po: string): Promise<ReceptionOrderLines | undefined> {
     try {
       // Si déjà en cache, retourne directement
       if (orders_lines.value?.has(po)) {
         return orders_lines.value.get(po)
       }
 
-      const response = await axios.get<InboundProduct[]>(`${config.backend.baseURL}/order/info`, {
+      const response = await axios.get<ReceptionProduct[]>(`${config.backend.baseURL}/order/info`, {
         params: { po },
       })
 
@@ -54,7 +54,7 @@ export const useInboundStore = defineStore('orders', () => {
       // Transformer le tableau en Map
       const productsMap = new Map(response.data.map((p) => [p.barcode, p]))
 
-      const orderLines: InboundOrderLines = { po, products: productsMap }
+      const orderLines: ReceptionOrderLines = { po, products: productsMap }
 
       orders_lines.value.set(po, orderLines)
       return orderLines
@@ -65,7 +65,7 @@ export const useInboundStore = defineStore('orders', () => {
     }
   }
 
-  async function getProduct(po: string, barcode: string): Promise<InboundProduct | undefined> {
+  async function getProduct(po: string, barcode: string): Promise<ReceptionProduct | undefined> {
     // Si les lignes sont déjà en cache
     if (orders_lines.value?.has(po)) {
       return orders_lines.value.get(po)?.products.get(barcode)
@@ -79,13 +79,13 @@ export const useInboundStore = defineStore('orders', () => {
   async function productCountValid(po: string, barcode: string) {
     const product = await getProduct(po, barcode)
     if (!product) throw new Error('product not found')
-    product.inbound = { ok: true }
+    product.reception = { ok: true }
   }
 
   async function productCountError(po: string, barcode: string, received: number, comment: string) {
     const product = await getProduct(po, barcode)
     if (!product) throw new Error('product not found')
-    product.inbound = { ok: false, received, comment }
+    product.reception = { ok: false, received, comment }
   }
 
   async function sendOrder(po: string) {
@@ -95,19 +95,19 @@ export const useInboundStore = defineStore('orders', () => {
     return axios
       .post(`${config.backend.baseURL}/orders/inbound/process/${po}`, {
         products: Array.from(order.products.values() ?? []).map(
-          ({ parcels, packSize, barcode, inbound, name }) => {
-            const received_quantity = inbound?.ok && inbound.received === undefined
+          ({ parcels, packSize, barcode, reception, name }) => {
+            const received_quantity = reception?.ok && reception?.received === undefined
             ? parcels
-            : inbound?.received;
-            
+            : reception?.received;
+
             return {
               barcode,
               name: name,
               packsize: packSize,
               received_quantity: received_quantity?.toString(),
               ordered_quantity: parcels.toString(),
-              ok: inbound?.ok,
-              comment: inbound?.comment
+              ok: reception?.ok,
+              comment: reception?.comment
             }
           },
         ),

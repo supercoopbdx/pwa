@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useInboundStore } from '@/stores/inbound.ts'
+import { useReceptionStore } from '@/stores/reception.ts'
 import PageLayout from '@/layout/PageLayout.vue'
 import {
   CheckIcon,
@@ -16,16 +16,16 @@ import GreenButton from '@/components/buttons/GreenButton.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
 import AuthImage from '@/components/AuthImage.vue'
 
-const { getOrder } = useInboundStore()
+const { getOrder } = useReceptionStore()
 
 const po = useRoute().params.po.toString()
-const order: Ref<InboundOrderLines | undefined> = ref()
+const order: Ref<ReceptionOrderLines | undefined> = ref()
 const loading = ref(true)
 
 const isOrderComplete = computed(() => {
   if (!order || !order.value?.products) return false
   for (let [, product] of order.value?.products) {
-    if (!product.inbound) return false
+    if (!product.reception) return false
   }
   return true
 })
@@ -46,9 +46,9 @@ onBeforeMount(async () => {
 <template>
   <PageLayout :title="po" :icon="TruckIcon">
     <div v-if="loading">
-      <h3 class="text-center text-xl">{{ $t('inbound.products-list.loading') }}</h3>
+      <h3 class="text-center text-xl">{{ $t('reception.products-list.loading') }}</h3>
     </div>
-    <div v-else-if="!order?.products?.size">{{ $t('inbound.products-list.empty') }}</div>
+    <div v-else-if="!order?.products?.size">{{ $t('reception.products-list.empty') }}</div>
     <div v-else>
       <!-- Alerte : produits sans code barre -->
       <div v-if="!allHaveBarcodes" class="mb-5">
@@ -72,7 +72,7 @@ onBeforeMount(async () => {
       <template v-if="allHaveBarcodes">
         <p class="text-green-600 font-semibold mb-3">Tous les produits ont un code barre.</p>
         <div class="flex justify-center mb-5">
-          <RouterLink :to="{ name: 'inbound-scan' }">
+          <RouterLink :to="{ name: 'reception-scan' }">
             <PrimaryButton class="text-2xl px-10 py-5">
               {{ $t('stock.button.start') }}
             </PrimaryButton>
@@ -97,15 +97,15 @@ onBeforeMount(async () => {
               <div class="items-center text-l font-semibold text-gray-900">
                 {{ product.parcels }} x {{ product.packSize }} =
                 {{ product.parcels * product.packSize }}
-                {{ $t('inbound.products-list.unit', product.parcels * product.packSize) }}
+                {{ $t('reception.products-list.unit', product.parcels * product.packSize) }}
               </div>
             </div>
             <div class="flex flex-col">
-              <RouterLink :to="{ name: 'inbound-form', params: { barcode: product.barcode } }">
-                <PrimaryButton v-if="!product.inbound">
+              <RouterLink :to="{ name: 'reception-form', params: { barcode: product.barcode } }">
+                <PrimaryButton v-if="!product.reception">
                   <ChevronRightIcon class="w-7 h-7" />
                 </PrimaryButton>
-                <GreenButton v-else-if="product.inbound.ok">
+                <GreenButton v-else-if="product.reception.ok">
                   <CheckIcon class="w-7 h-7" />
                 </GreenButton>
                 <RedButton v-else>
@@ -118,11 +118,11 @@ onBeforeMount(async () => {
       </ul>
     </div>
     <template #footer>
-      <RouterLink :to="{ name: 'inbound-orders' }">
-        <SecondaryButton>{{ $t('inbound.button.back') }}</SecondaryButton>
+      <RouterLink :to="{ name: 'reception-orders' }">
+        <SecondaryButton>{{ $t('reception.button.back') }}</SecondaryButton>
       </RouterLink>
-      <RouterLink v-if="isOrderComplete" :to="{ name: 'inbound-send' }">
-        <PrimaryButton>{{ $t('inbound.button.complete') }}</PrimaryButton>
+      <RouterLink v-if="isOrderComplete" :to="{ name: 'reception-send' }">
+        <PrimaryButton>{{ $t('reception.button.complete') }}</PrimaryButton>
       </RouterLink>
     </template>
   </PageLayout>

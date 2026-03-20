@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 // TODO : read server URL from config instead
 const SERVER_URL = 'https://backend.supercoop.fr/send-email';
-export const useInboundStore = defineStore('orders', () => {
+export const useReceptionStore = defineStore('orders', () => {
     const orders = ref();
     async function getOrders() {
         // TODO : replace this with AXIOS request and include access token
@@ -105,13 +105,13 @@ export const useInboundStore = defineStore('orders', () => {
         const product = orders.value?.get(po)?.products?.get(barcode);
         if (!product)
             throw new Error('product not found');
-        product.inbound = { ok: true };
+        product.reception = { ok: true };
     }
     async function productCountError(po, barcode, received, comment) {
         const product = orders.value?.get(po)?.products?.get(barcode);
         if (!product)
             throw new Error('product not found');
-        product.inbound = { ok: false, received, comment };
+        product.reception = { ok: false, received, comment };
     }
     async function sendOrder(po) {
         const order = orders.value?.get(po);
