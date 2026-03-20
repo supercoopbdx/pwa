@@ -12,7 +12,7 @@ export const useReceptionStore = defineStore('orders', () => {
   async function getOrders() {
 
     orders.value = await axios
-      .get(`${config.backend.baseURL}/orders/inbound`)
+      .get(`${config.backend.baseURL}/orders/reception`)
       .then((response: { data: ReceptionOrderResponse[] }) => {
         // TODO : handle errors
         return new Map(
@@ -93,7 +93,7 @@ export const useReceptionStore = defineStore('orders', () => {
     if (!order) throw new Error('Order not found')
     // TODO : make this work in the backend
     return axios
-      .post(`${config.backend.baseURL}/orders/inbound/process/${po}`, {
+      .post(`${config.backend.baseURL}/orders/reception/process/${po}`, {
         products: Array.from(order.products.values() ?? []).map(
           ({ parcels, packSize, barcode, reception, name }) => {
             const received_quantity = reception?.ok && reception?.received === undefined
