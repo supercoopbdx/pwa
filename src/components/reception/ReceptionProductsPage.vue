@@ -74,7 +74,7 @@ onBeforeMount(async () => {
         <div class="flex justify-center mb-5">
           <RouterLink :to="{ name: 'reception-scan' }">
             <PrimaryButton class="text-2xl px-10 py-5">
-              {{ $t('stock.button.start') }}
+              {{ $t('inventaire.button.start') }}
             </PrimaryButton>
           </RouterLink>
         </div>

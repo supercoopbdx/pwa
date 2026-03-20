@@ -3,7 +3,7 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import RedButton from '@/components/buttons/RedButton.vue'
-import { useStockStore } from '@/stores/stock'
+import { useInventaireStore } from '@/stores/inventaire'
 import AuthImage from '@/components/AuthImage.vue'
 import { ClipboardDocumentCheckIcon, QrCodeIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useRouter } from 'vue-router'
@@ -11,14 +11,14 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 
 const router = useRouter()
-const stockStore = useStockStore()
+const stockStore = useInventaireStore()
 const { t } = useI18n()
 
 const { products } = storeToRefs(stockStore)
 
 if (!stockStore.zone) {
   // if zone is not set, we go back to landing page
-  router.push({ name: 'stock-landing' })
+  router.push({ name: 'inventaire-landing' })
 }
 
 function removeItem(barcode: string) {
@@ -26,7 +26,7 @@ function removeItem(barcode: string) {
 }
 
 function reset() {
-  if (confirm(t('stock.list.reset'))) {
+  if (confirm(t('inventaire.list.reset'))) {
     stockStore.reset()
   }
 }
@@ -34,19 +34,19 @@ function reset() {
 
 <template>
   <PageLayout
-    :title="$t('stock.list.title', { zone: stockStore.zone })"
+    :title="$t('inventaire.list.title', { zone: stockStore.zone })"
     :icon="ClipboardDocumentCheckIcon"
   >
     <div class="flex justify-center mb-5">
-      <RouterLink :to="{ name: 'stock-scan' }">
+      <RouterLink :to="{ name: 'inventaire-scan' }">
         <PrimaryButton class="text-2xl px-10 py-5">
-          {{ $t('stock.button.start') }}
+          {{ $t('inventaire.button.start') }}
         </PrimaryButton>
       </RouterLink>
     </div>
 
     <div v-if="!products.size" class="text-center text-gray-500 my-5">
-      {{ $t('stock.list.empty') }}
+      {{ $t('inventaire.list.empty') }}
     </div>
 
     <ul class="divide-y divide-gray-200 mx-auto flex flex-col gap-2">
@@ -57,7 +57,7 @@ function reset() {
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 text-clip">
-              {{ product.name ?? $t('stock.form.errors.product_not_found') }}
+              {{ product.name ?? $t('inventaire.form.errors.product_not_found') }}
             </p>
             <p class="text-sm text-gray-500">
               <QrCodeIcon class="h-5 inline align-text-bottom" />
@@ -77,13 +77,13 @@ function reset() {
 
     <!-- Boutons fixes en bas -->
     <template #footer>
-      <SecondaryButton @click="$router.push({ name: 'stock-landing' })">
-        {{ $t('stock.button.back') }}
+      <SecondaryButton @click="$router.push({ name: 'inventaire-landing' })">
+        {{ $t('inventaire.button.back') }}
       </SecondaryButton>
       <div class="flex gap-4">
-        <RedButton @click="reset()" :disabled="!products.size">{{ $t('stock.button.reset') }}</RedButton>
-        <PrimaryButton @click="$router.push({ name: 'stock-send' })" :disabled="!products.size">
-          {{ $t('stock.button.finish') }}
+        <RedButton @click="reset()" :disabled="!products.size">{{ $t('inventaire.button.reset') }}</RedButton>
+        <PrimaryButton @click="$router.push({ name: 'inventaire-send' })" :disabled="!products.size">
+          {{ $t('inventaire.button.finish') }}
         </PrimaryButton>
       </div>
     </template>

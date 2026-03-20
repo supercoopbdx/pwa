@@ -12,7 +12,7 @@ function decode(barcode: string) {
 
 <template>
   <BarcodeScanPage
-    :title="$t('stock.scan.title')"
+    :title="$t('inventaire.scan.title')"
     :icon="TruckIcon"
     :back-route="{ name: 'reception-products' }"
     :manual-input="true"

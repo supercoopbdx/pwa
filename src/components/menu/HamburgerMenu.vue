@@ -29,7 +29,7 @@ const isOpen = ref(false)
 // Define your menu items here
 const menuItems: MenuItem[] = [
   { label: t('menu.home'), path: '/', icon: HomeIcon },
-  { label: t('menu.stock'), path: '/stock', icon: ClipboardDocumentCheckIcon },
+  { label: t('menu.inventaire'), path: '/inventaire', icon: ClipboardDocumentCheckIcon },
   { label: t('menu.reception'), path: '/reception', icon: TruckIcon },
 ]
 

@@ -1,8 +1,8 @@
-import StockLandingPage from '@/components/stock/StockLandingPage.vue'
-import StockListPage from '@/components/stock/StockListPage.vue'
-import StockScanPage from '@/components/stock/StockScanPage.vue'
-import StockFormPage from '@/components/stock/StockFormPage.vue'
-import StockSendPage from '@/components/stock/StockSendPage.vue'
+import InventaireLandingPage from '@/components/inventaire/InventaireLandingPage.vue'
+import InventaireListPage from '@/components/inventaire/InventaireListPage.vue'
+import InventaireScanPage from '@/components/inventaire/InventaireScanPage.vue'
+import InventaireFormPage from '@/components/inventaire/InventaireFormPage.vue'
+import InventaireSendPage from '@/components/inventaire/InventaireSendPage.vue'
 import HomePage from '@/components/HomePage.vue'
 import LoginCallbackPage from '@/components/LoginCallbackPage.vue'
 import NotFound from '@/components/NotFound.vue'
@@ -29,33 +29,33 @@ const router = createRouter({
       component: LoginCallbackPage,
     },
     {
-      path: '/stock',
-      name: 'stock-landing',
-      component: StockLandingPage,
+      path: '/inventaire',
+      name: 'inventaire-landing',
+      component: InventaireLandingPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/stock/list/',
-      name: 'stock-list',
-      component: StockListPage,
+      path: '/inventaire/list/',
+      name: 'inventaire-liste',
+      component: InventaireListPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/stock/scan',
-      name: 'stock-scan',
-      component: StockScanPage,
+      path: '/inventaire/scan',
+      name: 'inventaire-scan',
+      component: InventaireScanPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/stock/form',
-      name: 'stock-form',
-      component: StockFormPage,
+      path: '/inventaire/form',
+      name: 'inventaire-form',
+      component: InventaireFormPage,
       meta: { requiresAuth: true },
     },
     {
-      path: '/stock/send',
-      name: 'stock-send',
-      component: StockSendPage,
+      path: '/inventaire/send',
+      name: 'inventaire-send',
+      component: InventaireSendPage,
       meta: { requiresAuth: true },
     },
     {

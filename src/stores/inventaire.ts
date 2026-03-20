@@ -4,25 +4,25 @@ import axios from 'axios'
 import config from '@/config.ts'
 import { useNotificationStore } from '@/stores/notifications.ts'
 
-export const useStockStore = defineStore('stock', () => {
+export const useInventaireStore = defineStore('inventaire', () => {
   const { notify } = useNotificationStore()
-  const zone = ref(localStorage.getItem('stock-zone') ?? '')
+  const zone = ref(localStorage.getItem('inventaire-zone') ?? '')
   const products: Ref<Map<string, StockProduct>> = ref(loadStorageProducts())
   const productsInfo: Ref<Map<string, StockProductInfo>> = ref(new Map())
 
   function saveZone() {
-    localStorage.setItem('stock-zone', zone.value)
+    localStorage.setItem('inventaire-zone', zone.value)
   }
 
   function loadStorageProducts() {
-    const stored = localStorage.getItem('stock-products')
+    const stored = localStorage.getItem('inventaire-products')
     return stored
       ? new Map<string, StockProduct>(JSON.parse(stored))
       : new Map<string, StockProduct>()
   }
 
   function persistProducts() {
-    localStorage.setItem('stock-products', JSON.stringify(Array.from(products.value)))
+    localStorage.setItem('inventaire-products', JSON.stringify(Array.from(products.value)))
   }
 
   async function getProductInfo(barcode: string): Promise<StockProductInfo> {

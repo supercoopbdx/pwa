@@ -6,14 +6,14 @@
   },
   "menu": {
     "home": "Accueil",
-    "stock": "Inventaire",
+    "inventaire": "Inventaire",
     "reception": "Réception"
   },
   "auth": {
     "login": "Connexion",
     "logout": "Deconnexion"
   },
-  "stock": {
+  "inventaire": {
     "button": {
       "back": "Retour",
       "back_to_home": "Retour à l'accueil",

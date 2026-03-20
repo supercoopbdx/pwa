@@ -30,9 +30,9 @@ async function submit() {
 </script>
 
 <template>
-  <PageLayout :title="$t('stock.send.title')">
+  <PageLayout :title="$t('inventaire.send.title')">
     <div v-if="!reportSent" class="text-left m-auto mt-4 mb-10">
-      <p v-if="!loading">{{ $t('stock.send.confirmation') }}</p>
+      <p v-if="!loading">{{ $t('inventaire.send.confirmation') }}</p>
       <div v-else class="flex items-center justify-center py-4">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
       </div>
@@ -41,13 +41,13 @@ async function submit() {
 
     <div class="flex flex-row justify-between">
       <RouterLink :to="{ name: 'reception-products' }">
-        <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
+        <SecondaryButton>{{ $t('inventaire.button.back') }}</SecondaryButton>
       </RouterLink>
       <PrimaryButton v-if="!reportSent" @click="submit() " :disabled="loading">{{
-        $t('stock.button.send_confirm')
+        $t('inventaire.button.send_confirm')
       }}</PrimaryButton>
       <RouterLink to="/" v-if="reportSent">
-        <PrimaryButton>{{ $t('stock.button.back_to_home') }}</PrimaryButton>
+        <PrimaryButton>{{ $t('inventaire.button.back_to_home') }}</PrimaryButton>
       </RouterLink>
     </div>
   </PageLayout>

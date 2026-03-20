@@ -6,15 +6,15 @@ import BarcodeScanPage from '@/components/barcode/BarcodeScanPage.vue'
 const router = useRouter()
 
 function decode(barcode: string) {
-  router.push({ name: 'stock-form', query: { barcode } })
+  router.push({ name: 'inventaire-form', query: { barcode } })
 }
 </script>
 
 <template>
   <BarcodeScanPage
-    :title="$t('stock.scan.title')"
+    :title="$t('inventaire.scan.title')"
     :icon="ClipboardDocumentCheckIcon"
-    :back-route="{ name: 'stock-list' }"
+    :back-route="{ name: 'inventaire-liste' }"
     :manual-input="true"
     @scan="decode($event)"
   />

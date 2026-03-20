@@ -47,7 +47,7 @@ function submitManual() {
     <template v-if="!showManual">
       <div v-if="loading">
         <img alt="Barcode" src="/barcode_scan.svg" />
-        <h3 class="text-center">{{ $t('stock.scan.loading') }}</h3>
+        <h3 class="text-center">{{ $t('inventaire.scan.loading') }}</h3>
       </div>
       <BarcodeScanner
         v-show="!loading"
@@ -57,27 +57,27 @@ function submitManual() {
       />
     </template>
     <div v-else>
-      <FormInput v-model="manualBarcode" :label="$t('stock.form.barcode')" type="text" />
+      <FormInput v-model="manualBarcode" :label="$t('inventaire.form.barcode')" type="text" />
       <div v-if="manualBarcode.length > 0 && !manualValid" class="text-red-600">
-        {{ $t('stock.form.errors.barcode') }}
+        {{ $t('inventaire.form.errors.barcode') }}
       </div>
     </div>
 
     <template #footer>
       <template v-if="!showManual">
         <RouterLink :to="backRoute">
-          <SecondaryButton>{{ $t('stock.button.back') }}</SecondaryButton>
+          <SecondaryButton>{{ $t('inventaire.button.back') }}</SecondaryButton>
         </RouterLink>
         <div v-if="manualInput" class="flex">
           <PrimaryButton class="text-sm m-auto" @click="openManual">
-            {{ $t('stock.button.manual_input') }}
+            {{ $t('inventaire.button.manual_input') }}
           </PrimaryButton>
         </div>
       </template>
       <template v-else>
-        <SecondaryButton @click="cancelManual">{{ $t('stock.button.back') }}</SecondaryButton>
+        <SecondaryButton @click="cancelManual">{{ $t('inventaire.button.back') }}</SecondaryButton>
         <PrimaryButton :disabled="!manualValid" @click="submitManual">
-          {{ $t('stock.button.submit') }}
+          {{ $t('inventaire.button.submit') }}
         </PrimaryButton>
       </template>
     </template>
