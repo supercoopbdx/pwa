@@ -7,6 +7,15 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.4.1] - 2026-03-22
+
+### Corrigé
+- Remplacement des textes lorem ipsum par des descriptions fonctionnelles
+- Remplacement de "joker" par "coordo" dans le message d'alerte réception
+- Externalisation des textes hardcodés de la page produits réception vers `fr.json`
+
+---
+
 ## [0.4.0] - 2026-03-20
 
 ### Ajouté

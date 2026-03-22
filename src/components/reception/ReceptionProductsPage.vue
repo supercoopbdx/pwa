@@ -53,7 +53,7 @@ onBeforeMount(async () => {
       <!-- Alerte : produits sans code barre -->
       <div v-if="!allHaveBarcodes" class="mb-5">
         <p class="text-red-600 font-semibold mb-3">
-          Les produits suivants doivent avoir un code barre pour pouvoir faire la réception :
+          {{ $t('reception.products-list.missing-barcode-warning') }}
         </p>
         <ul class="divide-y divide-gray-200 mb-4">
           <li v-for="product in productsWithoutBarcode" :key="product.name" class="py-2">
@@ -65,12 +65,12 @@ onBeforeMount(async () => {
             </div>
           </li>
         </ul>
-        <p class="text-gray-600 italic">Merci de contacter un joker ou un salarié.</p>
+        <p class="text-gray-600 italic">{{ $t('reception.products-list.missing-barcode-contact') }}</p>
       </div>
 
       <!-- Cas nominal : tous les produits ont un code barre -->
       <template v-if="allHaveBarcodes">
-        <p class="text-green-600 font-semibold mb-3">Tous les produits ont un code barre.</p>
+        <p class="text-green-600 font-semibold mb-3">{{ $t('reception.products-list.all-barcodes-ok') }}</p>
         <div class="flex justify-center mb-5">
           <RouterLink :to="{ name: 'reception-scan' }">
             <PrimaryButton class="text-2xl px-10 py-5">

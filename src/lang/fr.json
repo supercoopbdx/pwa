@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Supercoop'App",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in convallis nisl. Praesent varius risus ac aliquam gravida. Proin nibh orci, iaculis quis erat sed, euismod hendrerit velit. Sed ullamcorper, orci sed ornare pretium, libero libero consectetur lorem, rutrum venenatis sapien nibh vitae urna. Curabitur tincidunt turpis vel diam vehicula, at hendrerit neque convallis. Nullam non molestie tortor. Nullam sodales sit amet ex ut tempor.",
+    "description": "Application de gestion des inventaires et des réceptions pour les coopérateurs de Supercoop.",
     "pagenotfound": "Page non trouvée"
   },
   "menu": {
@@ -87,7 +87,7 @@
     "home": {
       "title": "Réception",
       "start": "Commencer",
-      "instructions": " Proin nec magna mollis, convallis sapien in, facilisis purus. Sed justo mi, ultricies sit amet tellus quis, porta porta tellus. Integer urna mi, posuere vitae finibus at, egestas a turpis. Cras vel sollicitudin neque. Phasellus lacinia pulvinar lorem, sed semper orci tristique vel. Vivamus facilisis nisl quis feugiat feugiat. Etiam ultrices, urna non sollicitudin iaculis, urna massa sagittis nulla, vel ullamcorper urna leo quis dui. Sed dolor nibh, rhoncus non ex sed, volutpat semper libero. "
+      "instructions": "Sélectionnez une commande dans la liste, puis pour chaque produit, vérifiez la quantité reçue ou signalez une correction."
     },
     "commande-list": {
       "title": "Commandes",
@@ -99,7 +99,10 @@
     "products-list": {
       "title": "Commande {po}",
       "loading": "Chargement des produits...",
-      "empty": "Aucun produit n'a été trouvé"
+      "empty": "Aucun produit n'a été trouvé",
+      "missing-barcode-warning": "Les produits suivants doivent avoir un code barre pour pouvoir faire la réception :",
+      "missing-barcode-contact": "Merci de contacter un coordo ou un salarié.",
+      "all-barcodes-ok": "Tous les produits ont un code barre."
     },
     "form": {
       "title": "Produit",
