@@ -13,6 +13,9 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 - Remplacement des textes lorem ipsum par des descriptions fonctionnelles
 - Remplacement de "joker" par "coordo" dans le message d'alerte réception
 - Externalisation des textes hardcodés de la page produits réception vers `fr.json`
+- Mise à jour axios 1.12 → 1.13.6 (CVE prototype pollution)
+- Mise à jour vite-plugin-pwa 0.21 → 1.2.0 et @vite-pwa/assets-generator 0.2 → 1.0.2
+- Override serialize-javascript → 7.0.4 (CVE RCE via workbox-build)
 
 ---
 
