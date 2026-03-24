@@ -10,21 +10,14 @@ import {
   CheckCircleIcon,
 } from '@heroicons/vue/24/outline'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
-import { onBeforeMount, onUnmounted, ref, computed } from 'vue'
+import { onBeforeMount, ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useImageCache } from '@/composables/useImageCache.ts'
 
-const { getCommandes, getCommande } = useReceptionStore()
-const { prefetch } = useImageCache()
+const { getCommandes } = useReceptionStore()
 const { commandes } = storeToRefs(useReceptionStore())
 const loading = ref(true)
 const searchQuery = ref('')
 
-/**
- * Filtre les commandes selon :
- * - Numéro de PO
- * - Nom du fournisseur
- */
 const filteredCommandes = computed(() => {
   if (!commandes.value || !searchQuery.value) {
     return commandes.value ?? new Map()
@@ -42,38 +35,9 @@ const filteredCommandes = computed(() => {
   )
 })
 
-function prefetchCommandeImages(po: string) {
-  getCommande(po).then((commandeLines) => {
-    if (!commandeLines) return
-    for (const product of commandeLines.products.values()) {
-      prefetch(product.image_url)
-    }
-  })
-}
-
-const observer = new IntersectionObserver((entries) => {
-  for (const entry of entries) {
-    if (entry.isIntersecting) {
-      const po = (entry.target as HTMLElement).dataset.po!
-      prefetchCommandeImages(po)
-      observer.unobserve(entry.target)
-    }
-  }
-})
-
-function observeCommandeItem(el: HTMLElement | null, po: string) {
-  if (!el) return
-  el.dataset.po = po
-  observer.observe(el)
-}
-
 onBeforeMount(async () => {
   await getCommandes()
   loading.value = false
-})
-
-onUnmounted(() => {
-  observer.disconnect()
 })
 </script>
 
@@ -112,7 +76,6 @@ onUnmounted(() => {
         :key="po"
         class="sm:pb-4"
         :class="{ 'opacity-60': commande.is_already_processed }"
-        :ref="(el) => observeCommandeItem(el as HTMLElement | null, po)"
       >
         <div class="flex items-center space-x-4 rtl:space-x-reverse">
 
