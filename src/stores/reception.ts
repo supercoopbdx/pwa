@@ -102,10 +102,10 @@ export const useReceptionStore = defineStore('commandes', () => {
 
             return {
               barcode,
-              name: name,
-              packsize: packSize,
+              name,
+              parcels,
+              packSize,
               received_quantity: received_quantity?.toString(),
-              ordered_quantity: parcels.toString(),
               ok: reception?.ok,
               comment: reception?.comment
             }
