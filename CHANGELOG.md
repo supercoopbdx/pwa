@@ -7,6 +7,14 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.4.2] - 2026-03-25
+
+### Corrigé
+- Réception : suppression du prefetch d'images sur la page liste des commandes (gel de l'application au chargement)
+- Réception : correction des champs `parcels` et `packSize` envoyés au backend (quantités toujours à 1 dans le CSV)
+
+---
+
 ## [0.4.1] - 2026-03-22
 
 ### Corrigé
