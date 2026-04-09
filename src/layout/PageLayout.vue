@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
-import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
-import { useAuthStore } from '@/stores/auth.ts'
-import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import NotificationToast from '@/components/NotificationToast.vue'
-import { storeToRefs } from 'pinia'
 
 declare const __APP_VERSION__: string
 const appVersion = __APP_VERSION__
@@ -13,9 +9,6 @@ const props = defineProps({
   title: { type: String, required: true },
   icon: { type: Function, required: false },
 })
-
-const { login, logout } = useAuthStore()
-const { user } = storeToRefs(useAuthStore())
 </script>
 
 <template>
@@ -27,12 +20,6 @@ const { user } = storeToRefs(useAuthStore())
         <component v-if="icon" :is="icon" class="h-9 inline align-top"></component>
         {{ props.title }}
       </h1>
-      <div class="fixed right-5 top-5">
-        <PrimaryButton v-if="!user" @click="login($route.fullPath)">{{
-          $t('auth.login')
-        }}</PrimaryButton>
-        <SecondaryButton v-else @click="logout()">{{ $t('auth.logout') }}</SecondaryButton>
-      </div>
     </div>
 
     <div

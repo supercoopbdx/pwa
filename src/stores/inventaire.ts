@@ -77,7 +77,13 @@ export const useInventaireStore = defineStore('inventaire', () => {
     persistProducts()
   }
 
-  async function send() {
+  async function send(): Promise<{
+    success: boolean
+    inventory_id?: number
+    submission_count?: number
+    can_compare?: boolean
+    error?: string
+  }> {
     try {
       const response = await axios.post(
         `${config.backend.baseURL}/zone/process/${zone.value}`,
@@ -88,15 +94,13 @@ export const useInventaireStore = defineStore('inventaire', () => {
           })),
         }
       )
-      console.log(response.data)
-      return response.data  
+      return response.data
     } catch (error: any) {
       console.error(error)
       notify(error.message)
-      return { email_status: 'error', message: error.message }
+      return { success: false, error: error.message }
     }
   }
-
 
   return {
     zone,

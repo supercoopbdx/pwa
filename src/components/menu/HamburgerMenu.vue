@@ -5,6 +5,7 @@ import {
   Bars3Icon,
   ClipboardDocumentCheckIcon,
   HomeIcon,
+  QrCodeIcon,
   TruckIcon,
   UserCircleIcon,
   XMarkIcon,
@@ -14,7 +15,7 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import { storeToRefs } from 'pinia'
 
-const { login } = useAuthStore()
+const { logout } = useAuthStore()
 const { user } = storeToRefs(useAuthStore())
 const { t } = useI18n()
 
@@ -31,6 +32,7 @@ const menuItems: MenuItem[] = [
   { label: t('menu.home'), path: '/', icon: HomeIcon },
   { label: t('menu.inventaire'), path: '/inventaire', icon: ClipboardDocumentCheckIcon },
   { label: t('menu.reception'), path: '/reception', icon: TruckIcon },
+  { label: t('menu.scan'), path: '/scan', icon: QrCodeIcon },
 ]
 
 const toggleMenu = () => {
@@ -81,14 +83,14 @@ const closeMenu = () => {
     </ul>
 
     <div class="fixed bottom-5">
-      <div>
-        <PrimaryButton v-if="!user" @click="login($route.fullPath)">
-          {{ $t('auth.login') }}
-        </PrimaryButton>
-        <div v-else>
-          <UserCircleIcon class="h-6 text-gray-600 inline align-text-bottom" />
-          {{ user?.profile.name }}<br />
+      <div v-if="user" class="flex flex-col gap-3">
+        <div class="flex items-center gap-2 text-gray-700">
+          <UserCircleIcon class="h-6 text-gray-600 shrink-0" />
+          <span class="text-sm font-medium">{{ user.profile.name }}</span>
         </div>
+        <PrimaryButton @click="logout(); closeMenu()">
+          {{ $t('auth.logout') }}
+        </PrimaryButton>
       </div>
     </div>
   </nav>

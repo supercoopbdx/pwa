@@ -13,6 +13,7 @@ defineProps<{
   icon: Component
   backRoute: RouteLocationRaw
   manualInput?: boolean
+  debug?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -51,6 +52,7 @@ function submitManual() {
       </div>
       <BarcodeScanner
         v-show="!loading"
+        :debug="debug"
         @loaded="loading = false"
         @scan="emit('scan', $event)"
         @error="console.error($event)"

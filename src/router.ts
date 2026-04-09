@@ -1,3 +1,4 @@
+import ScanPage from '@/components/ScanPage.vue'
 import InventaireLandingPage from '@/components/inventaire/InventaireLandingPage.vue'
 import InventaireListPage from '@/components/inventaire/InventaireListPage.vue'
 import InventaireScanPage from '@/components/inventaire/InventaireScanPage.vue'
@@ -27,6 +28,12 @@ const router = createRouter({
       path: '/login_callback',
       name: 'login-callback',
       component: LoginCallbackPage,
+    },
+    {
+      path: '/scan',
+      name: 'scan',
+      component: ScanPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/inventaire',

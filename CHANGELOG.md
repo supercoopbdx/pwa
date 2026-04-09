@@ -7,6 +7,23 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.4.3] - 2026-04-09
+
+### Ajouts
+- Page d'accueil repensée : bouton de connexion centré, sans menu hamburger (affiché uniquement après connexion)
+- Déconnexion déplacée exclusivement dans le menu hamburger (avec nom d'utilisateur)
+- Page de scan produit (`/scan`) accessible depuis le menu (dernière entrée)
+- Scanner : détection native `BarcodeDetector` (Chrome/Chromium) avec fallback automatique sur ZXing JS
+- Scanner : overlay de debug affichant le décodeur actif (natif vs JS), le nombre de scans et le dernier code-barres détecté
+- HTTPS en développement local via `@vitejs/plugin-basic-ssl` pour permettre l'accès caméra sur le réseau local
+- Proxy Vite complet pour les endpoints OIDC et backend (tests sur téléphone sans mixed-content)
+- Inventaire : affichage du numéro de soumission et message quand deux inventaires sont disponibles pour comparaison
+
+### Modifications
+- `vite.config.js` : activation HTTPS, `host: true` pour l'exposition réseau, proxy avec clés de chemin simples
+
+---
+
 ## [0.4.2] - 2026-03-25
 
 ### Corrigé

@@ -6,8 +6,15 @@
   },
   "menu": {
     "home": "Accueil",
+    "scan": "Scanner un produit",
     "inventaire": "Inventaire",
     "reception": "Réception"
+  },
+  "scan": {
+    "title": "Scanner un produit",
+    "loading": "Chargement...",
+    "not_found": "Produit introuvable",
+    "scan_again": "Scanner un autre produit"
   },
   "auth": {
     "login": "Connexion",
@@ -73,7 +80,10 @@
     "send": {
       "title": "Envoi de la liste",
       "confirmation": "Vous êtes sur le point d'envoyer la liste, êtes-vous certain que c'est ce que vous voulez faire ?",
-      "email_sent": "Email envoyé avec succès"
+      "email_sent": "Email envoyé avec succès",
+      "first_submission": "Premier inventaire enregistré pour la zone {zone}.",
+      "nth_submission": "Inventaire n°{count} enregistré pour la zone {zone}.",
+      "can_compare": "Deux inventaires sont disponibles pour cette zone, la fiche de soucis peut être générée."
     }
   },
   "reception": {

@@ -3,36 +3,53 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import SecondaryButton from '@/components/buttons/SecondaryButton.vue'
 import PageLayout from '@/layout/PageLayout.vue'
 import { useInventaireStore } from '@/stores/inventaire'
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
-const reportSent = ref(false)
-const message = ref('')
+const store = useInventaireStore()
+const { zone } = storeToRefs(store)
 
-const { send } = useInventaireStore()
+const reportSent = ref(false)
+const submissionCount = ref(0)
+const error = ref('')
 
 async function submit() {
-  console.log('send exists?', send)  // doit afficher la fonction
-  const jso = await send()
-  console.log(jso)
-  message.value = jso["email_status"]  
+  const result = await store.send()
+  if (!result.success) {
+    error.value = result.error ?? 'Erreur inconnue'
+  } else {
+    submissionCount.value = result.submission_count ?? 1
+  }
   reportSent.value = true
 }
 </script>
 
 <template>
   <PageLayout :title="$t('inventaire.send.title')">
-    <p v-if="!reportSent" class="text-left m-auto mt-4 mb-10">
-      {{ $t('inventaire.send.confirmation') }}
-    </p>
-    <p v-else class="text-left m-auto mt-4">{{ message }}</p>
+    <div v-if="!reportSent" class="text-left m-auto mt-4 mb-10">
+      <p>{{ $t('inventaire.send.confirmation') }}</p>
+    </div>
+
+    <div v-else-if="error" class="mt-4 text-red-600">
+      {{ error }}
+    </div>
+
+    <div v-else class="mt-4 space-y-3">
+      <p>
+        {{ $t('inventaire.send.nth_submission', { count: submissionCount, zone: zone }) }}
+      </p>
+      <p v-if="submissionCount >= 2" class="text-green-700 font-medium">
+        {{ $t('inventaire.send.can_compare') }}
+      </p>
+    </div>
 
     <template #footer>
       <RouterLink :to="{ name: 'inventaire-liste' }">
         <SecondaryButton>{{ $t('inventaire.button.back') }}</SecondaryButton>
       </RouterLink>
-      <PrimaryButton v-if="!reportSent" @click="submit()">{{
-        $t('inventaire.button.send_confirm')
-      }}</PrimaryButton>
+      <PrimaryButton v-if="!reportSent" @click="submit()">
+        {{ $t('inventaire.button.send_confirm') }}
+      </PrimaryButton>
       <RouterLink v-else :to="{ name: 'inventaire-landing' }">
         <PrimaryButton>{{ $t('inventaire.button.back_to_home') }}</PrimaryButton>
       </RouterLink>
