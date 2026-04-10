@@ -12,7 +12,7 @@ L'appli utilise l'API native `BarcodeDetector` quand elle est disponible, et bas
 | Android | Samsung Internet | 13+ |
 | macOS | Chrome / Edge / Opera | récent |
 | ChromeOS | Chrome / Edge / Opera | récent |
-| iOS 17 | Safari | expérimental (flag à activer manuellement, voir ci-dessous) |
+| iOS 17 / iOS 26 | Safari | expérimental (flag à activer manuellement, voir ci-dessous) |
 
 ### Pas de support natif → fallback ZXing
 
@@ -24,7 +24,7 @@ L'appli utilise l'API native `BarcodeDetector` quand elle est disponible, et bas
 | Linux | Tous |
 | iOS < 17 | Safari |
 
-## Activer BarcodeDetector dans Safari iOS 17
+## Activer BarcodeDetector dans Safari iOS 17 / iOS 26
 
 1. Ouvrir **Réglages**
 2. Aller dans **Safari**
