@@ -4,11 +4,23 @@ import axios from 'axios'
 import config from '@/config.ts'
 import { useNotificationStore } from '@/stores/notifications.ts'
 
+export type Zone = { id: number; name: string; description: string | null; is_active: boolean }
+
 export const useInventaireStore = defineStore('inventaire', () => {
   const { notify } = useNotificationStore()
   const zone = ref(localStorage.getItem('inventaire-zone') ?? '')
+  const zones = ref<Zone[]>([])
   const products: Ref<Map<string, StockProduct>> = ref(loadStorageProducts())
   const productsInfo: Ref<Map<string, StockProductInfo>> = ref(new Map())
+
+  async function fetchZones() {
+    try {
+      const response = await axios.get(`${config.backend.baseURL}/zones`)
+      zones.value = response.data
+    } catch (error: any) {
+      notify(error.message)
+    }
+  }
 
   function saveZone() {
     localStorage.setItem('inventaire-zone', zone.value)
@@ -104,7 +116,9 @@ export const useInventaireStore = defineStore('inventaire', () => {
 
   return {
     zone,
+    zones,
     products,
+    fetchZones,
     productsInfo,
     getProductInfo,
     saveZone,

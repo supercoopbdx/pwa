@@ -56,7 +56,8 @@
         "send": "5. Envoyer la liste une fois la zone terminée !"
       },
       "good_luck": "Bon comptage, et merci \uD83D\uDE42",
-      "zone_number": "Numéro de la zone",
+      "zone_number": "Choisir une zone",
+      "zones_loading": "Chargement des zones...",
       "zone_error": "La zone doit être un numéro à 3 chiffres",
       "start": "Démarrer l'inventaire",
       "continue": "Reprendre l'inventaire"
