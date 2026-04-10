@@ -34,6 +34,13 @@ L'appli utilise l'API native `BarcodeDetector` quand elle est disponible, et bas
 
 > **Note :** Cette fonctionnalité est **cassée dans iOS 18** et ne fonctionne pas même avec le flag activé. Les utilisateurs iOS 18 resteront sur le fallback ZXing.
 
+## Cas particulier : Chrome (et autres navigateurs) sous iOS
+
+Sur iOS, Apple impose à tous les navigateurs d'utiliser le moteur **WebKit**. Chrome, Firefox, Edge et autres ne sont que des interfaces par-dessus Safari. En conséquence :
+
+- Le support de `BarcodeDetector` sur iOS dépend **uniquement de la version d'iOS**, peu importe le navigateur affiché.
+- Chrome iOS se comporte exactement comme Safari iOS.
+
 ## Remarques
 
 - Les formats supportés sont **dépendants de la plateforme** — utiliser `BarcodeDetector.getSupportedFormats()` pour vérifier à l'exécution (c'est ce que fait la page Debug de l'appli).
