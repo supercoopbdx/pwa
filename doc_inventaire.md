@@ -14,6 +14,8 @@ L'inventaire se fait zone par zone. Pour chaque zone, vous scannez les produits 
 
 Depuis le menu, appuyez sur **Inventaire**.
 
+![Page d'accueil inventaire](screenshots/inventaire_accueil.png)
+
 - Saisissez le **numéro de zone** à 3 chiffres (ex. : `042`).
 - Si vous avez déjà commencé cette zone, le bouton indique **Reprendre l'inventaire**.
 - Sinon, le bouton indique **Démarrer l'inventaire**.
@@ -27,9 +29,13 @@ Depuis le menu, appuyez sur **Inventaire**.
 
 Depuis la liste de la zone, appuyez sur **Scanner Code Barre**.
 
+![Liste de la zone](screenshots/inventaire_liste.png)
+
 - Pointez l'appareil photo vers le code-barres du produit.
 - La détection est automatique.
 - Si le scan ne fonctionne pas, appuyez sur **Saisie manuelle** et entrez les 13 chiffres du code-barres.
+
+![Saisie manuelle du code-barres](screenshots/inventaire_scan_manuel.png)
 
 > Le code-barres doit comporter exactement 13 chiffres. Si votre appareil le supporte, le bouton **torche** (éclair) permet d'activer le flash pour les environnements sombres.
 
@@ -38,6 +44,8 @@ Depuis la liste de la zone, appuyez sur **Scanner Code Barre**.
 ## Étape 3 — Saisir la quantité
 
 Après le scan, la fiche du produit s'affiche.
+
+![Fiche produit avec quantité](screenshots/inventaire_form_rempli.png)
 
 - L'image et le nom du produit apparaissent si le produit est reconnu.
 - Saisissez la **quantité** comptée dans la zone.
@@ -52,6 +60,8 @@ Après le scan, la fiche du produit s'affiche.
 
 La liste affiche tous les produits enregistrés pour la zone en cours.
 
+![Liste avec un produit enregistré](screenshots/inventaire_liste_produit.png)
+
 - Pour **ajouter un produit**, appuyez sur **Scanner Code Barre**.
 - Pour **supprimer un produit**, appuyez sur l'icône poubelle à droite du produit.
 - Pour **vider toute la liste**, appuyez sur **Réinitialiser** (une confirmation est demandée).
@@ -61,6 +71,8 @@ La liste affiche tous les produits enregistrés pour la zone en cours.
 ## Étape 5 — Envoyer l'inventaire
 
 Une fois tous les produits de la zone saisis, appuyez sur **Terminer**.
+
+![Page d'envoi de l'inventaire](screenshots/inventaire_envoi.png)
 
 - Un message de confirmation s'affiche.
 - Appuyez sur **Confirmer l'envoi** pour soumettre l'inventaire.

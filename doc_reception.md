@@ -14,7 +14,11 @@ La réception consiste à vérifier les produits livrés par rapport à une comm
 
 Depuis le menu, appuyez sur **Réception**, puis sur **Commencer**.
 
+![Page d'accueil réception](screenshots/reception_accueil.png)
+
 La liste des commandes en attente de réception s'affiche.
+
+![Liste des commandes](screenshots/reception_commandes.png)
 
 - Utilisez la **barre de recherche** pour filtrer par fournisseur, numéro de commande (PO) ou trigramme.
 - Les commandes déjà traitées apparaissent en grisé.
@@ -26,9 +30,11 @@ La liste des commandes en attente de réception s'affiche.
 
 La liste des produits de la commande s'affiche avec pour chaque produit :
 
+![Liste des produits d'une commande](screenshots/reception_produits.png)
+
 - L'image et le nom du produit.
 - Le code-barres.
-- La quantité attendue (ex. : *2 colis de 6 = 12 bouteilles*).
+- La quantité attendue (ex. : *360 colis de 1 unité*).
 - Le statut de réception (non traité / correct / erreur).
 
 **Si des produits n'ont pas de code-barres :**
@@ -44,6 +50,8 @@ Appuyez sur **Scanner Code Barre**.
 - La détection est automatique.
 - Si le scan ne fonctionne pas, appuyez sur **Saisie manuelle** et entrez les 13 chiffres du code-barres.
 
+![Saisie manuelle du code-barres](screenshots/reception_scan_manuel.png)
+
 > Si votre appareil le supporte, le bouton **torche** (éclair) permet d'activer le flash pour les environnements sombres.
 
 ---
@@ -51,6 +59,8 @@ Appuyez sur **Scanner Code Barre**.
 ## Étape 4 — Valider ou signaler une anomalie
 
 Après le scan, la fiche du produit s'affiche avec la quantité attendue.
+
+![Fiche produit réception](screenshots/reception_form.png)
 
 ### Réception correcte
 Appuyez sur **Correct** (bouton vert) si la quantité reçue correspond à la commande.
