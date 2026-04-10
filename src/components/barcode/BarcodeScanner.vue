@@ -3,7 +3,6 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { BrowserMultiFormatReader } from '@zxing/browser'
 import { BarcodeFormat, DecodeHintType, NotFoundException } from '@zxing/library'
 
-const props = defineProps<{ debug?: boolean }>()
 
 const emit = defineEmits<{
   loaded: [playing: boolean]
@@ -14,12 +13,7 @@ const emit = defineEmits<{
 const videoRef = ref<HTMLVideoElement | null>(null)
 const error = ref<string | null>(null)
 
-// --- Debug info ---
-type DecoderType = 'native (BarcodeDetector)' | 'zxing (JS)'
-const decoderType = ref<DecoderType | null>(null)
 const nativeSupported = typeof (window as any).BarcodeDetector !== 'undefined'
-const scanCount = ref(0)
-const lastBarcode = ref<string | null>(null)
 
 // --- Native BarcodeDetector path ---
 let nativeAnimFrame: number | null = null
@@ -27,7 +21,6 @@ let nativeAnimFrame: number | null = null
 async function startNative() {
   const BarcodeDetector = (window as any).BarcodeDetector
   const detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8'] })
-  decoderType.value = 'native (BarcodeDetector)'
 
   const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
   if (!videoRef.value) return
@@ -41,8 +34,6 @@ async function startNative() {
       const barcodes = await detector.detect(videoRef.value)
       if (barcodes.length > 0) {
         const code = barcodes[0].rawValue as string
-        scanCount.value++
-        lastBarcode.value = code
         emit('scan', code)
         stopCamera()
         return
@@ -76,8 +67,6 @@ async function startZxing() {
   decoderType.value = 'zxing (JS)'
   zxingControls = await reader.decodeFromVideoDevice(undefined, videoRef.value, (result, err) => {
     if (result) {
-      scanCount.value++
-      lastBarcode.value = result.getText()
       emit('scan', result.getText())
       stopCamera()
     }
@@ -142,16 +131,6 @@ onUnmounted(stopCamera)
         ></div>
       </div>
 
-      <!-- Debug overlay -->
-      <div
-        v-if="props.debug"
-        class="absolute bottom-2 left-2 right-2 bg-black/70 text-white text-xs font-mono rounded p-2 pointer-events-none space-y-0.5"
-      >
-        <div>BarcodeDetector natif : <span :class="nativeSupported ? 'text-green-400' : 'text-red-400'">{{ nativeSupported ? 'supporté' : 'non supporté' }}</span></div>
-        <div>Décodeur actif : <span class="text-yellow-300">{{ decoderType ?? '…' }}</span></div>
-        <div>Scans : {{ scanCount }}</div>
-        <div v-if="lastBarcode">Dernier : {{ lastBarcode }}</div>
-      </div>
     </div>
   </div>
 </template>

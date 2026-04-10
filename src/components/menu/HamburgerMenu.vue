@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
   Bars3Icon,
+  BugAntIcon,
   ClipboardDocumentCheckIcon,
   HomeIcon,
   QrCodeIcon,
@@ -33,6 +34,7 @@ const menuItems: MenuItem[] = [
   { label: t('menu.inventaire'), path: '/inventaire', icon: ClipboardDocumentCheckIcon },
   { label: t('menu.reception'), path: '/reception', icon: TruckIcon },
   { label: t('menu.scan'), path: '/scan', icon: QrCodeIcon },
+  { label: t('menu.debug'), path: '/debug', icon: BugAntIcon },
 ]
 
 const toggleMenu = () => {

@@ -57,7 +57,6 @@ function scanAgain() {
     :icon="QrCodeIcon"
     :back-route="{ name: 'home' }"
     :manual-input="true"
-    :debug="true"
     @scan="onScan($event)"
   />
 

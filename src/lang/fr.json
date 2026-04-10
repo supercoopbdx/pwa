@@ -8,7 +8,14 @@
     "home": "Accueil",
     "scan": "Scanner un produit",
     "inventaire": "Inventaire",
-    "reception": "Réception"
+    "reception": "Réception",
+    "debug": "Debug"
+  },
+  "debug": {
+    "title": "Debug",
+    "app": "Application",
+    "scanner": "Scanner",
+    "browser": "Navigateur"
   },
   "scan": {
     "title": "Scanner un produit",

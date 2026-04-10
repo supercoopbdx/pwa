@@ -6,6 +6,7 @@ import InventaireFormPage from '@/components/inventaire/InventaireFormPage.vue'
 import InventaireSendPage from '@/components/inventaire/InventaireSendPage.vue'
 import HomePage from '@/components/HomePage.vue'
 import AccueilPage from '@/components/AccueilPage.vue'
+import DebugPage from '@/components/DebugPage.vue'
 import LoginCallbackPage from '@/components/LoginCallbackPage.vue'
 import NotFound from '@/components/NotFound.vue'
 import ReceptionLandingPage from '@/components/reception/ReceptionLandingPage.vue'
@@ -29,6 +30,12 @@ const router = createRouter({
       path: '/accueil',
       name: 'accueil',
       component: AccueilPage,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/debug',
+      name: 'debug',
+      component: DebugPage,
       meta: { requiresAuth: true },
     },
     {
