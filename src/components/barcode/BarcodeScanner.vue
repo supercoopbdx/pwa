@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import { BrowserMultiFormatReader } from '@zxing/browser'
 import { BarcodeFormat, DecodeHintType, NotFoundException } from '@zxing/library'
-
+import { BoltIcon, BoltSlashIcon } from '@heroicons/vue/24/outline'
 
 const emit = defineEmits<{
   loaded: [playing: boolean]
@@ -15,6 +15,34 @@ const error = ref<string | null>(null)
 
 const nativeSupported = typeof (window as any).BarcodeDetector !== 'undefined'
 
+// --- Torch ---
+const torchSupported = ref(false)
+const torchOn = ref(false)
+let videoTrack: MediaStreamTrack | null = null
+
+async function toggleTorch() {
+  if (!videoTrack || !torchSupported.value) return
+  torchOn.value = !torchOn.value
+  await videoTrack.applyConstraints({ advanced: [{ torch: torchOn.value } as any] })
+}
+
+async function setupTrack(stream: MediaStream) {
+  videoTrack = stream.getVideoTracks()[0]
+  const capabilities = videoTrack.getCapabilities() as any
+  torchSupported.value = !!capabilities.torch
+
+  const advanced: Record<string, string>[] = []
+  if (capabilities.focusMode?.includes('continuous')) {
+    advanced.push({ focusMode: 'continuous' })
+  }
+  if (capabilities.exposureMode?.includes('continuous')) {
+    advanced.push({ exposureMode: 'continuous' })
+  }
+  if (advanced.length > 0) {
+    await videoTrack.applyConstraints({ advanced } as any)
+  }
+}
+
 // --- Native BarcodeDetector path ---
 let nativeAnimFrame: number | null = null
 
@@ -22,7 +50,14 @@ async function startNative() {
   const BarcodeDetector = (window as any).BarcodeDetector
   const detector = new BarcodeDetector({ formats: ['ean_13', 'ean_8'] })
 
-  const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: {
+      facingMode: 'environment',
+      width: { ideal: 1280 },
+      height: { ideal: 720 },
+    },
+  })
+  setupTrack(stream)
   if (!videoRef.value) return
   videoRef.value.srcObject = stream
   await videoRef.value.play()
@@ -33,8 +68,7 @@ async function startNative() {
     try {
       const barcodes = await detector.detect(videoRef.value)
       if (barcodes.length > 0) {
-        const code = barcodes[0].rawValue as string
-        emit('scan', code)
+        emit('scan', barcodes[0].rawValue as string)
         stopCamera()
         return
       }
@@ -64,7 +98,15 @@ let zxingControls: { stop: () => void } | null = null
 
 async function startZxing() {
   if (!videoRef.value) return
-  decoderType.value = 'zxing (JS)'
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: {
+      facingMode: 'environment',
+      width: { ideal: 1280 },
+      height: { ideal: 720 },
+    },
+  })
+  setupTrack(stream)
+  videoRef.value.srcObject = stream
   zxingControls = await reader.decodeFromVideoDevice(undefined, videoRef.value, (result, err) => {
     if (result) {
       emit('scan', result.getText())
@@ -131,6 +173,16 @@ onUnmounted(stopCamera)
         ></div>
       </div>
 
+      <button
+        v-if="torchSupported"
+        @click="toggleTorch"
+        class="absolute bottom-4 right-4 p-3 rounded-full bg-black/50 text-white"
+        :class="{ 'bg-yellow-400/80 text-black': torchOn }"
+        aria-label="Torche"
+      >
+        <BoltIcon v-if="!torchOn" class="h-6 w-6" />
+        <BoltSlashIcon v-else class="h-6 w-6" />
+      </button>
     </div>
   </div>
 </template>
