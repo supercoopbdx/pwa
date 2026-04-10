@@ -7,6 +7,21 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.4.4] - 2026-04-10
+
+### Ajouts
+- Page d'accueil authentifiée (`/accueil`) affichée après connexion, avec message de bienvenue personnalisé
+- Page Debug (`/debug`) accessible depuis le menu : version de l'appli, support `BarcodeDetector` natif et formats disponibles, user-agent
+- Scanner : bouton torch (flash) dans l'overlay caméra, affiché uniquement si le device le supporte
+- Scanner : activation automatique de l'autofocus continu et de l'ajustement automatique de l'exposition
+- Scanner : résolution caméra portée à 1280×720
+
+### Documentation
+- `doc_barcode_detection.md` : tableau de support `BarcodeDetector` par OS/navigateur, procédure d'activation sur Safari iOS, cas particulier Chrome iOS
+- Script `md_to_pdf.py` et cible `make doc-pdf` pour générer un PDF depuis le markdown
+
+---
+
 ## [0.4.3] - 2026-04-09
 
 ### Ajouts
