@@ -16,6 +16,11 @@
     "not_found": "Produit introuvable",
     "scan_again": "Scanner un autre produit"
   },
+  "accueil": {
+    "title": "Accueil",
+    "welcome": "Bonjour {name} !",
+    "message": "Vous êtes bien connecté à la Supercoop'App. Tout va bien, vous pouvez commencer à travailler."
+  },
   "auth": {
     "login": "Connexion",
     "logout": "Deconnexion"

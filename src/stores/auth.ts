@@ -34,7 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function loginCallback(): Promise<string> {
     await userManager.signinCallback()
     user.value = await userManager.getUser()
-    return sessionStorage.getItem('redirectAfterLogin') ?? '/'
+    return sessionStorage.getItem('redirectAfterLogin') ?? '/accueil'
   }
 
   async function logout() {

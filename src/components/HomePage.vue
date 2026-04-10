@@ -12,7 +12,7 @@ const router = useRouter()
 onMounted(async () => {
   await checkAuth()
   if (user.value) {
-    router.replace({ name: 'inventaire-landing' })
+    router.replace({ name: 'accueil' })
   }
 })
 </script>
