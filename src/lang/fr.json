@@ -36,6 +36,7 @@
     "button": {
       "back": "Retour",
       "back_to_home": "Retour à l'accueil",
+      "back_to_zones": "Retour à la liste des zones",
       "start": "Scanner Code Barre",
       "manual_input": "Saisie manuelle",
       "submit": "Valider",
@@ -43,6 +44,7 @@
       "send_confirm": "Confirmer l'envoi",
       "reset": "Réinitialiser",
       "cancel": "Annuler",
+      "cancel_count": "Annuler mon comptage",
       "finish": "Terminer"
     },
     "home": {
@@ -60,7 +62,12 @@
       "zones_loading": "Chargement des zones...",
       "zone_error": "La zone doit être un numéro à 3 chiffres",
       "start": "Démarrer l'inventaire",
-      "continue": "Reprendre l'inventaire"
+      "continue": "Reprendre l'inventaire",
+      "session_premier": "Premier comptage",
+      "session_deuxieme": "Deuxième comptage",
+      "session_suggestion": "Zone suggérée",
+      "session_other": "Autre zone",
+      "session_no_zones": "Aucune zone disponible pour le comptage"
     },
     "list": {
       "title": "Zone {zone}",
@@ -70,7 +77,8 @@
       "name": "Nom",
       "image": "Image",
       "empty": "La liste est vide",
-      "reset": "Vous êtes sur le point de vider la liste"
+      "reset": "Vous êtes sur le point de vider la liste",
+      "cancel_confirm": "Êtes-vous sûr de vouloir annuler votre comptage ? La zone sera remise en attente."
     },
     "scan": {
       "title": "Scan code-barre",

@@ -19,6 +19,7 @@ async function submit() {
     error.value = result.error ?? 'Erreur inconnue'
   } else {
     submissionCount.value = result.submission_count ?? 1
+    store.reset()
   }
   reportSent.value = true
 }
@@ -51,7 +52,7 @@ async function submit() {
         {{ $t('inventaire.button.send_confirm') }}
       </PrimaryButton>
       <RouterLink v-else :to="{ name: 'inventaire-landing' }">
-        <PrimaryButton>{{ $t('inventaire.button.back_to_home') }}</PrimaryButton>
+        <PrimaryButton>{{ $t('inventaire.button.back_to_zones') }}</PrimaryButton>
       </RouterLink>
     </template>
   </PageLayout>

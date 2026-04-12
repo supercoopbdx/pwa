@@ -14,7 +14,7 @@ const router = useRouter()
 const stockStore = useInventaireStore()
 const { t } = useI18n()
 
-const { products } = storeToRefs(stockStore)
+const { products, zone, sessionCourante } = storeToRefs(stockStore)
 
 if (!stockStore.zone) {
   // if zone is not set, we go back to landing page
@@ -29,6 +29,14 @@ function reset() {
   if (confirm(t('inventaire.list.reset'))) {
     stockStore.reset()
   }
+}
+
+async function annulerComptage() {
+  if (!confirm(t('inventaire.list.cancel_confirm'))) return
+  const zoneId = parseInt(zone.value)
+  await stockStore.annulerComptage(zoneId)
+  stockStore.reset()
+  router.push({ name: 'inventaire-landing' })
 }
 </script>
 
@@ -81,6 +89,9 @@ function reset() {
         {{ $t('inventaire.button.back') }}
       </SecondaryButton>
       <div class="flex gap-4">
+        <RedButton v-if="sessionCourante" @click="annulerComptage()">
+          {{ $t('inventaire.button.cancel_count') }}
+        </RedButton>
         <RedButton @click="reset()" :disabled="!products.size">{{ $t('inventaire.button.reset') }}</RedButton>
         <PrimaryButton @click="$router.push({ name: 'inventaire-send' })" :disabled="!products.size">
           {{ $t('inventaire.button.finish') }}

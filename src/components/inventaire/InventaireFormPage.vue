@@ -44,7 +44,7 @@ watch(
 function submit() {
   if (!valid.value) return
   stockStore.addProduct(barcode.value, quantity.value ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image_url ?? '')
-  router.push({ name: 'inventaire-liste' })
+  router.push({ name: 'inventaire-scan' })
 }
 </script>
 

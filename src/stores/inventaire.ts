@@ -6,19 +6,36 @@ import { useNotificationStore } from '@/stores/notifications.ts'
 
 export type Zone = { id: number; name: string; description: string | null; is_active: boolean }
 
+export type SessionCourante = {
+  session_type: 'complet' | 'tournant'
+  suggestion_premier: Zone | null
+  suggestion_deuxieme: Zone | null
+  zones_premier_comptage: Zone[]
+  zones_deuxieme_comptage: Zone[]
+}
+
 export const useInventaireStore = defineStore('inventaire', () => {
   const { notify } = useNotificationStore()
   const zone = ref(localStorage.getItem('inventaire-zone') ?? '')
   const zones = ref<Zone[]>([])
+  const sessionCourante = ref<SessionCourante | null>(null)
+  const zonesComptees = ref<Set<number>>(
+    new Set(JSON.parse(localStorage.getItem('inventaire-zones-comptees') ?? '[]'))
+  )
   const products: Ref<Map<string, StockProduct>> = ref(loadStorageProducts())
   const productsInfo: Ref<Map<string, StockProductInfo>> = ref(new Map())
 
   async function fetchZones() {
-    try {
-      const response = await axios.get(`${config.backend.baseURL}/zones`)
-      zones.value = response.data
-    } catch (error: any) {
-      notify(error.message)
+    const response = await axios.get(`${config.backend.baseURL}/zones`)
+    zones.value = response.data
+  }
+
+  async function fetchSessionCourante() {
+    const response = await axios.get(`${config.backend.baseURL}/session-inventaire/courante`)
+    sessionCourante.value = response.data  // null si aucune session active
+    // Fallback : si pas de session, charger toutes les zones actives
+    if (!sessionCourante.value) {
+      await fetchZones()
     }
   }
 
@@ -89,6 +106,16 @@ export const useInventaireStore = defineStore('inventaire', () => {
     persistProducts()
   }
 
+  async function debutComptage(zoneId: number): Promise<void> {
+    await axios.post(`${config.backend.baseURL}/session-inventaire/zones/${zoneId}/debut-comptage`)
+    zonesComptees.value.add(zoneId)
+    localStorage.setItem('inventaire-zones-comptees', JSON.stringify([...zonesComptees.value]))
+  }
+
+  async function annulerComptage(zoneId: number): Promise<void> {
+    await axios.post(`${config.backend.baseURL}/session-inventaire/zones/${zoneId}/annuler-comptage`)
+  }
+
   async function send(): Promise<{
     success: boolean
     inventory_id?: number
@@ -100,9 +127,10 @@ export const useInventaireStore = defineStore('inventaire', () => {
       const response = await axios.post(
         `${config.backend.baseURL}/zone/process/${zone.value}`,
         {
-          products: Array.from(products.value.values()).map(({ barcode, quantity }) => ({
+          products: Array.from(products.value.values()).map(({ barcode, quantity, name }) => ({
             barcode,
             quantity,
+            name,
           })),
         }
       )
@@ -117,8 +145,13 @@ export const useInventaireStore = defineStore('inventaire', () => {
   return {
     zone,
     zones,
+    zonesComptees,
+    sessionCourante,
     products,
     fetchZones,
+    fetchSessionCourante,
+    debutComptage,
+    annulerComptage,
     productsInfo,
     getProductInfo,
     saveZone,
