@@ -2,7 +2,6 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import PageLayout from '@/layout/PageLayout.vue'
-import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { useInventaireStore } from '@/stores/inventaire'
 import { storeToRefs } from 'pinia'
 import { ClipboardDocumentCheckIcon } from '@heroicons/vue/24/outline'
@@ -11,12 +10,16 @@ import axios from 'axios'
 
 const stockStore = useInventaireStore()
 const router = useRouter()
-const { zone, zones, products, sessionCourante, zonesComptees } = storeToRefs(stockStore)
+const { zone, sessionCourante, zonesComptees, products } = storeToRefs(stockStore)
+
+const comptageEnCours = computed(() => zone.value !== '' && products.value.size > 0)
 
 const conflictMessage = ref<string | null>(null)
+const loaded = ref(false)
 
 onMounted(async () => {
   await stockStore.fetchSessionCourante()
+  loaded.value = true
 })
 
 // Liste ordonnée des zones disponibles : 1er deuxième comptage, 1er premier comptage, puis le reste
@@ -59,21 +62,31 @@ async function choisirZone(z: Zone) {
     }
   }
 
+  stockStore.reset()
   router.push({ name: 'inventaire-liste' })
-}
-
-// Mode sans session : sélection puis bouton démarrer
-function selectZone(z: Zone) {
-  zone.value = String(z.id).padStart(3, '0')
 }
 
 function isSelected(z: Zone) {
   return zone.value === String(z.id).padStart(3, '0')
 }
 
-async function submitZone() {
-  stockStore.saveZone()
+function reprendreComptage() {
   router.push({ name: 'inventaire-liste' })
+}
+
+async function annulerComptageEnCours() {
+  if (zone.value && sessionCourante.value) {
+    const zoneId = parseInt(zone.value, 10)
+    try {
+      await stockStore.annulerComptage(zoneId)
+    } catch {
+      // ignore errors on cancel
+    }
+    await stockStore.fetchSessionCourante()
+  }
+  stockStore.reset()
+  zone.value = ''
+  stockStore.saveZone()
 }
 </script>
 
@@ -97,87 +110,85 @@ async function submitZone() {
     <div class="mx-auto max-w-sm">
 
       <!-- Chargement -->
-      <div v-if="!sessionCourante && zones.length === 0"
+      <div v-if="!loaded"
            class="text-center text-gray-400 text-sm py-4">
         {{ $t('inventaire.home.zones_loading') }}
       </div>
 
-      <!-- Mode session active -->
-      <template v-else-if="zonesSession">
-        <p class="text-sm font-medium text-gray-700 mb-3">{{ $t('inventaire.home.zone_number') }}</p>
+      <!-- Aucune session active -->
+      <div v-else-if="!sessionCourante"
+           class="text-center text-gray-500 text-sm py-6 px-4 rounded-lg bg-gray-50 border border-gray-200">
+        {{ $t('inventaire.home.no_session') }}
+      </div>
 
-        <!-- Message de conflit -->
-        <div v-if="conflictMessage"
-             class="mb-3 px-4 py-3 rounded-lg bg-orange-50 border border-orange-300 text-orange-800 text-sm">
-          {{ conflictMessage }}
-        </div>
-
-        <!-- Aucune zone disponible -->
-        <p v-if="zonesSession.length === 0"
-           class="text-sm text-gray-400 text-center py-4">
-          {{ $t('inventaire.home.session_no_zones') }}
-        </p>
-
-        <div class="flex flex-col gap-2">
-          <button
-            v-for="entry in zonesSession"
-            :key="entry.zone.id"
-            @click="choisirZone(entry.zone)"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg border-2 text-left transition-colors"
-            :class="isSelected(entry.zone)
-              ? (entry.label === 'deuxieme' ? 'border-indigo-600 bg-indigo-50 text-indigo-800' : 'border-blue-600 bg-blue-50 text-blue-800')
-              : 'border-gray-200 bg-white hover:border-gray-300'"
-          >
-            <span class="font-mono font-bold text-lg w-10 shrink-0">
-              {{ String(entry.zone.id).padStart(3, '0') }}
-            </span>
-            <div class="min-w-0 flex-1">
-              <div class="font-medium truncate">{{ entry.zone.name }}</div>
-              <div v-if="entry.suggestion"
-                   class="text-xs"
-                   :class="entry.label === 'deuxieme' ? 'text-indigo-500' : 'text-blue-500'">
-                {{ entry.label === 'deuxieme' ? $t('inventaire.home.session_deuxieme') : $t('inventaire.home.session_premier') }}
-                · {{ $t('inventaire.home.session_suggestion') }}
-              </div>
-              <div v-else
-                   class="text-xs text-gray-400">
-                {{ entry.label === 'deuxieme' ? $t('inventaire.home.session_deuxieme') : $t('inventaire.home.session_premier') }}
-              </div>
-            </div>
-          </button>
-        </div>
-      </template>
-
-      <!-- Mode sans session : liste de toutes les zones actives -->
+      <!-- Session active -->
       <template v-else>
-        <p class="text-sm font-medium text-gray-700 mb-3">{{ $t('inventaire.home.zone_number') }}</p>
-        <div class="flex flex-col gap-2 max-h-72 overflow-y-auto pr-1">
-          <button
-            v-for="z in zones"
-            :key="z.id"
-            @click="selectZone(z)"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg border-2 text-left transition-colors"
-            :class="isSelected(z)
-              ? 'border-blue-600 bg-blue-50 text-blue-800'
-              : 'border-gray-200 bg-white hover:border-gray-300'"
-          >
-            <span class="font-mono font-bold text-lg w-10 shrink-0">
-              {{ String(z.id).padStart(3, '0') }}
-            </span>
-            <div class="min-w-0">
-              <div class="font-medium truncate">{{ z.name }}</div>
-              <div v-if="z.description" class="text-xs text-gray-500 truncate">{{ z.description }}</div>
-            </div>
-          </button>
-        </div>
-      </template>
-    </div>
 
-    <!-- ── Bouton démarrer ─────────────────────────────────────────── -->
-    <div class="text-center mt-6">
-      <PrimaryButton @click="submitZone()" :disabled="!zone">
-        {{ !products.size ? $t('inventaire.home.start') : $t('inventaire.home.continue') }}
-      </PrimaryButton>
+        <!-- Comptage en cours (app quittée puis reprise) -->
+        <div v-if="comptageEnCours"
+             class="px-4 py-3 rounded-lg bg-blue-50 border border-blue-200">
+          <p class="text-sm font-medium text-blue-800 mb-2">
+            {{ $t('inventaire.home.resume_title', { zone }) }}
+          </p>
+          <div class="flex gap-2">
+            <button @click="reprendreComptage"
+                    class="flex-1 px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition-colors">
+              {{ $t('inventaire.home.resume_continue') }}
+            </button>
+            <button @click="annulerComptageEnCours"
+                    class="flex-1 px-3 py-2 rounded-lg border border-blue-300 text-blue-700 text-sm hover:bg-blue-100 transition-colors">
+              {{ $t('inventaire.home.resume_cancel') }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Sélection d'une nouvelle zone -->
+        <template v-else-if="zonesSession">
+          <p class="text-sm font-medium text-gray-700 mb-3">{{ $t('inventaire.home.zone_number') }}</p>
+
+          <!-- Message de conflit -->
+          <div v-if="conflictMessage"
+               class="mb-3 px-4 py-3 rounded-lg bg-orange-50 border border-orange-300 text-orange-800 text-sm">
+            {{ conflictMessage }}
+          </div>
+
+          <!-- Aucune zone disponible -->
+          <p v-if="zonesSession.length === 0"
+             class="text-sm text-gray-400 text-center py-4">
+            {{ $t('inventaire.home.session_no_zones') }}
+          </p>
+
+          <div class="flex flex-col gap-2">
+            <button
+              v-for="entry in zonesSession"
+              :key="entry.zone.id"
+              @click="choisirZone(entry.zone)"
+              class="flex items-center gap-3 px-4 py-3 rounded-lg border-2 text-left transition-colors"
+              :class="isSelected(entry.zone)
+                ? (entry.label === 'deuxieme' ? 'border-indigo-600 bg-indigo-50 text-indigo-800' : 'border-blue-600 bg-blue-50 text-blue-800')
+                : 'border-gray-200 bg-white hover:border-gray-300'"
+            >
+              <span class="font-mono font-bold text-lg w-10 shrink-0">
+                {{ String(entry.zone.id).padStart(3, '0') }}
+              </span>
+              <div class="min-w-0 flex-1">
+                <div class="font-medium truncate">{{ entry.zone.name }}</div>
+                <div v-if="entry.suggestion"
+                     class="text-xs"
+                     :class="entry.label === 'deuxieme' ? 'text-indigo-500' : 'text-blue-500'">
+                  {{ entry.label === 'deuxieme' ? $t('inventaire.home.session_deuxieme') : $t('inventaire.home.session_premier') }}
+                  · {{ $t('inventaire.home.session_suggestion') }}
+                </div>
+                <div v-else
+                     class="text-xs text-gray-400">
+                  {{ entry.label === 'deuxieme' ? $t('inventaire.home.session_deuxieme') : $t('inventaire.home.session_premier') }}
+                </div>
+              </div>
+            </button>
+          </div>
+        </template>
+
+      </template>
     </div>
 
   </PageLayout>

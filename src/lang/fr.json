@@ -67,7 +67,11 @@
       "session_deuxieme": "Deuxième comptage",
       "session_suggestion": "Zone suggérée",
       "session_other": "Autre zone",
-      "session_no_zones": "Aucune zone disponible pour le comptage"
+      "session_no_zones": "Aucune zone disponible pour le comptage",
+      "no_session": "Aucune session d'inventaire en cours. Contactez un administrateur pour en créer une.",
+      "resume_title": "Comptage en cours — Zone {zone}",
+      "resume_continue": "Reprendre",
+      "resume_cancel": "Annuler mon comptage"
     },
     "list": {
       "title": "Zone {zone}",
