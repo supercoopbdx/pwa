@@ -85,13 +85,14 @@ export const useInventaireStore = defineStore('inventaire', () => {
       })
   }
 
-  function addProduct(barcode: string, quantity: number, found: boolean, name: string, image: string) {
+  function addProduct(barcode: string, quantity: number, found: boolean, name: string, image: string, uom_id?: number) {
     products.value.set(barcode, {
       barcode,
       quantity,
       found,
       name,
-      image
+      image,
+      uom_id,
     })
     persistProducts()
   }
@@ -127,10 +128,11 @@ export const useInventaireStore = defineStore('inventaire', () => {
       const response = await axios.post(
         `${config.backend.baseURL}/zone/process/${zone.value}`,
         {
-          products: Array.from(products.value.values()).map(({ barcode, quantity, name }) => ({
+          products: Array.from(products.value.values()).map(({ barcode, quantity, name, uom_id }) => ({
             barcode,
             quantity,
             name,
+            uom_id,
           })),
         }
       )

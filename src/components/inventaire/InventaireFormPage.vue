@@ -10,6 +10,9 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { ClipboardDocumentCheckIcon, QrCodeIcon } from '@heroicons/vue/24/outline'
 import AuthImage from '@/components/AuthImage.vue'
 
+const UOM_KG = 3
+const UOM_LITRE = 11
+
 const route = useRoute()
 const router = useRouter()
 const stockStore = useInventaireStore()
@@ -19,11 +22,27 @@ const quantity = ref(stockStore.products.get(barcode.value)?.quantity ?? 0)
 const infos: Ref<StockProductInfo | undefined> = ref(undefined)
 const loading = ref(false)
 
+const allowsDecimal = computed(() =>
+  infos.value?.uom_id === UOM_KG || infos.value?.uom_id === UOM_LITRE
+)
+
+const unitLabel = computed(() => {
+  if (infos.value?.uom_id === UOM_KG) return 'kg'
+  if (infos.value?.uom_id === UOM_LITRE) return 'litre'
+  return null
+})
+
 const valid = computed(() => !errors.value.barcode && !errors.value.quantity)
 const errors = computed(() => {
+  const qty = Number(quantity.value)
+  const quantityInvalid =
+    quantity.value.toString() === '' ||
+    isNaN(qty) ||
+    qty < 0 ||
+    (!allowsDecimal.value && !Number.isInteger(qty))
   return {
     barcode: !/^\d{13}$/.test(barcode.value),
-    quantity: quantity.value.toString() === '' || quantity.value < 0,
+    quantity: quantityInvalid,
   }
 })
 
@@ -43,7 +62,7 @@ watch(
 
 function submit() {
   if (!valid.value) return
-  stockStore.addProduct(barcode.value, quantity.value ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image_url ?? '')
+  stockStore.addProduct(barcode.value, Number(quantity.value) ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image_url ?? '', infos.value?.uom_id)
   router.push({ name: 'inventaire-scan' })
 }
 </script>
@@ -85,13 +104,14 @@ function submit() {
       <div>
         <FormInput
           v-model="quantity"
-          :label="$t('inventaire.form.quantity')"
+          :label="unitLabel ? `${$t('inventaire.form.quantity')} (${unitLabel})` : $t('inventaire.form.quantity')"
           :placeholder="$t('inventaire.form.quantity_placeholder')"
           type="number"
           min="0"
+          :step="allowsDecimal ? 'any' : '1'"
         />
         <div v-if="errors.quantity" class="text-red-600">
-          {{ $t('inventaire.form.errors.quantity') }}
+          {{ allowsDecimal ? $t('inventaire.form.errors.quantity_decimal') : $t('inventaire.form.errors.quantity') }}
         </div>
       </div>
     </FormLayout>

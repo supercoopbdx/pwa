@@ -94,7 +94,8 @@
       "modify": "Modifier le code barre",
       "errors": {
         "barcode": "Le code-barres doit être un nombre à 13 chiffres",
-        "quantity": "La quantité doit être un nombre entier",
+        "quantity": "La quantité doit être un nombre entier positif",
+        "quantity_decimal": "La quantité doit être un nombre positif",
         "product_not_found": "Produit inconnu"
       }
     },

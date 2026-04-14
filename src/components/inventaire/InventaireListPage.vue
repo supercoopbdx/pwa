@@ -74,6 +74,8 @@ async function annulerComptage() {
           </div>
           <div class="inline-flex items-center text-base font-semibold text-gray-900">
             {{ product.quantity }}
+            <span v-if="product.uom_id === 3" class="ml-1 text-sm font-normal text-gray-500">kg</span>
+            <span v-else-if="product.uom_id === 11" class="ml-1 text-sm font-normal text-gray-500">L</span>
           </div>
 
           <PrimaryButton @click="removeItem(product.barcode)">
