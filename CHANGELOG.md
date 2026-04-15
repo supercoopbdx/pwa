@@ -7,6 +7,47 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.5.6] - 2026-04-16
+
+### Ajouts
+- Scanner Android : normalisation EAN-13 — codes à 12 chiffres (UPC-A) préfixés automatiquement d'un zéro
+- Page debug : section "Zones comptées" avec liste triée et bouton de réinitialisation
+- Prévention double soumission : overlay spinner bloquant pendant l'envoi de la zone
+
+### Modifications
+- Quantité : placeholder `0`, message d'erreur distinct si champ vide, dismiss clavier mobile via focus sur le bouton de validation
+- UOM : labels et mode décimal injectés par le backend — suppression des constantes locales `UOM_KG` / `UOM_LITRE`
+- Zones comptées : marquage uniquement après soumission serveur réussie (et non au démarrage du comptage)
+
+---
+
+## [0.5.3] - 2026-04-15
+
+### Corrections
+- Inventaire : gestion des codes-barres secondaires dans le formulaire
+- `can_compare` : correction de l'affichage du statut de zone
+- Mise en page du footer des pages inventaire
+
+---
+
+## [0.5.2] - 2026-04-14
+
+### Ajouts
+- Inventaire : réinitialisation de la liste au démarrage (reprise possible si l'app a été quittée)
+- Unités de mesure : affichage kg/L/unité selon l'UOM Odoo
+
+---
+
+## [0.5.0] - 2026-04-12
+
+### Ajouts
+- Inventaire : sélection de zone via liste déroulante depuis l'API backend
+- Inventaire : gestion des sessions de comptage par zone (premier/deuxième passage)
+- Documentation utilisateur : guides inventaire et réception avec captures d'écran
+- Cible `make doc` pour générer les PDFs de documentation
+
+---
+
 ## [0.4.4] - 2026-04-10
 
 ### Ajouts
