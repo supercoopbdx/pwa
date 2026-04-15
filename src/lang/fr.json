@@ -95,13 +95,13 @@
       "barcode_placeholder": "Scannez ou saisissez un code-barres",
       "quantity_placeholder": "Saisissez la quantité",
       "quantity": "Quantité",
-      "modify": "Modifier le code barre",
-      "errors": {
+"errors": {
         "barcode": "Le code-barres doit être un nombre à 13 chiffres",
         "quantity": "La quantité doit être un nombre entier positif",
         "quantity_decimal": "La quantité doit être un nombre positif",
         "product_not_found": "Produit inconnu"
-      }
+      },
+      "multi_barcode": "Code-barres secondaire ({scanned}) — enregistré sous le code principal ({main})"
     },
     "send": {
       "title": "Envoi de la liste",
@@ -109,7 +109,7 @@
       "email_sent": "Email envoyé avec succès",
       "first_submission": "Premier inventaire enregistré pour la zone {zone}.",
       "nth_submission": "Inventaire n°{count} enregistré pour la zone {zone}.",
-      "can_compare": "Deux inventaires sont disponibles pour cette zone, la fiche de soucis peut être générée."
+      "can_compare": "La zone est prête pour la finalisation."
     }
   },
   "reception": {

@@ -87,17 +87,27 @@ async function annulerComptage() {
 
     <!-- Boutons fixes en bas -->
     <template #footer>
-      <SecondaryButton @click="$router.push({ name: 'inventaire-landing' })">
-        {{ $t('inventaire.button.back') }}
-      </SecondaryButton>
-      <div class="flex gap-4">
-        <RedButton v-if="sessionCourante" @click="annulerComptage()">
-          {{ $t('inventaire.button.cancel_count') }}
-        </RedButton>
-        <RedButton @click="reset()" :disabled="!products.size">{{ $t('inventaire.button.reset') }}</RedButton>
-        <PrimaryButton @click="$router.push({ name: 'inventaire-send' })" :disabled="!products.size">
+      <div class="flex flex-col gap-2 w-full">
+        <PrimaryButton
+          class="w-full"
+          @click="$router.push({ name: 'inventaire-send' })"
+          :disabled="!products.size"
+        >
           {{ $t('inventaire.button.finish') }}
         </PrimaryButton>
+        <div class="flex justify-between gap-2">
+          <SecondaryButton @click="$router.push({ name: 'inventaire-landing' })">
+            {{ $t('inventaire.button.back') }}
+          </SecondaryButton>
+          <div class="flex gap-2">
+            <RedButton v-if="sessionCourante" @click="annulerComptage()">
+              {{ $t('inventaire.button.cancel_count') }}
+            </RedButton>
+            <RedButton @click="reset()" :disabled="!products.size">
+              {{ $t('inventaire.button.reset') }}
+            </RedButton>
+          </div>
+        </div>
       </div>
     </template>
   </PageLayout>

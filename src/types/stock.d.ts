@@ -3,6 +3,7 @@ type StockProductInfo = {
   image_url?: string
   found: boolean
   uom_id?: number
+  barcode?: string
 }
 
 type StockProduct = {

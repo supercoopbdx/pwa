@@ -17,8 +17,12 @@ const route = useRoute()
 const router = useRouter()
 const stockStore = useInventaireStore()
 
-const barcode = ref((route.query.barcode as string) ?? null)
-const quantity = ref(stockStore.products.get(barcode.value)?.quantity ?? 0)
+const scannedBarcode = ref((route.query.barcode as string) ?? null)
+const barcode = computed(() => infos.value?.barcode ?? scannedBarcode.value)
+const isMultiBarcode = computed(() =>
+  !!infos.value?.barcode && infos.value.barcode !== scannedBarcode.value
+)
+const quantity = ref(stockStore.products.get(scannedBarcode.value)?.quantity ?? 0)
 const infos: Ref<StockProductInfo | undefined> = ref(undefined)
 const loading = ref(false)
 
@@ -41,17 +45,17 @@ const errors = computed(() => {
     qty < 0 ||
     (!allowsDecimal.value && !Number.isInteger(qty))
   return {
-    barcode: !/^\d{13}$/.test(barcode.value),
+    barcode: !/^\d{13}$/.test(scannedBarcode.value),
     quantity: quantityInvalid,
   }
 })
 
 watch(
-  barcode,
+  scannedBarcode,
   async (newVal) => {
     if (newVal && !errors.value.barcode) {
       loading.value = true
-      infos.value = await stockStore.getProductInfo(barcode.value)
+      infos.value = await stockStore.getProductInfo(scannedBarcode.value)
       loading.value = false
     } else {
       infos.value = undefined
@@ -64,6 +68,11 @@ function submit() {
   if (!valid.value) return
   stockStore.addProduct(barcode.value, Number(quantity.value) ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image_url ?? '', infos.value?.uom_id)
   router.push({ name: 'inventaire-scan' })
+}
+
+function modifyBarcode() {
+  infos.value = undefined
+  scannedBarcode.value = ''
 }
 </script>
 
@@ -86,18 +95,21 @@ function submit() {
               <QrCodeIcon class="h-5 inline align-text-bottom" />
               {{ barcode }}
             </p>
+            <p v-if="isMultiBarcode" class="text-xs text-amber-600 mt-1">
+              {{ $t('inventaire.form.multi_barcode', { scanned: scannedBarcode, main: barcode }) }}
+            </p>
           </div>
         </div>
       </div>
       <div>
         <FormInput
           v-if="!loading && !infos"
-          v-model="barcode"
+          v-model="scannedBarcode"
           :label="$t('inventaire.form.barcode')"
           type="text"
           maxlength="13"
         />
-        <div v-if="barcode?.length >= 13 && errors.barcode" class="text-red-600">
+        <div v-if="scannedBarcode?.length >= 13 && errors.barcode" class="text-red-600">
           {{ $t('inventaire.form.errors.barcode') }}
         </div>
       </div>

@@ -11,6 +11,7 @@ const { zone } = storeToRefs(store)
 
 const reportSent = ref(false)
 const submissionCount = ref(0)
+const canCompare = ref(false)
 const error = ref('')
 
 async function submit() {
@@ -19,6 +20,7 @@ async function submit() {
     error.value = result.error ?? 'Erreur inconnue'
   } else {
     submissionCount.value = result.submission_count ?? 1
+    canCompare.value = result.can_compare ?? false
     store.reset()
   }
   reportSent.value = true
@@ -39,7 +41,7 @@ async function submit() {
       <p>
         {{ $t('inventaire.send.nth_submission', { count: submissionCount, zone: zone }) }}
       </p>
-      <p v-if="submissionCount >= 2" class="text-green-700 font-medium">
+      <p v-if="canCompare" class="text-green-700 font-medium">
         {{ $t('inventaire.send.can_compare') }}
       </p>
     </div>
