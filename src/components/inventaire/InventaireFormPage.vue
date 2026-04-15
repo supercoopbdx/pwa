@@ -10,9 +10,6 @@ import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { ClipboardDocumentCheckIcon, QrCodeIcon } from '@heroicons/vue/24/outline'
 import AuthImage from '@/components/AuthImage.vue'
 
-const UOM_KG = 3
-const UOM_LITRE = 11
-
 const route = useRoute()
 const router = useRouter()
 const stockStore = useInventaireStore()
@@ -22,18 +19,17 @@ const barcode = computed(() => infos.value?.barcode ?? scannedBarcode.value)
 const isMultiBarcode = computed(() =>
   !!infos.value?.barcode && infos.value.barcode !== scannedBarcode.value
 )
-const quantity = ref(stockStore.products.get(scannedBarcode.value)?.quantity ?? 0)
+const quantity = ref<number | ''>(stockStore.products.get(scannedBarcode.value)?.quantity ?? '')
+const quantityTouched = ref(false)
+const submitButtonRef = ref<{ focus: () => void } | null>(null)
 const infos: Ref<StockProductInfo | undefined> = ref(undefined)
 const loading = ref(false)
 
-const allowsDecimal = computed(() =>
-  infos.value?.uom_id === UOM_KG || infos.value?.uom_id === UOM_LITRE
-)
+const allowsDecimal = computed(() => infos.value?.uom_is_decimal ?? false)
 
 const unitLabel = computed(() => {
-  if (infos.value?.uom_id === UOM_KG) return 'kg'
-  if (infos.value?.uom_id === UOM_LITRE) return 'litre'
-  return null
+  if (!infos.value?.uom_is_decimal) return null
+  return infos.value?.uom_label ?? null
 })
 
 const valid = computed(() => !errors.value.barcode && !errors.value.quantity)
@@ -65,8 +61,12 @@ watch(
 )
 
 function submit() {
-  if (!valid.value) return
-  stockStore.addProduct(barcode.value, Number(quantity.value) ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image_url ?? '', infos.value?.uom_id)
+  if (!valid.value) {
+    quantityTouched.value = true
+    return
+  }
+  submitButtonRef.value?.focus()
+  stockStore.addProduct(barcode.value, Number(quantity.value) ?? 0, infos.value?.found ?? false, infos.value?.name ?? '', infos.value?.image_url ?? '', infos.value?.uom_id, infos.value?.uom_label, infos.value?.uom_is_decimal)
   router.push({ name: 'inventaire-scan' })
 }
 
@@ -117,13 +117,15 @@ function modifyBarcode() {
         <FormInput
           v-model="quantity"
           :label="unitLabel ? `${$t('inventaire.form.quantity')} (${unitLabel})` : $t('inventaire.form.quantity')"
-          :placeholder="$t('inventaire.form.quantity_placeholder')"
           type="number"
           min="0"
+          placeholder="0"
           :step="allowsDecimal ? 'any' : '1'"
+          @blur="quantityTouched = true"
+          @keydown.enter="submit"
         />
-        <div v-if="errors.quantity" class="text-red-600">
-          {{ allowsDecimal ? $t('inventaire.form.errors.quantity_decimal') : $t('inventaire.form.errors.quantity') }}
+        <div v-if="errors.quantity && quantityTouched" class="text-red-600">
+          {{ quantity === '' ? $t('inventaire.form.errors.quantity_empty') : allowsDecimal ? $t('inventaire.form.errors.quantity_decimal') : $t('inventaire.form.errors.quantity') }}
         </div>
       </div>
     </FormLayout>
@@ -132,7 +134,7 @@ function modifyBarcode() {
       <RouterLink :to="{ name: 'inventaire-liste' }">
         <SecondaryButton>{{ $t('inventaire.button.cancel') }}</SecondaryButton>
       </RouterLink>
-      <PrimaryButton @click="submit()">{{ $t('inventaire.button.submit') }}</PrimaryButton>
+      <PrimaryButton ref="submitButtonRef" @click="submit()">{{ $t('inventaire.button.submit') }}</PrimaryButton>
     </template>
   </PageLayout>
 </template>

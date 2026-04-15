@@ -85,14 +85,16 @@ export const useInventaireStore = defineStore('inventaire', () => {
       })
   }
 
-  function addProduct(barcode: string, quantity: number, found: boolean, name: string, image: string, uom_id?: number) {
+  function addProduct(barcode: string, quantity: number, found: boolean, name: string, image_url: string, uom_id?: number, uom_label?: string, uom_is_decimal?: boolean) {
     products.value.set(barcode, {
       barcode,
       quantity,
       found,
       name,
-      image,
+      image_url,
       uom_id,
+      uom_label,
+      uom_is_decimal,
     })
     persistProducts()
   }
@@ -109,8 +111,6 @@ export const useInventaireStore = defineStore('inventaire', () => {
 
   async function debutComptage(zoneId: number): Promise<void> {
     await axios.post(`${config.backend.baseURL}/session-inventaire/zones/${zoneId}/debut-comptage`)
-    zonesComptees.value.add(zoneId)
-    localStorage.setItem('inventaire-zones-comptees', JSON.stringify([...zonesComptees.value]))
   }
 
   async function annulerComptage(zoneId: number): Promise<void> {
@@ -136,6 +136,9 @@ export const useInventaireStore = defineStore('inventaire', () => {
           })),
         }
       )
+      const zoneId = parseInt(zone.value, 10)
+      zonesComptees.value.add(zoneId)
+      localStorage.setItem('inventaire-zones-comptees', JSON.stringify([...zonesComptees.value]))
       return response.data
     } catch (error: any) {
       console.error(error)

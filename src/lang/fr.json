@@ -97,6 +97,7 @@
       "quantity": "Quantité",
 "errors": {
         "barcode": "Le code-barres doit être un nombre à 13 chiffres",
+        "quantity_empty": "Veuillez saisir une quantité",
         "quantity": "La quantité doit être un nombre entier positif",
         "quantity_decimal": "La quantité doit être un nombre positif",
         "product_not_found": "Produit inconnu"
@@ -109,7 +110,8 @@
       "email_sent": "Email envoyé avec succès",
       "first_submission": "Premier inventaire enregistré pour la zone {zone}.",
       "nth_submission": "Inventaire n°{count} enregistré pour la zone {zone}.",
-      "can_compare": "La zone est prête pour la finalisation."
+      "can_compare": "La zone est prête pour la finalisation.",
+      "sending": "Envoi en cours…"
     }
   },
   "reception": {

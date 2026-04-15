@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 defineOptions({ inheritAttrs: false })
 
 defineProps({
@@ -9,11 +11,14 @@ defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
+const inputRef = ref<HTMLInputElement | null>(null)
 
 function updateValue(e: Event) {
   const target = e.target as HTMLInputElement
   emit('update:modelValue', target.value)
 }
+
+defineExpose({ blur: () => inputRef.value?.blur() })
 </script>
 
 <template>
@@ -31,6 +36,7 @@ function updateValue(e: Event) {
     />
     <input
       v-else
+      ref="inputRef"
       :type="type"
       :value="modelValue"
       @input="updateValue"

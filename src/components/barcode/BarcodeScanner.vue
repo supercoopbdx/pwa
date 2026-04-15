@@ -68,7 +68,11 @@ async function startNative() {
     try {
       const barcodes = await detector.detect(videoRef.value)
       if (barcodes.length > 0) {
-        emit('scan', barcodes[0].rawValue as string)
+        // Le BarcodeDetector natif Android retourne parfois les EAN-13 commençant
+        // par 0 sous forme UPC-A (12 chiffres) — on restitue le zéro initial.
+        const raw = barcodes[0].rawValue as string
+        const normalized = /^\d{12}$/.test(raw) ? '0' + raw : raw
+        emit('scan', normalized)
         stopCamera()
         return
       }
