@@ -17,6 +17,7 @@ defineProps<{
 
 const emit = defineEmits<{
   scan: [barcode: string]
+  error: [error: unknown]
 }>()
 
 const loading = ref(true)
@@ -53,7 +54,7 @@ function submitManual() {
         v-show="!loading"
         @loaded="loading = false"
         @scan="emit('scan', $event)"
-        @error="console.error($event)"
+        @error="emit('error', $event)"
       />
     </template>
     <div v-else>

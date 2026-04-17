@@ -138,7 +138,6 @@ router.beforeEach(async (to, _from, next) => {
   // other routes needs to be authenticated, if no auth, then login
   await checkAuth()
   const { user } = useAuthStore()
-  console.log('auth required', user)
   if (!user) {
     await login(to.fullPath)
     return false
