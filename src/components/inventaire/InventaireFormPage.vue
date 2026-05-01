@@ -95,7 +95,7 @@ function modifyBarcode() {
               <QrCodeIcon class="h-5 inline align-text-bottom" />
               {{ barcode }}
             </p>
-            <p v-if="isMultiBarcode" class="text-xs text-amber-600 mt-1">
+<p v-if="isMultiBarcode" class="text-xs text-amber-600 mt-1">
               {{ $t('inventaire.form.multi_barcode', { scanned: scannedBarcode, main: barcode }) }}
             </p>
           </div>

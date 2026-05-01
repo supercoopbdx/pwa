@@ -7,6 +7,16 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.5.7] - 2026-05-01
+
+### Ajouts
+- Page scan produit : affichage du prix et de la quantité en stock
+
+### Corrections
+- Prise de zone : la zone n'est plus sauvegardée localement avant confirmation serveur — toute erreur réseau ou serveur affiche un message et annule la sélection
+
+---
+
 ## [0.5.6] - 2026-04-16
 
 ### Ajouts

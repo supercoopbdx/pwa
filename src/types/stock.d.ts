@@ -6,6 +6,8 @@ type StockProductInfo = {
   uom_label?: string
   uom_is_decimal?: boolean
   barcode?: string
+  qty_available?: number
+  lst_price?: number
 }
 
 type StockProduct = {

@@ -43,8 +43,6 @@ const zonesSession = computed(() => {
 
 async function choisirZone(z: Zone) {
   conflictMessage.value = null
-  zone.value = String(z.id).padStart(3, '0')
-  stockStore.saveZone()
 
   if (sessionCourante.value) {
     try {
@@ -55,13 +53,16 @@ async function choisirZone(z: Zone) {
         conflictMessage.value = par
           ? `Cette zone a déjà été prise par ${par}.`
           : `Cette zone n'est plus disponible.`
-        await stockStore.fetchSessionCourante()
-        return
+      } else {
+        conflictMessage.value = `Impossible de prendre la zone (problème réseau ou serveur). Veuillez réessayer.`
       }
-      throw err
+      await stockStore.fetchSessionCourante()
+      return
     }
   }
 
+  zone.value = String(z.id).padStart(3, '0')
+  stockStore.saveZone()
   stockStore.reset()
   router.push({ name: 'inventaire-liste' })
 }
