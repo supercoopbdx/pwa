@@ -1,6 +1,7 @@
 type ReceptionProduct = {
   name: string
   barcode: string
+  additional_barcodes: string[]
   image_url: string
   parcels: number
   packSize: number
@@ -21,8 +22,9 @@ type MappedReceptionCommande = {
 }
 
 type ReceptionCommandeLines = {
-  po : string,
-  products: Map<string, ReceptionProduct>
+  po: string
+  products: Map<string, ReceptionProduct>  // barcode → product, pour lookup pendant le scan
+  allProducts: ReceptionProduct[]          // liste complète pour l'affichage et l'envoi
 }
 
 

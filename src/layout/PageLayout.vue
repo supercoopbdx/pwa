@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import HamburgerMenu from '@/components/menu/HamburgerMenu.vue'
 import NotificationToast from '@/components/NotificationToast.vue'
+import PwaInstallBanner from '@/components/PwaInstallBanner.vue'
 
 declare const __APP_VERSION__: string
 const appVersion = __APP_VERSION__
@@ -13,6 +14,7 @@ const props = defineProps({
 
 <template>
   <NotificationToast />
+  <PwaInstallBanner />
   <main class="fixed top-0 left-0 h-full w-full flex flex-col p-5">
     <span class="fixed bottom-1 right-2 text-xs text-gray-300 select-none">v{{ appVersion }}</span>
     <div class="fixed left-0 top-0 right-0 pb-5 items-center">

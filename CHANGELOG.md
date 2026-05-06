@@ -7,6 +7,18 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.5.8] - 2026-05-07
+
+### Ajouts
+- Réception : support des barcodes alternatifs (`product.multi.barcode`) — scanner un barcode secondaire identifie correctement le produit dans le bon de commande
+- Réception : liste complète des produits sans code-barres affichée d'un coup (plus de troncature due à la collision de clés)
+- Bannière d'installation PWA : invite à ajouter l'app à l'écran d'accueil (Chrome Android avec prompt natif, iOS avec instructions partage, Firefox avec message d'ouverture dans Chrome)
+
+### Corrections
+- Réception : `parcels` et `packSize` désormais issus des champs de la ligne de commande Odoo (`product_qty_package` / `package_qty`) et non plus du champ produit — les quantités affichées sont maintenant correctes
+
+---
+
 ## [0.5.7] - 2026-05-01
 
 ### Ajouts

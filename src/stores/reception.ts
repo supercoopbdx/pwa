@@ -33,8 +33,14 @@ export const useReceptionStore = defineStore('commandes', () => {
       params: { po },
     })
 
-    const productsMap = new Map(response.data.map((p) => [p.barcode, p]))
-    const commandeLines: ReceptionCommandeLines = { po, products: productsMap }
+    const productsMap = new Map<string, ReceptionProduct>()
+    for (const p of response.data) {
+      if (p.barcode) productsMap.set(p.barcode, p)
+      for (const alt of p.additional_barcodes ?? []) {
+        if (alt) productsMap.set(alt, p)
+      }
+    }
+    const commandeLines: ReceptionCommandeLines = { po, products: productsMap, allProducts: response.data }
     commandes_lines.value.set(po, commandeLines)
     return commandeLines
   }
@@ -64,7 +70,7 @@ export const useReceptionStore = defineStore('commandes', () => {
     if (!commande) throw new Error('Commande non trouvée')
 
     const response = await axios.post(`${config.backend.baseURL}/commandes/reception/process/${po}`, {
-      products: Array.from(commande.products.values()).map(
+      products: commande.allProducts.map(
         ({ parcels, packSize, barcode, reception, name }) => {
           const received_quantity =
             reception?.ok && reception?.received === undefined ? parcels : reception?.received
