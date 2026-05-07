@@ -23,16 +23,12 @@ const commande: Ref<ReceptionCommandeLines | undefined> = ref()
 const loading = ref(true)
 
 const isCommandeComplete = computed(() => {
-  if (!commande || !commande.value?.products) return false
-  for (let [, product] of commande.value?.products) {
-    if (!product.reception) return false
-  }
-  return true
+  if (!commande.value?.allProducts?.length) return false
+  return commande.value.allProducts.every((p) => !!p.reception)
 })
 
 const productsWithoutBarcode = computed(() => {
-  if (!commande.value?.products) return []
-  return Array.from(commande.value.products.values()).filter((p) => !p.barcode)
+  return commande.value?.allProducts.filter((p) => !p.barcode) ?? []
 })
 
 const allHaveBarcodes = computed(() => productsWithoutBarcode.value.length === 0)
@@ -81,7 +77,7 @@ onBeforeMount(async () => {
       </template>
 
       <ul v-if="commande && allHaveBarcodes" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
-        <li v-for="[barcode, product] in commande.products" :key="barcode">
+        <li v-for="product in commande.allProducts" :key="product.barcode">
           <div class="flex items-center space-x-2 rtl:space-x-reverse py-2">
             <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
               <AuthImage :path="product.image_url" img-class="w-15 h-15 rounded-lg" />

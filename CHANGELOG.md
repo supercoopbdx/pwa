@@ -7,6 +7,13 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.5.9] - 2026-05-07
+
+### Corrections
+- Réception : la liste des produits sans code-barres utilisait la Map (indexée par barcode) au lieu de `allProducts` — les produits sans barcode étaient invisibles
+
+---
+
 ## [0.5.8] - 2026-05-07
 
 ### Ajouts
