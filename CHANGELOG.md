@@ -7,7 +7,7 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
-## [0.7.0] - 2026-05-20
+## [0.7.1] - 2026-05-20
 
 ### Modifications
 - Réception : les commandes finalisées (stock-in Odoo effectué) disparaissent de la liste — cohérence avec l'interface admin
