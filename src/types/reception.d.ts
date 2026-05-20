@@ -13,12 +13,14 @@ type ReceptionProduct = {
   }
 }
 
+type ReceptionStatut = 'a_recevoir' | 'soumise'
+
 type MappedReceptionCommande = {
   po: string
   provider: string
   date: Date
   n_products: number
-  is_already_processed: boolean
+  statut: ReceptionStatut
 }
 
 type ReceptionCommandeLines = {
@@ -27,12 +29,11 @@ type ReceptionCommandeLines = {
   allProducts: ReceptionProduct[]          // liste complète pour l'affichage et l'envoi
 }
 
-
 type ReceptionCommandeResponse = {
   po: string
   provider: string
   date: Date
   n_products: number
-  received : boolean
-
+  received: boolean
+  statut: ReceptionStatut
 }

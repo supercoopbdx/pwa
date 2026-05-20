@@ -17,7 +17,7 @@ export const useReceptionStore = defineStore('commandes', () => {
           provider: commande.provider,
           date: new Date(commande.date),
           n_products: commande.n_products,
-          is_already_processed: commande.received,
+          statut: commande.statut ?? (commande.received ? 'soumise' : 'a_recevoir'),
         },
       ]),
     )

@@ -7,6 +7,14 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.0] - 2026-05-20
+
+### Modifications
+- Réception : les commandes finalisées (stock-in Odoo effectué) disparaissent de la liste — cohérence avec l'interface admin
+- Réception : les commandes soumises mais non encore finalisées affichent une icône horloge jaune (au lieu de la coche verte qui ne distinguait pas les deux états)
+
+---
+
 ## [0.5.9] - 2026-05-07
 
 ### Corrections

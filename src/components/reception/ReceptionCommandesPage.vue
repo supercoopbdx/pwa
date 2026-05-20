@@ -8,6 +8,7 @@ import {
   TruckIcon,
   MagnifyingGlassIcon,
   CheckCircleIcon,
+  ClockIcon,
 } from '@heroicons/vue/24/outline'
 import PrimaryButton from '@/components/buttons/PrimaryButton.vue'
 import { onBeforeMount, ref, computed } from 'vue'
@@ -75,7 +76,7 @@ onBeforeMount(async () => {
         v-for="[po, commande] in filteredCommandes"
         :key="po"
         class="sm:pb-4"
-        :class="{ 'opacity-60': commande.is_already_processed }"
+        :class="{ 'opacity-60': commande.statut === 'soumise' }"
       >
         <div class="flex items-center space-x-4 rtl:space-x-reverse">
 
@@ -83,11 +84,11 @@ onBeforeMount(async () => {
             <p class="text-sm font-medium text-gray-900 flex items-center gap-2">
               {{ commande.provider }}
 
-              <!-- Icône commande réceptionnée -->
-              <CheckCircleIcon
-                v-if="commande.is_already_processed"
-                class="h-5 w-5 text-green-600"
-                title="Commande déjà réceptionnée"
+              <!-- Soumise via app, en attente de validation backend -->
+              <ClockIcon
+                v-if="commande.statut === 'soumise'"
+                class="h-5 w-5 text-yellow-500"
+                title="Reçu via l'app — en attente de validation"
               />
             </p>
             <p class="text-sm text-gray-500">
