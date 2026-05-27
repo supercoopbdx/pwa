@@ -37,6 +37,22 @@ onBeforeMount(async () => {
   commande.value = await getCommande(po)
   loading.value = false
 })
+
+function orderedQty(product: ReceptionProduct): number {
+  return product.parcels * product.packSize
+}
+
+function receivedQty(product: ReceptionProduct): number {
+  if (!product.reception) return 0
+  if (product.reception.ok) return orderedQty(product)
+  return product.reception.received ?? 0
+}
+
+/** Abréviation d'unité pour l'affichage compact dans les parenthèses */
+function shortUnit(unit: string): string {
+  if (unit === 'unité') return 'u'
+  return unit  // kg, L → déjà courts
+}
 </script>
 
 <template>
@@ -77,34 +93,69 @@ onBeforeMount(async () => {
       </template>
 
       <ul v-if="commande && allHaveBarcodes" class="divide-y divide-gray-200 mx-auto max-h-full flex flex-col my-5">
-        <li v-for="product in commande.allProducts" :key="product.barcode">
-          <div class="flex items-center space-x-2 rtl:space-x-reverse py-2">
-            <div class="shrink-0 w-15 h-15 rounded-lg bg-gray-200">
-              <AuthImage :path="product.image_url" img-class="w-15 h-15 rounded-lg" />
+        <li
+          v-for="product in commande.allProducts"
+          :key="product.barcode"
+          :class="{
+            'bg-green-50':  product.reception?.ok,
+            'bg-amber-50':  product.reception && !product.reception.ok,
+          }"
+          class="rounded-lg my-0.5"
+        >
+          <div class="flex items-center gap-3 px-2 py-2">
+            <!-- Image -->
+            <div class="shrink-0 w-12 h-12 rounded-lg bg-gray-200 overflow-hidden">
+              <AuthImage :path="product.image_url" img-class="w-12 h-12 rounded-lg" />
             </div>
-            <div class="flex-1 min-w-0 grow">
-              <p class="text-sm font-medium text-gray-900 text-clip">
-                {{ product.name }}
+
+            <!-- Infos produit -->
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-gray-900 truncate">{{ product.name }}</p>
+              <p class="text-xs text-gray-400 flex items-center gap-1">
+                <QrCodeIcon class="h-3.5 inline" />{{ product.barcode }}
               </p>
-              <p class="text-sm text-gray-500">
-                <QrCodeIcon class="h-5 inline align-text-bottom" />
-                {{ product.barcode }}
-              </p>
-              <div class="items-center text-l font-semibold text-gray-900">
-                {{ product.parcels }} x {{ product.packSize }} =
-                {{ product.parcels * product.packSize }} {{ product.unit }}
+
+              <!-- Quantités -->
+              <div class="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-0.5 text-sm">
+                <!-- Commandé (toujours visible) -->
+                <span class="text-gray-500">
+                  {{ $t('reception.products-list.ordered') }} :
+                  <template v-if="product.packSize > 1">
+                    <span class="font-semibold text-gray-700">{{ product.parcels }} {{ $t('reception.form.parcel') }}</span>{{ ' ' }}<span class="text-xs text-gray-400">({{ product.packSize }} {{ shortUnit(product.unit) }})</span>{{ ' ' }}<span class="text-gray-400">soit</span>{{ ' ' }}<span class="font-semibold text-gray-700">{{ orderedQty(product) }} {{ product.unit }}</span>
+                  </template>
+                  <template v-else>
+                    <span class="font-semibold text-gray-700">{{ orderedQty(product) }} {{ product.unit }}</span>
+                  </template>
+                </span>
+
+                <!-- Reçu : uniquement si scanné -->
+                <span v-if="product.reception?.ok" class="text-green-700 font-semibold flex items-center gap-0.5">
+                  <CheckIcon class="h-4 inline" />
+                  {{ $t('reception.products-list.received') }} : {{ receivedQty(product) }} {{ product.unit }}
+                </span>
+                <span v-else-if="product.reception && !product.reception.ok" class="text-amber-700 font-semibold flex items-center gap-0.5">
+                  <ExclamationTriangleIcon class="h-4 inline" />
+                  {{ $t('reception.products-list.received') }} : {{ receivedQty(product) }} / {{ orderedQty(product) }} {{ product.unit }}
+                </span>
               </div>
+
+              <!-- Commentaire anomalie -->
+              <p v-if="product.reception?.comment" class="text-xs text-amber-600 mt-0.5 italic truncate">
+                {{ product.reception.comment }}
+              </p>
             </div>
-            <div class="flex flex-col">
+
+            <!-- Bouton action -->
+            <div class="shrink-0">
               <RouterLink :to="{ name: 'reception-form', params: { barcode: product.barcode } }">
                 <PrimaryButton v-if="!product.reception">
-                  <ChevronRightIcon class="w-7 h-7" />
+                  <ChevronRightIcon class="w-6 h-6" />
                 </PrimaryButton>
                 <GreenButton v-else-if="product.reception.ok">
-                  <CheckIcon class="w-7 h-7" />
+                  <CheckIcon class="w-6 h-6" />
                 </GreenButton>
                 <RedButton v-else>
-                  <ExclamationTriangleIcon class="w-7 h-7" />
+                  <ExclamationTriangleIcon class="w-6 h-6" />
                 </RedButton>
               </RouterLink>
             </div>

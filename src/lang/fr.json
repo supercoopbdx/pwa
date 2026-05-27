@@ -140,7 +140,9 @@
       "empty": "Aucun produit n'a été trouvé",
       "missing-barcode-warning": "Les produits suivants doivent avoir un code barre pour pouvoir faire la réception :",
       "missing-barcode-contact": "Merci de contacter un coordo ou un salarié.",
-      "all-barcodes-ok": "Tous les produits ont un code barre."
+      "all-barcodes-ok": "Tous les produits ont un code barre.",
+      "ordered": "Cmdé",
+      "received": "Reçu"
     },
     "form": {
       "title": "Produit",
@@ -149,7 +151,8 @@
       "within": "dans",
       "parcel": "colis",
       "of": "de",
-      "received": "Colis reçus",
+      "received": "Quantité reçue",
+      "expected": "Attendu",
       "comment": "Commentaire"
     }
   }

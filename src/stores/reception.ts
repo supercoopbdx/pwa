@@ -72,8 +72,11 @@ export const useReceptionStore = defineStore('commandes', () => {
     const response = await axios.post(`${config.backend.baseURL}/commandes/reception/process/${po}`, {
       products: commande.allProducts.map(
         ({ parcels, packSize, barcode, reception, name }) => {
+          // received_quantity est toujours en UOM (pas en colis)
           const received_quantity =
-            reception?.ok && reception?.received === undefined ? parcels : reception?.received
+            reception?.ok && reception?.received === undefined
+              ? parcels * packSize         // OK sans saisie → total attendu en UOM
+              : reception?.received        // anomalie → quantité saisie en UOM
           return {
             barcode,
             name,

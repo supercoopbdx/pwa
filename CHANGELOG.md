@@ -7,6 +7,18 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.2] - 2026-05-27
+
+### Ajouts
+- Réception : affichage des quantités commandées et reçues par ligne de produit, avec fond coloré selon l'état (vert = OK, orange = anomalie)
+- Réception : format quantité commandée "X colis (Y u) soit Z unités" — abréviations d'unités (unité → u)
+
+### Corrections
+- Réception : les quantités envoyées au backend sont désormais en UOM (et non en colis) — cohérence avec le traitement backend et l'email CSV
+- Réception : formulaire pré-rempli avec la quantité totale attendue en UOM, label explicite avec l'unité
+
+---
+
 ## [0.7.1] - 2026-05-20
 
 ### Modifications

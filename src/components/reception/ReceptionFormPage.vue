@@ -29,6 +29,10 @@ const comment = ref('')
 onBeforeMount(async () => {
   product.value = await getProduct(po.toString(), barcode.toString())
   received.value = product.value?.reception?.received ?? 0
+  // Si pas encore de réception, pré-remplir avec la quantité attendue en UOM
+  if (!product.value?.reception) {
+    received.value = (product.value?.parcels ?? 0) * (product.value?.packSize ?? 1)
+  }
   comment.value = product.value?.reception?.comment ?? ''
   loading.value = false
 })
@@ -75,10 +79,10 @@ function submit() {
       </div>
       <FormLayout v-if="showErrorForm">
         <div>
-          <FormInput type="number" :label="$t('reception.form.received')" v-model="received" />
+          <FormInput type="number" :label="`${$t('reception.form.received')} (${product.unit})`" v-model="received" />
           <p class="text-sm text-gray-500 mt-1">
-            = {{ received * product.packSize }} {{ product.unit }}
-            ({{ product.packSize }} {{ product.unit }}/{{ $t('reception.form.parcel') }})
+            {{ $t('reception.form.expected') }} : {{ product.parcels * product.packSize }} {{ product.unit }}
+            ({{ product.parcels }} {{ $t('reception.form.parcel') }} × {{ product.packSize }} {{ product.unit }})
           </p>
         </div>
         <FormInput type="textarea" :label="$t('reception.form.comment')" v-model="comment" />
