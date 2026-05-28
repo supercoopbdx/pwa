@@ -7,6 +7,13 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.3] - 2026-05-28
+
+### Corrections
+- Réception : les boutons d'action de chaque ligne de produit n'étaient plus visibles sur mobile (coupés à droite)
+
+---
+
 ## [0.7.2] - 2026-05-27
 
 ### Ajouts

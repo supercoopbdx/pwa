@@ -25,7 +25,7 @@ const props = defineProps({
     </div>
 
     <div
-      class="text-left mt-30 md:mt-20 max-w-lg mx-auto overflow-y-auto"
+      class="text-left mt-30 md:mt-20 w-full max-w-lg mx-auto overflow-y-auto"
       :class="{
         'h-[calc(100%-175px)] md:h-[calc(100%-135px)]': $slots.footer,
       }"
