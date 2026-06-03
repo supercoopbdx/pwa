@@ -27,6 +27,7 @@ jobs:
           VITE_OIDC_CLIENT_SECRET: ${{ secrets.VITE_OIDC_CLIENT_SECRET_RECETTE }}
           VITE_OIDC_SCOPE: ${{ vars.VITE_OIDC_SCOPE }}
           VITE_BACKEND_BASEURL: https://backend-test.supercoop.fr
+          VITE_APP_ENV: recette
 
       - name: Upload build files
         uses: actions/upload-artifact@v4

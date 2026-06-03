@@ -6,6 +6,8 @@ import PwaInstallBanner from '@/components/PwaInstallBanner.vue'
 declare const __APP_VERSION__: string
 const appVersion = __APP_VERSION__
 
+const isRecette = import.meta.env.VITE_APP_ENV === 'recette'
+
 const props = defineProps({
   title: { type: String, required: true },
   icon: { type: Function, required: false },
@@ -15,6 +17,9 @@ const props = defineProps({
 <template>
   <NotificationToast />
   <PwaInstallBanner />
+  <div v-if="isRecette" class="fixed top-0 left-0 right-0 z-50 bg-amber-400 text-amber-900 text-center text-xs font-semibold py-1">
+    ⚠ Environnement de recette
+  </div>
   <main class="fixed top-0 left-0 h-full w-full flex flex-col p-5">
     <span class="fixed bottom-1 right-2 text-xs text-gray-300 select-none">v{{ appVersion }}</span>
     <div class="fixed left-0 top-0 right-0 pb-5 items-center">
