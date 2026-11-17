@@ -4,6 +4,7 @@ import PageLayout from '@/layout/PageLayout.vue'
 import { BugAntIcon } from '@heroicons/vue/24/outline'
 import { useInventaireStore } from '@/stores/inventaire'
 import { storeToRefs } from 'pinia'
+import BarcodeScanner, { type ScannerInfo } from '@/components/barcode/BarcodeScanner.vue'
 
 declare const __APP_VERSION__: string
 const appVersion = __APP_VERSION__
@@ -18,6 +19,52 @@ const { zonesComptees } = storeToRefs(inventaireStore)
 function viderZonesComptees() {
   zonesComptees.value.clear()
   localStorage.setItem('inventaire-zones-comptees', '[]')
+}
+
+// --- Comparatif ancienne / nouvelle méthode de scan ---
+interface ScanTest {
+  info: ScannerInfo | null
+  code: string
+  ms: number
+}
+const testLegacy = ref(false)
+const testForceZxing = ref(false)
+const testRunning = ref(false)
+const testKey = ref(0)
+const testInfo = ref<ScannerInfo | null>(null)
+const testError = ref<string | null>(null)
+const testResults = ref<ScanTest[]>([])
+let testLoadedAt = 0
+
+function startTest() {
+  testInfo.value = null
+  testError.value = null
+  testKey.value++
+  testRunning.value = true
+}
+
+function onTestLoaded() {
+  testLoadedAt = performance.now()
+}
+
+function onTestScan(code: string) {
+  testResults.value.unshift({
+    info: testInfo.value,
+    code,
+    ms: Math.round(performance.now() - testLoadedAt),
+  })
+  testRunning.value = false
+}
+
+function onTestError(e: Error) {
+  testError.value = e?.message || String(e)
+}
+
+function fmtInfo(i: ScannerInfo | null) {
+  if (!i) return '—'
+  const res = i.width && i.height ? `${i.width}×${i.height}` : '?'
+  const z = i.zoom !== undefined ? ` · zoom ${i.zoom}` : ''
+  return `${i.camera} · ${res}${z} · ${i.streams} flux`
 }
 
 onMounted(async () => {
@@ -60,6 +107,80 @@ onMounted(async () => {
             <span v-if="nativeFormats.length">{{ nativeFormats.join(', ') }}</span>
             <span v-else class="text-red-500">aucun</span>
           </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="font-semibold text-base mb-2 font-sans">Test du scanner : ancienne / nouvelle méthode</h2>
+        <div class="bg-gray-50 rounded-lg p-3 space-y-3">
+          <div class="flex flex-wrap gap-4 font-sans">
+            <label class="flex items-center gap-1">
+              <input type="radio" :value="false" v-model="testLegacy" :disabled="testRunning" />
+              Nouvelle
+            </label>
+            <label class="flex items-center gap-1">
+              <input type="radio" :value="true" v-model="testLegacy" :disabled="testRunning" />
+              Ancienne (≤ 0.7.3)
+            </label>
+            <label v-if="nativeSupported" class="flex items-center gap-1">
+              <input type="checkbox" v-model="testForceZxing" :disabled="testRunning" />
+              Forcer ZXing
+            </label>
+          </div>
+          <button
+            v-if="!testRunning"
+            @click="startTest"
+            class="px-3 py-1 rounded bg-blue-600 text-white font-sans"
+          >Scanner</button>
+          <button
+            v-else
+            @click="testRunning = false"
+            class="px-3 py-1 rounded bg-gray-300 font-sans"
+          >Arrêter</button>
+
+          <div v-if="testRunning" class="h-72">
+            <BarcodeScanner
+              :key="testKey"
+              :legacy="testLegacy"
+              :force-zxing="testForceZxing"
+              @loaded="onTestLoaded"
+              @info="testInfo = $event"
+              @scan="onTestScan"
+              @error="onTestError"
+            />
+          </div>
+
+          <div v-if="testInfo" class="space-y-1">
+            <div><span class="text-gray-500">Méthode :</span> {{ testInfo.method }} ({{ testInfo.decoder }})</div>
+            <div><span class="text-gray-500">Caméra :</span> {{ fmtInfo(testInfo) }}</div>
+            <div v-if="testInfo.focusMode"><span class="text-gray-500">Mise au point :</span> {{ testInfo.focusMode }}</div>
+            <div><span class="text-gray-500">Caméras arrière :</span></div>
+            <ul class="list-disc pl-5">
+              <li v-for="c in testInfo.cameras" :key="c">{{ c }}</li>
+            </ul>
+          </div>
+          <div v-if="testError" class="text-red-500">{{ testError }}</div>
+
+          <table v-if="testResults.length" class="w-full text-xs">
+            <thead>
+              <tr class="text-left text-gray-500">
+                <th>Méthode</th><th>Délai</th><th>Code</th><th>Caméra</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(r, i) in testResults" :key="i" class="align-top border-t border-gray-200">
+                <td>{{ r.info ? `${r.info.method} (${r.info.decoder})` : '?' }}</td>
+                <td>{{ (r.ms / 1000).toFixed(1) }} s</td>
+                <td>{{ r.code }}</td>
+                <td>{{ fmtInfo(r.info) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button
+            v-if="testResults.length"
+            @click="testResults = []"
+            class="text-xs text-red-500 underline"
+          >Vider les résultats</button>
         </div>
       </section>
 

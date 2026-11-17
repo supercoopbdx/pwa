@@ -7,6 +7,17 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.4] - 2026-11-17
+
+### Corrections
+- Scan sur iPhone (ZXing) : la caméra était ouverte deux fois et ZXing décodait son propre flux en basse résolution, sans les réglages de mise au point ni la torche. Il décode désormais le flux configuré, en 1920×1080, avec une tentative toutes les 150 ms
+
+### Ajouts
+- Scan : choix automatique de l'objectif (caméra virtuelle triple / double grand-angle sur iPhone, qui bascule sur la macro de près ; `camera2 0` sur Android), menu pour changer d'objectif et réglage du zoom, mémorisés sur l'appareil
+- Debug : test comparatif ancienne / nouvelle méthode de scan (caméra utilisée, résolution, nombre de flux, délai de lecture)
+
+---
+
 ## [0.7.3] - 2026-05-28
 
 ### Corrections
