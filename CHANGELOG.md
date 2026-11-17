@@ -7,6 +7,13 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.5] - 2026-11-17
+
+### Modifications
+- Scan iPhone : hors iPhone Pro (caméra triple), choix par défaut de la « Caméra arrière » simple au lieu de la « Double caméra grand angle », moins bonne à l'essai sur iPhone 14
+
+---
+
 ## [0.7.4] - 2026-11-17
 
 ### Corrections

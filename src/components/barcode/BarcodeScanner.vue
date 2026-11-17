@@ -84,14 +84,15 @@ function pickCamera(cams: MediaDeviceInfo[], savedLabel?: string): MediaDeviceIn
     const saved = cams.find(c => c.label === savedLabel)
     if (saved) return saved
   }
-  // iPhone : les caméras virtuelles multi-objectifs basculent seules sur la macro
-  // quand on s'approche (iPhone Pro), contrairement au grand-angle seul.
+  // iPhone Pro : la caméra virtuelle triple bascule seule sur la macro quand on
+  // s'approche, contrairement au grand-angle seul.
   const triple = cams.find(c => /triple/i.test(c.label))
   if (triple) return triple
-  const dualWide = cams.find(
-    c => /dual|double/i.test(c.label) && /wide|grand/i.test(c.label) && !/ultra/i.test(c.label),
-  )
-  if (dualWide) return dualWide
+  // Autres iPhone (pas de macro sur le parc, iPhone ≤ 15) : le grand-angle seul.
+  // La « double caméra grand angle » n'apporte rien et a semblé moins bonne
+  // à l'essai sur iPhone 14 (test du 2026-11-17).
+  const wide = cams.find(c => /^(caméra arrière|back camera)$/i.test(c.label.trim()))
+  if (wide) return wide
   // Android : camera2 0 est presque toujours l'objectif principal
   const android0 = cams.find(c => /camera2 0\b/.test(c.label))
   if (android0) return android0
