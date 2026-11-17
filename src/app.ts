@@ -5,6 +5,9 @@ import { createPinia } from 'pinia'
 import App from '@/components/App.vue'
 import router from '@/router.ts'
 import french from '@/lang/fr.json'
+import { capturePwaInstallPrompt } from '@/pwaInstall.ts'
+
+capturePwaInstallPrompt()
 
 
 createApp(App)

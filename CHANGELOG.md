@@ -7,6 +7,13 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.6] - 2026-11-17
+
+### Corrections
+- Bandeau d'installation : l'événement d'installation de Chrome est capté dès le démarrage de l'app ; avant, il était perdu s'il arrivait avant l'affichage du bandeau (ex. pendant le retour de connexion), et ni le bandeau ni la proposition de Chrome ne s'affichaient
+
+---
+
 ## [0.7.5] - 2026-11-17
 
 ### Modifications

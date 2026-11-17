@@ -1,74 +1,58 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+// L'événement d'installation de Chrome est capté au démarrage (voir @/pwaInstall.ts) :
+// le bandeau ne le rate plus s'il est monté après coup (même code que l'app Étiquettes).
+import { computed, ref } from 'vue'
 import { XMarkIcon, ArrowDownTrayIcon, ArrowUpOnSquareIcon } from '@heroicons/vue/24/outline'
+import { installPrompt } from '@/pwaInstall.ts'
 
 const DISMISSED_KEY = 'pwa-install-dismissed'
 
-const show = ref(false)
-const isIos = ref(false)
-const isFirefox = ref(false)
-let deferredPrompt: any = null
-
-function isStandalone() {
-  return (
-    window.matchMedia('(display-mode: standalone)').matches ||
-    (window.navigator as any).standalone === true
-  )
+function readDismissed(): boolean {
+  try {
+    return !!localStorage.getItem(DISMISSED_KEY)
+  } catch {
+    return false
+  }
 }
 
-function isIosDevice() {
-  return /iphone|ipad|ipod/i.test(navigator.userAgent)
+function writeDismissed() {
+  try {
+    localStorage.setItem(DISMISSED_KEY, '1')
+  } catch {
+    /* stockage indisponible */
+  }
 }
 
-function isAndroidChrome() {
-  const ua = navigator.userAgent
-  return /android/i.test(ua) && /chrome\/\d+/i.test(ua) && !/samsung|edg[ea]/i.test(ua)
-}
+const ua = navigator.userAgent
+const standalone =
+  window.matchMedia('(display-mode: standalone)').matches ||
+  (window.navigator as { standalone?: boolean }).standalone === true
+const isIos = /iphone|ipad|ipod/i.test(ua)
+const isFirefox = /android/i.test(ua) && /firefox\/\d+/i.test(ua)
 
-function isAndroidFirefox() {
-  const ua = navigator.userAgent
-  return /android/i.test(ua) && /firefox\/\d+/i.test(ua)
-}
+const dismissed = ref(readDismissed())
 
-function handleBeforeInstallPrompt(e: Event) {
-  e.preventDefault()
-  deferredPrompt = e
-  if (!localStorage.getItem(DISMISSED_KEY)) show.value = true
-}
+const show = computed(() => {
+  if (standalone || dismissed.value) return false
+  return isIos || isFirefox || installPrompt.value !== null
+})
 
 async function install() {
-  if (!deferredPrompt) return
-  deferredPrompt.prompt()
-  const { outcome } = await deferredPrompt.userChoice
-  deferredPrompt = null
-  show.value = false
-  if (outcome === 'accepted') localStorage.setItem(DISMISSED_KEY, '1')
+  const prompt = installPrompt.value
+  if (!prompt) return
+  await prompt.prompt()
+  const { outcome } = await prompt.userChoice
+  installPrompt.value = null
+  if (outcome === 'accepted') {
+    dismissed.value = true
+    writeDismissed()
+  }
 }
 
 function dismiss() {
-  show.value = false
-  localStorage.setItem(DISMISSED_KEY, '1')
+  dismissed.value = true
+  writeDismissed()
 }
-
-onMounted(() => {
-  if (isStandalone() || localStorage.getItem(DISMISSED_KEY)) return
-  if (isIosDevice()) {
-    isIos.value = true
-    show.value = true
-    return
-  }
-  if (isAndroidFirefox()) {
-    isFirefox.value = true
-    show.value = true
-    return
-  }
-  if (!isAndroidChrome()) return
-  window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-})
 </script>
 
 <template>
@@ -107,7 +91,7 @@ onBeforeUnmount(() => {
         >
           Installer
         </button>
-        <button @click="dismiss" class="text-gray-400 hover:text-gray-600">
+        <button @click="dismiss" class="text-gray-400 hover:text-gray-600" aria-label="Fermer">
           <XMarkIcon class="w-5 h-5" />
         </button>
       </div>
