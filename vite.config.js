@@ -13,6 +13,9 @@ export default defineConfig({
   server: {
     host: true,  // expose sur le réseau local (0.0.0.0)
     https: {},   // certificat auto-signé via basicSsl()
+    // L'app Étiquettes (:5174) utilise le mock OIDC exposé ici (émetteur unique) :
+    // on autorise son origine pour les requêtes CORS (ex. /userinfo avec Authorization).
+    cors: { origin: /^https:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+):5174$/ },
     // Proxy : les appels API sont forwarded vers le backend Flask local.
     // Le téléphone ne parle qu'à Vite (HTTPS) → pas de mixed-content.
     proxy: {

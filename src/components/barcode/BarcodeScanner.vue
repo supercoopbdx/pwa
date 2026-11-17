@@ -88,9 +88,12 @@ function pickCamera(cams: MediaDeviceInfo[], savedLabel?: string): MediaDeviceIn
   // s'approche, contrairement au grand-angle seul.
   const triple = cams.find(c => /triple/i.test(c.label))
   if (triple) return triple
-  // Autres iPhone (pas de macro sur le parc, iPhone ≤ 15) : le grand-angle seul.
-  // La « double caméra grand angle » n'apporte rien et a semblé moins bonne
-  // à l'essai sur iPhone 14 (test du 2026-11-17).
+  // Autres iPhone : le grand-angle seul, sûr sur tous les modèles. Sur iPhone ≤ 15
+  // la « double caméra grand angle » n'apporte rien (pas de macro) et a semblé
+  // moins bonne à l'essai sur iPhone 14 (2026-11-17). Les iPhone 16/17 standard
+  // ont la macro via cette caméra double, mais Safari ne permet pas de distinguer
+  // le modèle : l'utilisateur la choisit dans le menu (mémorisé). À réévaluer
+  // si le parc en compte (test page Debug).
   const wide = cams.find(c => /^(caméra arrière|back camera)$/i.test(c.label.trim()))
   if (wide) return wide
   // Android : camera2 0 est presque toujours l'objectif principal
