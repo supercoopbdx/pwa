@@ -7,6 +7,12 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.8] - 2026-11-17
+
+### Ajouts
+- Connexion : le bouton affiche « Connexion… » pendant l'accès au portail, et un message « Connexion impossible : vérifiez le réseau et réessayez » s'il est injoignable (avant : aucun retour, on croyait le bouton cassé)
+- Ouverture d'une page protégée sans session avec le portail injoignable : retour à l'accueil avec ce message au lieu d'une page blanche
+
 ## [0.7.7] - 2026-11-17
 
 ### Corrections
