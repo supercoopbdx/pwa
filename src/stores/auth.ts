@@ -32,9 +32,18 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function loginCallback(): Promise<string> {
-    await userManager.signinCallback()
+    try {
+      await userManager.signinCallback()
+    } catch (e) {
+      // Code déjà utilisé : l'app installée a été rouverte sur /login_callback
+      // (Android reprend la dernière page). Sans ce rattrapage : page blanche.
+      console.warn('Retour de connexion invalide, retour à l\'accueil', e)
+    }
     user.value = await userManager.getUser()
-    return sessionStorage.getItem('redirectAfterLogin') ?? '/accueil'
+    if (!user.value) return '/'
+    const target = sessionStorage.getItem('redirectAfterLogin') ?? '/accueil'
+    sessionStorage.removeItem('redirectAfterLogin')
+    return target
   }
 
   async function logout() {
