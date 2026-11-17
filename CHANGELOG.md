@@ -7,6 +7,11 @@ et ce projet adhère au [Versioning Sémantique](https://semver.org/lang/fr/).
 
 ---
 
+## [0.7.7] - 2026-11-17
+
+### Corrections
+- Connexion : un retour de connexion invalide (app installée rouverte sur `/login_callback` avec un code déjà utilisé) renvoie sur l'accueil au lieu d'afficher une page blanche à chaque ouverture
+
 ## [0.7.6] - 2026-11-17
 
 ### Corrections
