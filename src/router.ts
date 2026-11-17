@@ -139,7 +139,13 @@ router.beforeEach(async (to, _from, next) => {
   await checkAuth()
   const { user } = useAuthStore()
   if (!user) {
-    await login(to.fullPath)
+    try {
+      await login(to.fullPath)
+    } catch (e) {
+      console.error('Connexion impossible', e)
+      next({ name: 'home', query: { erreur: 'connexion' } })
+      return
+    }
     return false
   }
 

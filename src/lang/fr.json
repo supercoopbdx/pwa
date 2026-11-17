@@ -30,7 +30,9 @@
   },
   "auth": {
     "login": "Connexion",
-    "logout": "Deconnexion"
+    "logout": "Deconnexion",
+    "loggingIn": "Connexion…",
+    "loginFailed": "Connexion impossible : vérifiez le réseau et réessayez."
   },
   "inventaire": {
     "button": {
